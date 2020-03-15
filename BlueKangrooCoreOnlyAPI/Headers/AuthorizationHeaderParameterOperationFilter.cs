@@ -1,0 +1,52 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using BlueKangrooCoreOnlyAPI.Filters;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+namespace BlueKangrooCoreOnlyAPI.Headers
+{
+    public class AuthorizationHeaderParameterOperationFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var filterPipeline = context.ApiDescription.ActionDescriptor.FilterDescriptors;
+            var isAuthorized = filterPipeline.Select(filterInfo => filterInfo.Filter).Any(filter => filter is AuthorizeFilter  ||  filter is ClaimRequirementAttribute);
+            var allowAnonymous = filterPipeline.Select(filterInfo => filterInfo.Filter).Any(filter => filter is IAllowAnonymousFilter);
+
+            if (isAuthorized && !allowAnonymous)
+            {
+                if (operation.Parameters == null)
+                    operation.Parameters = new List<OpenApiParameter>();
+
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Description = "access token",
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "String",
+                        Default = new OpenApiString("Bearer ")
+                    }
+                });
+
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "CustomerGuidKey",
+                    In = ParameterLocation.Header,
+                    Description = "customer token",
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "String",
+                        Default = new OpenApiString("empty")
+                    }
+                });
+            }
+        }
+    }
+}
