@@ -14,10 +14,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     /// <summary>
     /// this will provide crud operations for AppBuyer 
     /// </summary>
-    [ClaimRequirement("CanRead", "CanReadResource")]
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class AppBuyerController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
@@ -26,8 +24,6 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             blueRepository = _blueRepository;
         }
 
-        [ClaimRequirement("CanRead", "CanReadResource")]
-        [Authorize("CustomGuid")]
         [HttpGet]
         [Route("GetAllBuyers")]
         public async Task<IActionResult> GetAllBuyers()

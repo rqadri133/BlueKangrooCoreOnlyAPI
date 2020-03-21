@@ -10,8 +10,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     {
          Task<List<AppBuyer>> GetBuyers();
         Task<string> LoginUser(AppUser user);  
+
          Task<List<AppUser>> GetAllUsers();
-         Task<List<AppSeller>> GetSellers();
+         Task<AppUser> AddUser(AppUser user);
+
+
+        Task<List<AppSeller>> GetSellers();
 
 
          Task<AppBuyer> GetBuyer(Guid? buyerId);

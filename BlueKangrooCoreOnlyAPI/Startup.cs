@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.Authentication;
 using BlueKangrooCoreOnlyAPI.AuthenticationHandlers;
 using BlueKangrooCoreOnlyAPI.Headers;
 using BlueKangrooCoreOnlyAPI.AuthorizationHandlers;
+using Scrutor;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -52,7 +53,6 @@ namespace BlueKangrooCoreOnlyAPI
            {
                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-               options.AddScheme<BasicAuthenticationHandler>("BasicAuthentication", "basicAuthentication");
                
            }).AddJwtBearer(options =>
            {
@@ -62,16 +62,24 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddControllers();
             services.AddCors(option => option.AddPolicy("MyPolicy", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();  }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
-            services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection")));
-
+            services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+            services.Scan(scan => scan
+            .FromAssemblyOf<IAuthorizationHandler>()
+            .AddClasses()
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+            .AsSelf()
+            .WithSingletonLifetime());
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("CustomGuid", policy =>
                     policy.Requirements.Add(new CustomerGuidHandlerRequirement()));
             });
-
+            services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
-
+      
+            services.AddSingleton<IUserAuthorization, UserAuthorization>();
+        
+            
             services.AddSwaggerGen(c =>
           {
              c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );

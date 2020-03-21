@@ -8,14 +8,14 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
  
     public class CustomerGuidHandlerRequirement : IAuthorizationRequirement
     {
-        public string customerGuid
+        public string Authorization
         {
             get;
             set;
 
         }
 
-        public string BearerTokenIfAny
+        public string CustomerGuidKey
         {
             get;
             set;

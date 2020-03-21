@@ -35,10 +35,10 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         }
         
 
-          [HttpPost]
+          [HttpGet]
           [Route("GetAllUsers")]
          [Authorize]
-         public async Task<IActionResult> GetAllUser([FromBody]AppUser model)
+         public async Task<IActionResult> GetAllUser()
         {
 
             var users = await blueRepository.GetAllUsers();
@@ -46,6 +46,22 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
         }
+
+
+
+        [HttpPost]
+        [Route("AddUser")]
+        [Authorize]
+        public async Task<IActionResult> AddUser([FromBody]AppUser model)
+        {
+
+            var user = await blueRepository.AddUser(model);
+            return Ok(user);
+
+
+        }
+
+
 
 
 
