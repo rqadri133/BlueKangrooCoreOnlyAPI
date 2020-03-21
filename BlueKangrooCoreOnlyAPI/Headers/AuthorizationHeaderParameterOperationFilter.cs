@@ -26,26 +26,14 @@ namespace BlueKangrooCoreOnlyAPI.Headers
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Description = "access token",
-                    Required = true,
+                    
                     Schema = new OpenApiSchema
                     {
                         Type = "String",
-                        Default = new OpenApiString("Bearer ")
+                        Default = new OpenApiString("Bearer")
                     }
                 });
 
-                operation.Parameters.Add(new OpenApiParameter
-                {
-                    Name = "CustomerGuidKey",
-                    In = ParameterLocation.Header,
-                    Description = "customer token",
-                    Required = true,
-                    Schema = new OpenApiSchema
-                    {
-                        Type = "String",
-                        Default = new OpenApiString("empty")
-                    }
-                });
             }
         }
     }

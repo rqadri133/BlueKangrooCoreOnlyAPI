@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using BlueKangrooCoreOnlyAPI.Repository;
 
 namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
 {
@@ -11,8 +12,17 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
 
     public class CustomGuidAuthorizationHandler : AuthorizationHandler<CustomerGuidHandlerRequirement>
     {
+        IUserAuthorization userAuthorization;
+        public CustomGuidAuthorizationHandler(IUserAuthorization userAuthorization)
+        {
+            this.userAuthorization = userAuthorization; 
+
+        }
+
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerGuidHandlerRequirement requirement)
         {
+           // !Request.Headers.ContainsKey("Authorization")
+
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier &&
                                             c.Issuer == "http://contoso.com"))
             {
@@ -22,15 +32,15 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
                 return Task.CompletedTask;
             }
 
-
             var guidCustomer =  context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier &&  c.Issuer == "http://contoso.com").Value;
 
+            Task<bool> _IsUserExist   =  this.userAuthorization.IsUserAuthorized(Guid.Parse(guidCustomer));
             Guid exists;
 
             try
             {
                 Guid.TryParse(guidCustomer, out exists);
-                if(exists != null && requirement.customerGuid == exists.ToString() )
+                if(exists != null && requirement.CustomerGuidKey == exists.ToString()  && _IsUserExist.Result )
                 {
                     context.Succeed(requirement);
 

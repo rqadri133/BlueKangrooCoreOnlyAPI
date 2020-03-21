@@ -177,6 +177,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                                                             
                                                               });
 
+                                            await  db.SaveChangesAsync();
+
                                            return _newTokenInfo.Entity.AppClientName.ToString();
 
 
@@ -315,6 +317,29 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 await db.SaveChangesAsync();
             }
         }
+
+
+        public async Task<AppUser> AddUser(AppUser user)
+        {
+
+            if (db != null)
+            {
+                user.AppUserId = Guid.NewGuid();
+                user.AppUserPwd  = Security.SecurityLogin.CreateHash(user.AppUserPwd);
+                user.CreatedDate = DateTime.Now;
+               
+                await db.AppUser.AddAsync(user);
+                await db.SaveChangesAsync();
+
+                return user;
+            }
+
+            return user;
+
+        }
+
+
+
       
         
 
