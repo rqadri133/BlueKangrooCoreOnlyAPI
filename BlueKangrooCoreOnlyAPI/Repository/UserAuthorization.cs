@@ -24,7 +24,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
 
-                    var user = await db.AppUser.FirstOrDefaultAsync<AppUser>(p => p.AppUserId == customerGuid );
+                    var user = await db.AppToken.FirstOrDefaultAsync<AppToken>(p => p.AppTokenId == customerGuid && p.TokenExpiredDate > DateTime.Now );
                     if(user != null)
                     {
                         _IsUserExist = true;

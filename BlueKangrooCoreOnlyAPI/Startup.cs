@@ -30,6 +30,7 @@ using BlueKangrooCoreOnlyAPI.AuthenticationHandlers;
 using BlueKangrooCoreOnlyAPI.Headers;
 using BlueKangrooCoreOnlyAPI.AuthorizationHandlers;
 using Scrutor;
+using Microsoft.OpenApi.Any;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -63,6 +64,11 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddCors(option => option.AddPolicy("MyPolicy", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();  }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+            services.AddHttpContextAccessor();
+             
+            
+
+
             services.Scan(scan => scan
             .FromAssemblyOf<IAuthorizationHandler>()
             .AddClasses()
@@ -71,19 +77,48 @@ namespace BlueKangrooCoreOnlyAPI
             .WithSingletonLifetime());
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("CustomGuid", policy =>
+                options.AddPolicy("CustomGuidAuthorization", policy =>
                     policy.Requirements.Add(new CustomerGuidHandlerRequirement()));
             });
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
       
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
-        
-            
+            services.AddHealthChecks();
             services.AddSwaggerGen(c =>
           {
              c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
-             c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+              c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+              {
+                  Description =
+                   "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                  Name = "Authorization",
+                  In = ParameterLocation.Header,
+                  Type = SecuritySchemeType.ApiKey,
+                  Scheme = "Bearer"
+              });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+               {
+                         new OpenApiSecurityScheme
+                        {
+                     Reference = new OpenApiReference
+                       {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                    Scheme = "oauth2",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header,
+
+           },
+             new List<string>()
+            }
+         }); 
+              c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+
+
           });
         }
 
@@ -97,7 +132,7 @@ namespace BlueKangrooCoreOnlyAPI
             }
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
+           
             app.UseRouting();
 
             app.UseAuthorization();
@@ -108,8 +143,11 @@ namespace BlueKangrooCoreOnlyAPI
             });
             app.UseCors("MyPolicy");
 
-          
+            app.UseHealthChecks("/health");
             //  app.UseMvc();
+
+
+         
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
@@ -128,7 +166,12 @@ namespace BlueKangrooCoreOnlyAPI
             });
 
 
-           
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Authorization", "bearer");
+                context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
+                await next.Invoke();
+            });
 
         }
 

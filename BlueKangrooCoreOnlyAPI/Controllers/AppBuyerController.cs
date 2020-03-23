@@ -14,18 +14,23 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     /// <summary>
     /// this will provide crud operations for AppBuyer 
     /// </summary>
+   
     [Route("api/[controller]")]
     [ApiController]
+   [Authorize (Policy = "CustomGuidAuthorization")]
     public class AppBuyerController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
+        private string _guidKey;
         public AppBuyerController(IBlueKangrooRepository _blueRepository)
         {
-            blueRepository = _blueRepository;
+           blueRepository = _blueRepository;
         }
 
         [HttpGet]
         [Route("GetAllBuyers")]
+        [Authorize]
+        
         public async Task<IActionResult> GetAllBuyers()
         {
             try
