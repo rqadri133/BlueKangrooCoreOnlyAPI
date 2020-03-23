@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using BlueKangrooCoreOnlyAPI.Repository;
 
 namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
@@ -13,18 +14,22 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
     public class CustomGuidAuthorizationHandler : AuthorizationHandler<CustomerGuidHandlerRequirement>
     {
         IUserAuthorization userAuthorization;
-        public CustomGuidAuthorizationHandler(IUserAuthorization userAuthorization)
+        IHttpContextAccessor _httpContextAccessor = null;
+
+        public CustomGuidAuthorizationHandler(IUserAuthorization userAuthorization, IHttpContextAccessor httpContextAccessor )
         {
-            this.userAuthorization = userAuthorization; 
+            this.userAuthorization = userAuthorization;
+            this._httpContextAccessor = httpContextAccessor;
 
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerGuidHandlerRequirement requirement)
         {
-           // !Request.Headers.ContainsKey("Authorization")
+            HttpContext httpContext = _httpContextAccessor.HttpContext;
 
-            if (!context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier &&
-                                            c.Issuer == "http://contoso.com"))
+            string guidCustomer = httpContext.Request.Headers["CustomerGuidKey"];
+
+            if (String.IsNullOrEmpty(guidCustomer))
             {
                 //TODO: Use the following if targeting a version of
                 //.NET Framework older than 4.6:
@@ -32,16 +37,16 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
                 return Task.CompletedTask;
             }
 
-            var guidCustomer =  context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier &&  c.Issuer == "http://contoso.com").Value;
-
-            Task<bool> _IsUserExist   =  this.userAuthorization.IsUserAuthorized(Guid.Parse(guidCustomer));
+     
             Guid exists;
 
             try
             {
                 Guid.TryParse(guidCustomer, out exists);
-                if(exists != null && requirement.CustomerGuidKey == exists.ToString()  && _IsUserExist.Result )
+                if(exists != null)
                 {
+                    Task<bool> _IsUserExist = this.userAuthorization.IsUserAuthorized(exists);
+                    if(_IsUserExist.Result)
                     context.Succeed(requirement);
 
                 }

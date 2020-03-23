@@ -2,6 +2,7 @@
 using System.Linq;
 using BlueKangrooCoreOnlyAPI.Filters;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -12,29 +13,35 @@ namespace BlueKangrooCoreOnlyAPI.Headers
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var filterPipeline = context.ApiDescription.ActionDescriptor.FilterDescriptors;
-            var isAuthorized = filterPipeline.Select(filterInfo => filterInfo.Filter).Any(filter => filter is AuthorizeFilter  ||  filter is ClaimRequirementAttribute);
-            var allowAnonymous = filterPipeline.Select(filterInfo => filterInfo.Filter).Any(filter => filter is IAllowAnonymousFilter);
 
-            if (isAuthorized && !allowAnonymous)
+
+            if (operation.Parameters == null)
+                operation.Parameters = new List<OpenApiParameter>();
+
+
+            var descriptor = context.ApiDescription.ActionDescriptor as ControllerActionDescriptor;
+
+            if (descriptor != null && descriptor.ControllerName  == "AppBuyer")
             {
-                if (operation.Parameters == null)
-                    operation.Parameters = new List<OpenApiParameter>();
-
                 operation.Parameters.Add(new OpenApiParameter
                 {
-                    Name = "Authorization",
+                    Name = "CustomerGuidKey",
                     In = ParameterLocation.Header,
-                    Description = "access token",
-                    
+                    Description = "after login guid",
+                 
                     Schema = new OpenApiSchema
                     {
-                        Type = "String",
-                        Default = new OpenApiString("Bearer")
-                    }
+                        Type = "string",
+                        Default = new OpenApiString("apitoken") ,
+                        Format = "string"
+                    } 
+                    
+
+                     
                 });
 
             }
         }
+        
     }
 }
