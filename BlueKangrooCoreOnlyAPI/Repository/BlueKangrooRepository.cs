@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
 
-    // this is an asynchronous version
+    
     public class BlueKangrooRepository : IBlueKangrooRepository
     {
         private blueKangrooContext db;
@@ -153,7 +153,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                             {
                                  if(tokenInformation.TokenExpiredDate > DateTime.Now)
                                  {
-                                      return tokenInformation.AppClientName.ToString();
+                                      return tokenInformation.AppTokenId.ToString();
                                  }     
                             }
                             else 
@@ -162,7 +162,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                                 // the method is accessible earlier only with bearer token 
                                  // this is add on token to return to client 
                                  Guid _tokenId = Guid.NewGuid();
-                               var _newTokenInfo  = await db.AppToken.AddAsync(new AppToken() {  
+                                 var _newTokenInfo  = await db.AppToken.AddAsync(new AppToken() {  
                                                               AppTokenId = _tokenId , 
                                                               AppTokenUserId = userinfo.AppUserId , 
                                                               TokenExpiredDate = DateTime.Now.AddDays(30) ,
@@ -179,7 +179,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
                                             await  db.SaveChangesAsync();
 
-                                           return _newTokenInfo.Entity.AppClientName.ToString();
+                                           return _newTokenInfo.Entity.AppTokenId.ToString();
 
 
 
