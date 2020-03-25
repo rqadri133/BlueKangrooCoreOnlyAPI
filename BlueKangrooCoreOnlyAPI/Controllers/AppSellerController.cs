@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Policy = "CustomGuidAuthorization")]
+
     public class AppSellerController : Controller
     {
         IBlueKangrooRepository blueRepository;
