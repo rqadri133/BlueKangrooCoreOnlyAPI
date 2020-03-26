@@ -9,8 +9,8 @@ using BlueKangrooCoreOnlyAPI.Repository;
 
 namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
 {
-  
-
+  // this class will take AppToken ID
+    
     public class CustomGuidAuthorizationHandler : AuthorizationHandler<CustomerGuidHandlerRequirement>
     {
         IUserAuthorization userAuthorization;
@@ -28,7 +28,7 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
             HttpContext httpContext = _httpContextAccessor.HttpContext;
 
             string guidCustomer = httpContext.Request.Headers["CustomerGuidKey"];
-
+            string _auth0Key = httpContext.Request.Headers["Authorization"];
             if (String.IsNullOrEmpty(guidCustomer))
             {
                 //TODO: Use the following if targeting a version of
@@ -46,9 +46,12 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
                 if(exists != null)
                 {
                     Task<bool> _IsUserExist = this.userAuthorization.IsUserAuthorized(exists);
-                    if(_IsUserExist.Result)
-                    context.Succeed(requirement);
-
+                    if (_IsUserExist.Result)
+                    {
+                        requirement.CustomerGuidKey = exists.ToString();
+                        requirement.Authorization = _auth0Key;
+                        context.Succeed(requirement);
+                    }
                 }
             }
             catch (Exception excp)

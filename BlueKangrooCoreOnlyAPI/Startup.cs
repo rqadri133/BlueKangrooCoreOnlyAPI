@@ -82,7 +82,6 @@ namespace BlueKangrooCoreOnlyAPI
             });
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
-      
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddHealthChecks();
             services.AddSwaggerGen(c =>
@@ -97,7 +96,6 @@ namespace BlueKangrooCoreOnlyAPI
                   Type = SecuritySchemeType.ApiKey,
                   Scheme = "Bearer"
               });
-
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
             {
                {
@@ -145,9 +143,7 @@ namespace BlueKangrooCoreOnlyAPI
 
             app.UseHealthChecks("/health");
             //  app.UseMvc();
-
-
-         
+       
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
@@ -158,21 +154,17 @@ namespace BlueKangrooCoreOnlyAPI
       
           });
 
-
-            app.UseSwaggerUI(option =>
+           app.UseSwaggerUI(option =>
              {
                  option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
                  option.DisplayOperationId();
             });
-
-
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("Authorization", "bearer");
                 context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
                 await next.Invoke();
             });
-
         }
 
          // If using Scrutor the folllowing is not required
