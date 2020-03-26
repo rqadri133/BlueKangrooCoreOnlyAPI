@@ -17,7 +17,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     public class AppSellerController : Controller
     {
         IBlueKangrooRepository blueRepository;
-        AppSellerController(IBlueKangrooRepository _blueRepository)
+        public AppSellerController(IBlueKangrooRepository _blueRepository)
         {
             blueRepository = _blueRepository;
         }
