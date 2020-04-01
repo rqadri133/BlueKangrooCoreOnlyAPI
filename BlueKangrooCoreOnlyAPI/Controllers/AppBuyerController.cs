@@ -21,7 +21,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     public class AppBuyerController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
-        private string _guidKey;
+        
         public AppBuyerController(IBlueKangrooRepository _blueRepository)
         {
            blueRepository = _blueRepository;
@@ -54,7 +54,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
         [HttpGet]
-        [Route("GetBuyer")]
+        [Route("GetBuyer/{buyerId}")]
         public async Task<IActionResult> GetBuyer(Guid? buyerId)
         {
             if (buyerId == null)

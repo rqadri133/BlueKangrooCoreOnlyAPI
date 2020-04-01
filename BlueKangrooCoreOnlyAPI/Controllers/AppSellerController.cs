@@ -48,7 +48,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
         [HttpGet]
-        [Route("GetSeller")]
+        [Route("GetSeller/{sellerId}")]
         [Authorize]
         public async Task<IActionResult> GetSeller(Guid? sellerId)
         {
