@@ -172,8 +172,7 @@ namespace BlueKangrooCoreOnlyAPI
             var storage = StorageClient.Create(credential);
 
             Console.WriteLine(env.EnvironmentName);
-            logger.AddGoogle(app.ApplicationServices, Configuration.GetValue<string>("GoogleCloudProjectId"));
-
+    
         }
 
          // If using Scrutor the folllowing is not required
