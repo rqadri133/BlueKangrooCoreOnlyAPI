@@ -84,6 +84,8 @@ namespace BlueKangrooCoreOnlyAPI
                     policy.Requirements.Add(new CustomerGuidHandlerRequirement()));
             });
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
+            services.AddSingleton<IGroundLogistics, GroundLogistics>();
+
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
           

@@ -292,7 +292,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             return null;
         }
 
-        public async Task UpdateBuyer(AppBuyer buyer)
+        public async Task<AppBuyer> UpdateBuyer(AppBuyer buyer)
         {
             if (db != null)
             {
@@ -303,9 +303,10 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 await db.SaveChangesAsync();
             }
 
+            return buyer;
         }
 
-        public async Task UpdateSeller(AppSeller seller)
+        public async Task<AppSeller> UpdateSeller(AppSeller seller)
         {
 
             if (db != null)
@@ -316,6 +317,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 //Commit the transaction
                 await db.SaveChangesAsync();
             }
+
+            return seller;
         }
 
 

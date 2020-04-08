@@ -25,9 +25,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
          Task<int> DeleteBuyer(AppBuyer buyer);
          Task<int> DeleteSeller(AppSeller seller);
-         Task UpdateBuyer(AppBuyer buyer);
+         Task<AppBuyer> UpdateBuyer(AppBuyer buyer);
 
-         Task UpdateSeller(AppSeller seller);
+         Task<AppSeller> UpdateSeller(AppSeller seller);
          Task<AppSeller> AddSeller(AppSeller seller);
 
          
