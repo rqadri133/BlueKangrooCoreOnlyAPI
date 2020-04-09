@@ -19,7 +19,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         Task<AppGroundActivity> AddGroundActity(AppGroundActivity groundActivity);
         Task<List<AppGroundActivity>> LoadAllGroundActivities();
         Task<int> DeleteAppGroundActivity(Guid? groundLogistics);
-
+        Task<int> DeleteAppGroundLogistics(Guid? groundLogisticsId);
 
 
 

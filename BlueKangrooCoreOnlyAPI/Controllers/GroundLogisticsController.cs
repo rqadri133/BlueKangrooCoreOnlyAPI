@@ -98,6 +98,61 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("DeleteGroundLogistics")]
+        public async Task<IActionResult> DeleteGroundLogistics(Guid groundLogisticsId)
+        {
+            int result = 0;
+
+            if (groundLogisticsId == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                result = await groundLogistics.DeletGroundLogistics(groundLogisticsId);
+                if (result == 0)
+                {
+                    return NotFound();
+                }
+                return Ok();
+            }
+            catch (Exception excp)
+            {
+
+                return BadRequest(excp);
+            }
+        }
+
+
+        [HttpPut]
+        [Route("UpdateGroundLogistics")]
+        public async Task<IActionResult> UpdateGroundLogistics([FromBody]AppGroundLogistics grLogistics)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await groundLogistics.UpdateGroundLogistics(grLogistics);
+
+                    return Ok();
+                }
+                catch (Exception excp)
+                {
+                    if (excp.GetType().FullName ==
+                             "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException")
+                    {
+                        return NotFound();
+                    }
+
+                    return BadRequest(excp);
+                }
+            }
+
+            return BadRequest();
+        }
+
 
 
     }

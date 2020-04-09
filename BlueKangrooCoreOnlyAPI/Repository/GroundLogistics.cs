@@ -173,6 +173,30 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
         }
 
+        public async Task<int> DeleteAppGroundLogistics(Guid? groundLogisticsId)
+        {
+            int result = 0;
 
+            if (db != null)
+            {
+                //Find the post for specific post id
+                var grlDel = await db.AppGroundLogistics.FirstOrDefaultAsync(p => p.AppGroundLogisticId == groundLogisticsId);
+
+                if (grlDel != null)
+                {
+                    //Delete that post
+                    db.AppGroundLogistics.Remove(grlDel);
+
+                    //Commit the transaction
+                    result = await db.SaveChangesAsync();
+                }
+                return result;
+            }
+
+            return result;
+
+
+
+        }
     }
 }
