@@ -129,6 +129,10 @@ namespace BlueKangrooCoreOnlyAPI
               .AddNewtonsoftJson(options =>
               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                );
+
+            services.AddMemoryCache();
+            services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

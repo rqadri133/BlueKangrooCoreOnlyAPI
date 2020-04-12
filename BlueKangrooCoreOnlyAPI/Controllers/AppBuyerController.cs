@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using BlueKangrooCoreOnlyAPI.Filters;
+using Microsoft.Extensions.Caching.Memory;
+using config = Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -21,10 +26,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     public class AppBuyerController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
-        
-        public AppBuyerController(IBlueKangrooRepository _blueRepository)
+        IDistributedCache distributedCache;
+      
+        private readonly config.IConfiguration configuration;
+        public AppBuyerController(IBlueKangrooRepository _blueRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache)
         {
            blueRepository = _blueRepository;
+           
+            configuration = _configurtaion;
+            distributedCache = _distributedCache;
         }
 
         [HttpGet]
@@ -33,14 +43,35 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         
         public async Task<IActionResult> GetAllBuyers()
         {
+            var cacheKey = "GetAllBuyers_" + Response.Headers["CustomerGuidKey"];
+            List<AppBuyer> buyers;
+            string serilaizedBuyers = String.Empty;
+            var encodedBuyers = await distributedCache.GetAsync(cacheKey);
+
+
             try
             {
-                var buyers = await blueRepository.GetBuyers();
-                if (buyers == null)
+                if(encodedBuyers != null)
                 {
-                     return NotFound();
-       
+                    serilaizedBuyers = Encoding.UTF8.GetString(encodedBuyers);
+                    buyers = JsonConvert.DeserializeObject<List<AppBuyer>>(serilaizedBuyers);
                 }
+                else
+                {
+                    buyers = await blueRepository.GetBuyers();
+                    if (buyers == null)
+                    {
+                        return NotFound();
+                    }
+                    serilaizedBuyers = JsonConvert.SerializeObject(encodedBuyers);
+                    encodedBuyers = Encoding.UTF8.GetBytes(serilaizedBuyers);
+                    var options = new DistributedCacheEntryOptions()
+                                     .SetAbsoluteExpiration(DateTime.Now.AddHours(Convert.ToInt32(configuration["CacheAbsoluteExpirations"])))
+                                     .SetSlidingExpiration(TimeSpan.FromMinutes(Convert.ToInt32(configuration["SlidingExpirationsTimeOutInMinutes"])));
+
+                      await distributedCache.SetAsync(cacheKey, encodedBuyers, options);
+                }
+
 
                 return Ok(buyers);
             }

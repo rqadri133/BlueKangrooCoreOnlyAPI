@@ -19,6 +19,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         {
             if (db != null)
             {
+                groundLogistics.AppGroundLogisticId = Guid.NewGuid();
+                groundLogistics.CreatedDate = DateTime.Now;
+                
                 await db.AppGroundLogistics.AddAsync(groundLogistics);
                 await db.SaveChangesAsync();
 
@@ -28,7 +31,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             return groundLogistics;
 
         }
-        public async Task<int> DeletGroundLogistics(Guid? groundLogisticsId)
+        public async Task<int> DeleteGroundLogistics(Guid? groundLogisticsId)
         {
             int result = 0;
 
@@ -121,6 +124,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         {
             if (db != null)
             {
+                groundActivity.AppGroundActivityId = Guid.NewGuid();
+                groundActivity.CreatedDate = DateTime.Now;
                 await db.AppGroundActivity.AddAsync(groundActivity);
                 await db.SaveChangesAsync();
 
@@ -196,6 +201,39 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             return result;
 
 
+
+        }
+
+        public async Task<AppGroundActivity> GetGroundActivity(Guid? groundActivityId)
+        {
+           
+                if (db != null)
+                {
+                    // One Groud Logistics per zip code
+                    var groundLogistics = await db.AppGroundActivity.FirstOrDefaultAsync<AppGroundActivity>(p => p.AppGroundActivityId == groundActivityId);
+                    return groundLogistics;
+
+                }
+            
+            
+            return null;
+
+        }
+
+
+        public async Task<AppGroundActivity> UpdateGroundActivity(AppGroundActivity activity)
+        {
+
+            if (db != null)
+            {
+                //Delete that post
+                db.AppGroundActivity.Update(activity);
+
+                //Commit the transaction
+                await db.SaveChangesAsync();
+            }
+
+            return activity;
 
         }
     }

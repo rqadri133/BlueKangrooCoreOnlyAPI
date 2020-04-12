@@ -10,7 +10,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     {
 
          Task<AppGroundLogistics> AddGroundLogistics(AppGroundLogistics groundLogistics);
-         Task<int> DeletGroundLogistics(Guid? groundLogisticsId);
+         Task<int> DeleteGroundLogistics(Guid? groundLogisticsId);
          Task<AppGroundLogistics> UpdateGroundLogistics(AppGroundLogistics groundLogistics);
          Task<List<AppGroundLogistics>> GetAllGroundLogistics();
          Task<List<AppGroundActivity>> GetGroundActivities();
@@ -20,13 +20,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         Task<List<AppGroundActivity>> LoadAllGroundActivities();
         Task<int> DeleteAppGroundActivity(Guid? groundLogistics);
         Task<int> DeleteAppGroundLogistics(Guid? groundLogisticsId);
-
-
-
-
-
-
-
+        Task<AppGroundActivity> GetGroundActivity(Guid? groundActivityId);
+        Task<AppGroundActivity> UpdateGroundActivity(AppGroundActivity activity);
 
     }
 }

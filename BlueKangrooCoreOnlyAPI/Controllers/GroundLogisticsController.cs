@@ -92,7 +92,6 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 return Ok(selectedLogistics);
             }
             catch (Exception excp)
-
             {
                 return BadRequest(excp);
             }
@@ -111,7 +110,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
             try
             {
-                result = await groundLogistics.DeletGroundLogistics(groundLogisticsId);
+                result = await groundLogistics.DeleteGroundLogistics(groundLogisticsId);
                 if (result == 0)
                 {
                     return NotFound();
