@@ -43,7 +43,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         
         public async Task<IActionResult> GetAllBuyers()
         {
-            var cacheKey = "GetAllBuyers_" + Response.Headers["CustomerGuidKey"];
+            var cacheKey = "GetAllBuyers_" + Request.Headers["CustomerGuidKey"];
             List<AppBuyer> buyers;
             string serilaizedBuyers = String.Empty;
             var encodedBuyers = await distributedCache.GetAsync(cacheKey);
@@ -63,7 +63,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                     {
                         return NotFound();
                     }
-                    serilaizedBuyers = JsonConvert.SerializeObject(encodedBuyers);
+                    serilaizedBuyers = JsonConvert.SerializeObject(buyers);
                     encodedBuyers = Encoding.UTF8.GetBytes(serilaizedBuyers);
                     var options = new DistributedCacheEntryOptions()
                                      .SetAbsoluteExpiration(DateTime.Now.AddHours(Convert.ToInt32(configuration["CacheAbsoluteExpirations"])))
