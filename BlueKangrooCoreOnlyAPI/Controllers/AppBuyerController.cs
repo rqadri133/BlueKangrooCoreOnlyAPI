@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 using config = Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using BlueKangrooCoreOnlyAPI.Caching;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -27,14 +28,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     {
         IBlueKangrooRepository blueRepository ;
         IDistributedCache distributedCache;
-      
+        ICacheManager<AppBuyer> cacheManager;
         private readonly config.IConfiguration configuration;
-        public AppBuyerController(IBlueKangrooRepository _blueRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache)
+        public AppBuyerController(IBlueKangrooRepository _blueRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache , ICacheManager<AppBuyer> _cacheManager )
         {
            blueRepository = _blueRepository;
            
             configuration = _configurtaion;
             distributedCache = _distributedCache;
+            cacheManager = _cacheManager;
         }
 
         [HttpGet]
@@ -44,34 +46,22 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         public async Task<IActionResult> GetAllBuyers()
         {
             var cacheKey = "GetAllBuyers_" + Request.Headers["CustomerGuidKey"];
-            List<AppBuyer> buyers;
-            string serilaizedBuyers = String.Empty;
+            List<AppBuyer> buyers = new List<AppBuyer>();
+          
             var encodedBuyers = await distributedCache.GetAsync(cacheKey);
-
+            
 
             try
             {
-                if(encodedBuyers != null)
-                {
-                    serilaizedBuyers = Encoding.UTF8.GetString(encodedBuyers);
-                    buyers = JsonConvert.DeserializeObject<List<AppBuyer>>(serilaizedBuyers);
-                }
-                else
+                if(encodedBuyers == null)
                 {
                     buyers = await blueRepository.GetBuyers();
                     if (buyers == null)
                     {
                         return NotFound();
                     }
-                    serilaizedBuyers = JsonConvert.SerializeObject(buyers);
-                    encodedBuyers = Encoding.UTF8.GetBytes(serilaizedBuyers);
-                    var options = new DistributedCacheEntryOptions()
-                                     .SetAbsoluteExpiration(DateTime.Now.AddHours(Convert.ToInt32(configuration["CacheAbsoluteExpirations"])))
-                                     .SetSlidingExpiration(TimeSpan.FromMinutes(Convert.ToInt32(configuration["SlidingExpirationsTimeOutInMinutes"])));
-
-                      await distributedCache.SetAsync(cacheKey, encodedBuyers, options);
                 }
-
+                buyers  = await cacheManager.ProcessCache(buyers, cacheKey, encodedBuyers, configuration, distributedCache);
 
                 return Ok(buyers);
             }

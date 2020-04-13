@@ -33,6 +33,7 @@ using Scrutor;
 using Google.Cloud.Diagnostics.AspNetCore;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using BlueKangrooCoreOnlyAPI.Caching;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -88,7 +89,10 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
-          
+            services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
+            // Adding Dependencies for Generics
+     
+
             services.AddSwaggerGen(c =>
           {
              c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
@@ -180,6 +184,9 @@ namespace BlueKangrooCoreOnlyAPI
                 context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
                 await next.Invoke();
             });
+
+            
+
             var credential = GoogleCredential.FromFile("BlueKangrooCoreApiOnly-6d3cfabd9cfc.json");
             var storage = StorageClient.Create(credential);
 
@@ -194,8 +201,9 @@ namespace BlueKangrooCoreOnlyAPI
             builder.RegisterType<BlueKangrooRepository>()
                     .As<IBlueKangrooRepository>()
                     .InstancePerLifetimeScope();
-                    
-           
+
+            builder.RegisterType<CacheManager<AppBuyer>>().As<ICacheManager<AppBuyer>>();
+
 
         }
     }

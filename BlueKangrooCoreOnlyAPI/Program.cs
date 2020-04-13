@@ -23,6 +23,7 @@ namespace BlueKangrooCoreOnlyAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    
                 }
                 
                 
