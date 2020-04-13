@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
-    interface IProductRepository
+    public interface IProductRepository
     {
         Task<AppProduct> AddProduct(AppProduct product);
         Task<List<AppProduct>> LoadAllProducts();

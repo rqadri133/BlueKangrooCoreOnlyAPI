@@ -6,51 +6,85 @@
     using Microsoft.AspNetCore.Mvc;
     using BlueKangrooCoreOnlyAPI.Repository;
     using Microsoft.AspNetCore.Authorization;
-    namespace BlueKangrooCoreOnlyAPI.Controllers
+    using Microsoft.Extensions.Caching.Distributed;
+    using BlueKangrooCoreOnlyAPI.Caching;
+    using Microsoft.Extensions.Configuration;
+
+namespace BlueKangrooCoreOnlyAPI.Controllers
     {
 
-        /// <summary>
-        /// this will provide crud operations for AppBuyer 
-        /// </summary>
+    /// <summary>
+    /// this will provide crud operations for AppBuyer 
+    /// </summary>
 
-        [Route("api/[controller]")]
-        [ApiController]
-        public class AppProductController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(Policy = "CustomGuidAuthorization")]
+    public class AppProductController : ControllerBase
         {
-            IGroundLogistics groundLogistics;
-            public AppProductController(IGroundLogistics _groundLogistics)
+            IProductRepository productRepo;
+            IDistributedCache distributedCache;
+            ICacheManager<AppProduct> cacheManager;
+            private readonly IConfiguration configuration;
+           public AppProductController(IProductRepository _productRepository , IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppProduct> _cacheManager)
             {
-                groundLogistics = _groundLogistics;
+                productRepo = _productRepository;
+                configuration = _configurtaion;
+                distributedCache = _distributedCache;
+                cacheManager = _cacheManager;
             }
 
             [HttpGet]
-            [Route("GetAllLogistics")]
+            [Route("GetAllProducts")]
             [Authorize]
-            public async Task<IActionResult> GetAllGroundLogistics()
+            public async Task<IActionResult> GetAllProducts()
             {
 
-                var groundLogisticsAll = await groundLogistics.GetAllGroundLogistics();
-                return Ok(groundLogisticsAll);
+                var cacheKey = "GetAllProducts_" + Request.Headers["CustomerGuidKey"];
+                List<AppProduct> products = new List<AppProduct>();
+
+                var encodedProducts = await distributedCache.GetAsync(cacheKey);
 
 
-            }
+                try
+                {
+                    if (encodedProducts == null)
+                    {
+                       products  = await productRepo.LoadAllProducts();
+                        if (products == null)
+                        {
+                            return NotFound();
+                        }
+                    }
+                    products = await cacheManager.ProcessCache(products, cacheKey, encodedProducts, configuration, distributedCache);
+
+                    return Ok(products);
+                }
+                catch (Exception excp)
+                {
+                    // client call must know stack exception
+                    return BadRequest(excp);
+                }
+
+
+        }
 
 
 
             [HttpPost]
-            [Route("AddGroundLogistics")]
+            [Route("AddProduct")]
             [Authorize]
-            public async Task<IActionResult> AddGroundLogistics([FromBody]AppGroundLogistics model)
+            public async Task<IActionResult> AddProduct([FromBody]AppProduct model)
             {
 
                 if (ModelState.IsValid)
                 {
                     try
                     {
-                        var groundLogisticsNew = await groundLogistics.AddGroundLogistics(model);
-                        if (groundLogisticsNew != null)
+                        var addedproduct = await productRepo.AddProduct(model);
+                        if (addedproduct != null)
                         {
-                            return Ok(groundLogisticsNew);
+                            return Ok(addedproduct);
                         }
                         else
                         {
@@ -72,24 +106,24 @@
 
 
             [HttpGet]
-            [Route("GetGroundLogistics/{zipCode}")]
-            public async Task<IActionResult> GetGroundLogistics(string zipCode)
+            [Route("GetProduct/{productId}")]
+            public async Task<IActionResult> GetProduct(Guid? productId)
             {
-                if (zipCode == null)
+                if (productId == null)
                 {
                     return BadRequest();
                 }
 
                 try
                 {
-                    var selectedLogistics = await groundLogistics.GetGroundLogisticsByZipCode(zipCode);
+                    var selectedProduct = await productRepo.GetProduct(productId);
 
-                    if (selectedLogistics == null)
+                    if (selectedProduct == null)
                     {
                         return NotFound();
                     }
 
-                    return Ok(selectedLogistics);
+                    return Ok(selectedProduct);
                 }
                 catch (Exception excp)
                 {
@@ -98,19 +132,19 @@
             }
 
             [HttpDelete]
-            [Route("DeleteGroundLogistics")]
-            public async Task<IActionResult> DeleteGroundLogistics(Guid groundLogisticsId)
+            [Route("DeleteProduct")]
+            public async Task<IActionResult> DeleteProduct(Guid productId)
             {
                 int result = 0;
 
-                if (groundLogisticsId == null)
+                if (productId == null)
                 {
                     return BadRequest();
                 }
 
                 try
                 {
-                    result = await groundLogistics.DeleteGroundLogistics(groundLogisticsId);
+                    result = await productRepo.DeleteProduct(productId);
                     if (result == 0)
                     {
                         return NotFound();
@@ -126,14 +160,14 @@
 
 
             [HttpPut]
-            [Route("UpdateGroundLogistics")]
-            public async Task<IActionResult> UpdateGroundLogistics([FromBody]AppGroundLogistics grLogistics)
+            [Route("UpdateProduct")]
+            public async Task<IActionResult> UpdateProduct([FromBody]AppProduct product)
             {
                 if (ModelState.IsValid)
                 {
                     try
                     {
-                        await groundLogistics.UpdateGroundLogistics(grLogistics);
+                        await productRepo.UpdateProduct(product);
 
                         return Ok();
                     }

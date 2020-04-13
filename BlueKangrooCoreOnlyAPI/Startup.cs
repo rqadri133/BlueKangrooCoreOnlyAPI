@@ -86,12 +86,13 @@ namespace BlueKangrooCoreOnlyAPI
             });
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
             services.AddSingleton<IGroundLogistics, GroundLogistics>();
-
+            services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
+            services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));
             // Adding Dependencies for Generics
-     
+
 
             services.AddSwaggerGen(c =>
           {
@@ -203,6 +204,8 @@ namespace BlueKangrooCoreOnlyAPI
                     .InstancePerLifetimeScope();
 
             builder.RegisterType<CacheManager<AppBuyer>>().As<ICacheManager<AppBuyer>>();
+            builder.RegisterType<CacheManager<AppProduct>>().As<ICacheManager<AppProduct>>();
+
 
 
         }
