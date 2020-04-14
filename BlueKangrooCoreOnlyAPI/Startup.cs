@@ -92,6 +92,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
             services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));
             // Adding Dependencies for Generics
+            services.AddScoped(typeof(ICacheManager<AppSeller>), typeof(CacheManager<AppSeller>));
 
 
             services.AddSwaggerGen(c =>
@@ -205,6 +206,8 @@ namespace BlueKangrooCoreOnlyAPI
 
             builder.RegisterType<CacheManager<AppBuyer>>().As<ICacheManager<AppBuyer>>();
             builder.RegisterType<CacheManager<AppProduct>>().As<ICacheManager<AppProduct>>();
+            builder.RegisterType<CacheManager<AppSeller>>().As<ICacheManager<AppSeller>>();
+
 
 
 

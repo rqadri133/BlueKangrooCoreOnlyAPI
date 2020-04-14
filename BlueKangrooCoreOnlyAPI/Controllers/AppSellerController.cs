@@ -6,6 +6,9 @@ using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
+using BlueKangrooCoreOnlyAPI.Caching;
+using Microsoft.Extensions.Configuration;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,9 +20,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     public class AppSellerController : Controller
     {
         IBlueKangrooRepository blueRepository;
-        public AppSellerController(IBlueKangrooRepository _blueRepository)
+        IDistributedCache distributedCache;
+        ICacheManager<AppSeller> cacheManager;
+        private readonly IConfiguration configuration;
+        public AppSellerController(IBlueKangrooRepository _blueRepository , IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppSeller> _cacheManager)
         {
             blueRepository = _blueRepository;
+            configuration = _configurtaion;
+            distributedCache = _distributedCache;
+            cacheManager = _cacheManager;
         }
 
 
@@ -28,13 +37,20 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetSellers()
         {
+            var cacheKey = "GetAllSellers_" + Request.Headers["CustomerGuidKey"];
+            List<AppSeller> sellers = new List<AppSeller>();
+            var encodedSellers = await distributedCache.GetAsync(cacheKey);
             try
             {
-                var sellers = await blueRepository.GetSellers();
-                if (sellers == null)
+                if (encodedSellers == null)
                 {
-                    return NotFound();
+                    sellers = await blueRepository.GetSellers();
+                    if (sellers == null)
+                    {
+                        return NotFound();
+                    }
                 }
+                sellers = await cacheManager.ProcessCache(sellers, cacheKey, encodedSellers, configuration, distributedCache);
 
                 return Ok(sellers);
             }
@@ -43,6 +59,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 // client call must know stack exception
                 return BadRequest(excp);
             }
+
 
         }
 
