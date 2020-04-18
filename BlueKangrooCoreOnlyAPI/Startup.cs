@@ -52,8 +52,7 @@ namespace BlueKangrooCoreOnlyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-        
-            
+           
            services.AddAuthentication(options =>
            {
                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -87,12 +86,15 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
             services.AddSingleton<IGroundLogistics, GroundLogistics>();
             services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IFreightRepository, FreightRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
             services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));
             // Adding Dependencies for Generics
             services.AddScoped(typeof(ICacheManager<AppSeller>), typeof(CacheManager<AppSeller>));
+            services.AddScoped(typeof(ICacheManager<AppFreight>), typeof(CacheManager<AppFreight>));
+
 
 
             services.AddSwaggerGen(c =>
