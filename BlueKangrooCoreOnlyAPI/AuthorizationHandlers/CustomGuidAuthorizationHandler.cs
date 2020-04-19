@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using BlueKangrooCoreOnlyAPI.Repository;
+using System;
+using System.Threading.Tasks;
 
 namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
 {
-  // this class will take AppToken ID
-    
+    // this class will take AppToken ID
+
     public class CustomGuidAuthorizationHandler : AuthorizationHandler<CustomerGuidHandlerRequirement>
     {
         IUserAuthorization userAuthorization;

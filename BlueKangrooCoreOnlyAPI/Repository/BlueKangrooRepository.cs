@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlueKangrooCoreOnlyAPI.Models;
+﻿using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
 
-    
+
     public class BlueKangrooRepository : IBlueKangrooRepository
     {
         private blueKangrooContext db;

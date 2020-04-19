@@ -1,39 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Autofac;
+using BlueKangrooCoreOnlyAPI.AuthorizationHandlers;
+using BlueKangrooCoreOnlyAPI.Caching;
+using BlueKangrooCoreOnlyAPI.Headers;
+using BlueKangrooCoreOnlyAPI.Models;
+using BlueKangrooCoreOnlyAPI.Repository;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using BlueKangrooCoreOnlyAPI.Models;
-using Microsoft.EntityFrameworkCore;
-using BlueKangrooCoreOnlyAPI.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
-using Autofac.Extensions.DependencyInjection;
-using Autofac;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerUI;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Models;
-using  m = BlueKangrooCoreOnlyAPI.options;
-using Microsoft.AspNetCore.Authentication;
-using BlueKangrooCoreOnlyAPI.AuthenticationHandlers;
-using BlueKangrooCoreOnlyAPI.Headers;
-using BlueKangrooCoreOnlyAPI.AuthorizationHandlers;
 using Scrutor;
-using Google.Cloud.Diagnostics.AspNetCore;
-using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Storage.V1;
-using BlueKangrooCoreOnlyAPI.Caching;
+using System;
+using System.Collections.Generic;
+using m = BlueKangrooCoreOnlyAPI.options;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -68,7 +56,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             services.AddHttpContextAccessor();
-             
+          
             
 
 
@@ -83,18 +71,7 @@ namespace BlueKangrooCoreOnlyAPI
                 options.AddPolicy("CustomGuidAuthorization", policy =>
                     policy.Requirements.Add(new CustomerGuidHandlerRequirement()));
             });
-            services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
-            services.AddSingleton<IGroundLogistics, GroundLogistics>();
-            services.AddSingleton<IProductRepository, ProductRepository>();
-            services.AddSingleton<IFreightRepository, FreightRepository>();
-            services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
-            services.AddSingleton<IUserAuthorization, UserAuthorization>();
-            services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
-            services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));
-            // Adding Dependencies for Generics
-            services.AddScoped(typeof(ICacheManager<AppSeller>), typeof(CacheManager<AppSeller>));
-            services.AddScoped(typeof(ICacheManager<AppFreight>), typeof(CacheManager<AppFreight>));
-
+            services.AddDependencies();
 
 
             services.AddSwaggerGen(c =>
