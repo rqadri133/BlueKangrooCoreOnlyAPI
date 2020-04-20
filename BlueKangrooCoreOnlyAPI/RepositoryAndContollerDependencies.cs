@@ -15,6 +15,8 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<IGroundLogistics, GroundLogistics>();
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IFreightRepository, FreightRepository>();
+            services.AddSingleton<IActivityRepository, ActivityRepository>();
+
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
@@ -22,6 +24,7 @@ namespace BlueKangrooCoreOnlyAPI
             // Adding Dependencies for Generics
             services.AddScoped(typeof(ICacheManager<AppSeller>), typeof(CacheManager<AppSeller>));
             services.AddScoped(typeof(ICacheManager<AppFreight>), typeof(CacheManager<AppFreight>));
+            services.AddScoped(typeof(ICacheManager<AppActivity>), typeof(CacheManager<AppActivity>));
 
 
         }

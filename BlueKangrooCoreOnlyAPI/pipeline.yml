@@ -1,0 +1,32 @@
+resources:
+- name: bluekangroo-source
+  type: git
+  source:
+    uri: https://github.com/rqadri133/BlueKangrooCoreOnlyAPI
+    branch: master
+    username: rqadri133@gmail.com
+    password: Astaghees@144
+
+jobs:
+- name: aspnetcore-bluekangroo-webapi
+  plan:
+    - get: bluekangroo-source
+      trigger: true
+    - task: run-tests
+      privileged: true
+      config:
+        platform: linux
+        inputs:
+        - name: seroter-source
+        image_resource:
+            type: docker-image
+            source:
+              repository: microsoft/aspnetcore-build
+        run:
+            path: sh
+            args:
+            - -exc
+            - |
+                cd ./bluekangroo-source
+                dotnet restore
+                

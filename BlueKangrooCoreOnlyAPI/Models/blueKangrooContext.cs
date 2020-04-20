@@ -96,7 +96,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-RM4VMT37\\SQLEXPRESSONE;Database=blueKangroo;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESSONE;Database=bluekangroo;UID=sam;PWD=Astaghees199;Trusted_Connection=True");
             }
         }
 
@@ -105,7 +105,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppActivity>(entity =>
             {
                 entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName })
-                    .HasName("UQ__AppActiv__56AE0C0233DADEDB")
+                    .HasName("UQ__AppActiv__56AE0C02C29303D2")
                     .IsUnique();
 
                 entity.Property(e => e.AppActivityId)
