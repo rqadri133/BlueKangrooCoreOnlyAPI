@@ -16,6 +16,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IFreightRepository, FreightRepository>();
             services.AddSingleton<IActivityRepository, ActivityRepository>();
+            services.AddSingleton<IBuyerActivityRepository, BuyerActivityRepository>();
 
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
@@ -25,6 +26,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppSeller>), typeof(CacheManager<AppSeller>));
             services.AddScoped(typeof(ICacheManager<AppFreight>), typeof(CacheManager<AppFreight>));
             services.AddScoped(typeof(ICacheManager<AppActivity>), typeof(CacheManager<AppActivity>));
+            services.AddScoped(typeof(ICacheManager<AppBuyerActivity>), typeof(CacheManager<AppBuyerActivity>));
 
 
         }
