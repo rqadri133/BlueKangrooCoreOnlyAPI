@@ -6,6 +6,9 @@ using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
+using BlueKangrooCoreOnlyAPI.Headers;
+using config = Microsoft.Extensions.Configuration;
+
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
 
@@ -18,10 +21,24 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     public class AppUserController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
-        public AppUserController(IBlueKangrooRepository _blueRepository)
+        config.IConfiguration configuration;
+        public AppUserController(IBlueKangrooRepository _blueRepository , config.IConfiguration _configurtaion)
         {
             blueRepository = _blueRepository;
+            configuration = _configurtaion;
         }
+
+        [HttpPost]
+        [Route("LoadBearerToken")]
+        public IActionResult LoadBearerToken([FromBody]ClientCredentials model)
+        {
+            var _token =  BearerToken.GetToken( configuration["BearerUrl"]  , model);
+            return Ok(_token);
+
+
+        }
+
+
         [HttpPost]
         [Route("LoginUser")]
         [Authorize]

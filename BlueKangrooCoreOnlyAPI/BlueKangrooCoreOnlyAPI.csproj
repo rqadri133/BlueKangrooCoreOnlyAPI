@@ -27,6 +27,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Kubernetes.Tools.Targets" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="Migrations" Version="1.0.1" />
+    <PackageReference Include="RestClient" Version="2.5.0.6" />
+    <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Scrutor" Version="3.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0" />
