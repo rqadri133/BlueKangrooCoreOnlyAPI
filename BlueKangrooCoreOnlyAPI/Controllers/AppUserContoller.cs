@@ -18,6 +18,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    
     public class AppUserController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;

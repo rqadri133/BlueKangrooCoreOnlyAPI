@@ -52,7 +52,7 @@ namespace BlueKangrooCoreOnlyAPI
                options.Audience = Configuration["Auth0:Audience"];
            });           
             services.AddControllers();
-            services.AddCors(option => option.AddPolicy("MyPolicy", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();  }));
+            services.AddCors(option => option.AddPolicy("CorsPolicy", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();  }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             services.AddHttpContextAccessor();
@@ -117,7 +117,14 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddMemoryCache();
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins(Configuration["baseUrl"])
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,11 +146,10 @@ namespace BlueKangrooCoreOnlyAPI
             {
                 endpoints.MapControllers();
             });
-            app.UseCors("MyPolicy");
-
-          
+           
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             //  app.UseMvc();
-       
+
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
