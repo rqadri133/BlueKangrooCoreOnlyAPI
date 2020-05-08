@@ -22,12 +22,12 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<IDemandRepository, DemandRepository>();  
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddSingleton<ISupplyRepository, SupplyRepository>();
-
+            services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
             services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));
             services.AddScoped(typeof(ICacheManager<AppSupply>), typeof(CacheManager<AppSupply>));
 
-
+            services.AddScoped(typeof(ICacheManager<AppCategory>), typeof(CacheManager<AppCategory>));
             // Adding Dependencies for Generics
             services.AddScoped(typeof(ICacheManager<AppSeller>), typeof(CacheManager<AppSeller>));
             services.AddScoped(typeof(ICacheManager<AppFreight>), typeof(CacheManager<AppFreight>));
