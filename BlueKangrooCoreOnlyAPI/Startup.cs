@@ -71,7 +71,7 @@ namespace BlueKangrooCoreOnlyAPI
                 options.AddPolicy("CustomGuidAuthorization", policy =>
                     policy.Requirements.Add(new CustomerGuidHandlerRequirement()));
             });
-            services.AddDependencies();
+             services.AddDependencies();
 
 
             services.AddSwaggerGen(c =>

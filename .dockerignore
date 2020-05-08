@@ -14,6 +14,7 @@
 **/azds.yaml
 **/bin
 **/charts
+**/concourse
 **/docker-compose*
 **/Dockerfile*
 **/node_modules
