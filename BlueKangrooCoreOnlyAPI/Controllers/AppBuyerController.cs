@@ -11,6 +11,7 @@ using BlueKangrooCoreOnlyAPI.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using config = Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging; 
 using Newtonsoft.Json;
 using BlueKangrooCoreOnlyAPI.Caching;
 
@@ -29,14 +30,17 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         IBlueKangrooRepository blueRepository ;
         IDistributedCache distributedCache;
         ICacheManager<AppBuyer> cacheManager;
+        private readonly ILogger _logger;
         private readonly config.IConfiguration configuration;
-        public AppBuyerController(IBlueKangrooRepository _blueRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache , ICacheManager<AppBuyer> _cacheManager )
+        public AppBuyerController(IBlueKangrooRepository _blueRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache , ICacheManager<AppBuyer> _cacheManager , ILogger<AppBuyerController> logger  )
         {
            blueRepository = _blueRepository;
            
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
+            _logger = logger;
+            _logger.LogInformation("API Called ");
         }
 
         [HttpGet]
@@ -47,7 +51,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         {
             var cacheKey = "GetAllBuyers_" + Request.Headers["CustomerGuidKey"];
             List<AppBuyer> buyers = new List<AppBuyer>();
-          
+            _logger.LogInformation("API Called with a cache key" + cacheKey);
+
             var encodedBuyers = await distributedCache.GetAsync(cacheKey);
             
 
@@ -55,6 +60,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 if(encodedBuyers == null)
                 {
+                    _logger.LogInformation("Before Calling Repository");
+
                     buyers = await blueRepository.GetBuyers();
                     if (buyers == null)
                     {
@@ -62,11 +69,13 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                     }
                 }
                 buyers  = await cacheManager.ProcessCache(buyers, cacheKey, encodedBuyers, configuration, distributedCache);
-
+                _logger.LogInformation("Get Cached Data from Buyers Count Loaded" + buyers.Count);
                 return Ok(buyers);
             }
             catch (Exception excp)
             {
+                _logger.LogError("In the catch Block of Get All Buyers" + excp.Message);
+
                 // client call must know stack exception
                 return BadRequest(excp);
             }
