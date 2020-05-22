@@ -74,7 +74,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
-                _logger.LogError("In the catch Block of Get All Buyers" + excp.Message);
+                _logger.LogError("In the catch Block of Get All Buyer" + excp.Message);
 
                 // client call must know stack exception
                 return BadRequest(excp);
