@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using BlueKangrooCoreOnlyAPI.Caching;
 using Microsoft.Extensions.Configuration;
 
@@ -25,13 +26,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         IActivityRepository activityRepo;
         IDistributedCache distributedCache;
         ICacheManager<AppActivity> cacheManager;
+        private ILogger logger;
         private readonly IConfiguration configuration;
-        public ActivityController(IActivityRepository _ActivityRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppActivity> _cacheManager)
+        public ActivityController(IActivityRepository _ActivityRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppActivity> _cacheManager , ILogger<ActivityController> _logger)
         {
             activityRepo = _ActivityRepository;
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
+            logger = _logger;
         }
 
         [HttpGet]
@@ -56,12 +59,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                         return NotFound();
                     }
                 }
+                logger.LogInformation("Activity Starts Caching");
                 Activitys = await cacheManager.ProcessCache(Activitys, cacheKey, encodedActivitys, configuration, distributedCache);
 
                 return Ok(Activitys);
             }
             catch (Exception excp)
             {
+                logger.LogError("Error while loading all activities " + excp.Message );
+
                 // client call must know stack exception
                 return BadRequest(excp);
             }
@@ -81,6 +87,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 try
                 {
+                    logger.LogInformation("Adding Actiivty in Repository");
                     var addedActivity = await activityRepo.AddActivity(model);
                     if (addedActivity != null)
                     {
@@ -93,6 +100,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 }
                 catch (Exception excp)
                 {
+                    logger.LogError("Error Adding Actiivty in Repository " +  excp.Message );
 
                     return BadRequest(excp);
                 }
@@ -111,11 +119,13 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         {
             if (ActivityId == null)
             {
+                logger.LogInformation("Activity is Null");
                 return BadRequest();
             }
 
             try
             {
+                logger.LogInformation("Load Activity information");
                 var selectedActivity = await activityRepo.GetActivityInfo(ActivityId);
 
                 if (selectedActivity == null)
@@ -127,6 +137,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
+                logger.LogError("Error in Activity " + excp.Message);
                 return BadRequest(excp);
             }
         }

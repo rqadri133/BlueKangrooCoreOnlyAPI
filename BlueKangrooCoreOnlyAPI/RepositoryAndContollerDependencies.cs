@@ -22,6 +22,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<ISellerActivityRepository, SellerActivityRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton(typeof(ILogger), typeof(ILogger<AppBuyerController>));
+            services.AddSingleton(typeof(ILogger), typeof(ILogger<ActivityController>));
             services.AddSingleton<IDemandRepository, DemandRepository>();  
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddSingleton<ISupplyRepository, SupplyRepository>();

@@ -94,6 +94,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
             try
             {
+                _logger.LogInformation("Before Calling Repository to retreive specific buyer " + buyerId);
                 var selectedBuyer = await blueRepository.GetBuyer(buyerId);
 
                 if (selectedBuyer == null)
@@ -105,6 +106,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
+                _logger.LogError("Error getting buyer information for " + buyerId + "due to exception" + excp.Message );
                 return BadRequest(excp);
             }
         }
@@ -118,6 +120,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 try
                 {
                     model.AppBuyerId = Guid.NewGuid();
+                    _logger.LogInformation("Add buyer information ");
                     var appBuyer = await blueRepository.AddBuyer(model);
                     if (appBuyer != null)
                     {
@@ -130,6 +133,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 }
                 catch (Exception excp)
                 {
+                    _logger.LogError("Error adding buyer information " + excp.Message);
 
                     return BadRequest(excp);
                 }
@@ -152,6 +156,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
             try
             {
+                _logger.LogInformation("Delete buyer information ");
                 result = await blueRepository.DeleteBuyer(buyer);
                 if (result == 0)
                 {
@@ -161,7 +166,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
-
+                _logger.LogError("Error deleting buyer information " + excp.Message);
                 return BadRequest(excp);
             }
         }
