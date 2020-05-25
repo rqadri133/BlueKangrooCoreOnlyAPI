@@ -4,16 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Logging;
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
     public class UserAuthorization : IUserAuthorization
     {
 
         private blueKangrooContext db;
-        public UserAuthorization(blueKangrooContext _db)
+        private ILogger logger;
+        public UserAuthorization(blueKangrooContext _db , ILogger<UserAuthorization> _logger )
         {
             db = _db;
+            logger = _logger;
         }
        public async Task<bool> IsUserAuthorized(Guid customerGuid)
        {
@@ -23,8 +25,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 if (db != null)
                 {
-
+                    logger.LogInformation("Before Making Call to DB Context Blue kangaroo");
                     var user = await db.AppToken.FirstOrDefaultAsync<AppToken>(p => p.AppTokenId == customerGuid && p.TokenExpiredDate > DateTime.Now );
+                   
                     if(user != null)
                     {
                         _IsUserExist = true;
@@ -35,8 +38,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             }
             catch (Exception excp)
             {
+                logger.LogError("Error in connecting DB Context" + excp.Message);
                 // Controller should catch exception and return as BadRequest
-                throw excp;
+               
             }
 
             return _IsUserExist;

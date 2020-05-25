@@ -45,6 +45,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [Authorize]
         public async Task<IActionResult> LoginUser([FromBody]AppUser model)
         {
+            
 
             var _token = await blueRepository.LoginUser(model);
             return Ok(_token);

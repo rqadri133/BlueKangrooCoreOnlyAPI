@@ -1,9 +1,11 @@
 ﻿using BlueKangrooCoreOnlyAPI.AuthorizationHandlers;
 using BlueKangrooCoreOnlyAPI.Caching;
+using BlueKangrooCoreOnlyAPI.Controllers;
 using BlueKangrooCoreOnlyAPI.Models;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -19,11 +21,16 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<IBuyerActivityRepository, BuyerActivityRepository>();
             services.AddSingleton<ISellerActivityRepository, SellerActivityRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
+            services.AddSingleton(typeof(ILogger), typeof(ILogger<AppBuyerController>));
+            services.AddSingleton(typeof(ILogger), typeof(ILogger<ActivityController>));
             services.AddSingleton<IDemandRepository, DemandRepository>();  
             services.AddSingleton<IUserAuthorization, UserAuthorization>();
             services.AddSingleton<ISupplyRepository, SupplyRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<CustomGuidAuthorizationHandler>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<UserAuthorization>));
+
             services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));
             services.AddScoped(typeof(ICacheManager<AppSupply>), typeof(CacheManager<AppSupply>));
 

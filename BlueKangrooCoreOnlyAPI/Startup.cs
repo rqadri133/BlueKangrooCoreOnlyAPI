@@ -22,6 +22,8 @@ using Scrutor;
 using System;
 using System.Collections.Generic;
 using m = BlueKangrooCoreOnlyAPI.options;
+using AWS.Logger.AspNetCore;
+using Microsoft.AspNetCore.Http;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -56,7 +58,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             services.AddHttpContextAccessor();
-          
+            
             
 
 
@@ -125,6 +127,7 @@ namespace BlueKangrooCoreOnlyAPI
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,7 +139,7 @@ namespace BlueKangrooCoreOnlyAPI
                 IdentityModelEventSource.ShowPII = true;
             }
             app.UseAuthentication();
-            app.UseHttpsRedirection();
+         
            
             app.UseRouting();
 
@@ -172,7 +175,10 @@ namespace BlueKangrooCoreOnlyAPI
                 await next.Invoke();
             });
 
-            
+            // AWS Logging configurati
+            var awsconfig =Configuration.GetAWSLoggingConfigSection();
+    
+            logger.AddAWSProvider(awsconfig);
 
             var credential = GoogleCredential.FromFile("BlueKangrooCoreApiOnly-6d3cfabd9cfc.json");
             var storage = StorageClient.Create(credential);

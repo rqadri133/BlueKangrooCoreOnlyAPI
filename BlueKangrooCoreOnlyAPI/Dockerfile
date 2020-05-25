@@ -1,18 +1,22 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 
-ARG BUILD_CONFIGURATION=Debug 
-ENV ASPNETCORE_ENVIRONMENT=Development 
-ENV ASPNETCORE_URLS=http://+:4500 
-ENV DOTNET_USE_POLLING_FILE_WATCHER=true 
-EXPOSE 4500
-WORKDIR /src 
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+WORKDIR /src
 COPY ["BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj", "BlueKangrooCoreOnlyAPI/"]
-RUN dotnet restore "BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj" 
-COPY . . 
-WORKDIR "/src/BlueKangrooCoreOnlyAPI" 
-RUN dotnet build --no-restore "BlueKangrooCoreOnlyAPI.csproj" -c $BUILD_CONFIGURATION
-RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION --" > /entrypoint.sh
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+RUN dotnet restore "BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj"
+COPY . .
+WORKDIR "/src/BlueKangrooCoreOnlyAPI"
+RUN dotnet build "BlueKangrooCoreOnlyAPI.csproj" -c Release -o /app/build
 
+FROM build AS publish
+RUN dotnet publish "BlueKangrooCoreOnlyAPI.csproj" -c Release -o /app/publish
 
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "BlueKangrooCoreOnlyAPI.dll"]

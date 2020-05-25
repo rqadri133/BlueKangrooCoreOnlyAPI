@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
 {
     // this class will take AppToken ID
@@ -12,18 +12,19 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
     {
         IUserAuthorization userAuthorization;
         IHttpContextAccessor _httpContextAccessor = null;
-
-        public CustomGuidAuthorizationHandler(IUserAuthorization userAuthorization, IHttpContextAccessor httpContextAccessor )
+        ILogger _logger = null;
+        public CustomGuidAuthorizationHandler(IUserAuthorization userAuthorization, IHttpContextAccessor httpContextAccessor  , ILogger<CustomGuidAuthorizationHandler> logger)
         {
             this.userAuthorization = userAuthorization;
             this._httpContextAccessor = httpContextAccessor;
+            this._logger = logger;
 
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomerGuidHandlerRequirement requirement)
         {
             HttpContext httpContext = _httpContextAccessor.HttpContext;
-
+            _logger.LogInformation("Inside Handle Requirement Async");
             string guidCustomer = httpContext.Request.Headers["CustomerGuidKey"];
             string _auth0Key = httpContext.Request.Headers["Authorization"];
             if (String.IsNullOrEmpty(guidCustomer))
