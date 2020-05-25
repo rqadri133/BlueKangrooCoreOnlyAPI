@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Distributed;
 using BlueKangrooCoreOnlyAPI.Caching;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
+
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -26,12 +29,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         IDistributedCache distributedCache;
         ICacheManager<AppDemand> cacheManager;
         private readonly IConfiguration configuration;
-        public AppDemandController(IDemandRepository _demandRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppDemand> _cacheManager)
+        private ILogger logger;
+
+        public AppDemandController(IDemandRepository _demandRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppDemand> _cacheManager  , ILogger<AppDemandController> _logger)
         {
             demandRepo = _demandRepository;
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
+            logger = _logger;
         }
 
         [HttpGet]
@@ -42,12 +48,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
             var cacheKey = "GetAllDemands_" + Request.Headers["CustomerGuidKey"];
             List<AppDemand> demands = new List<AppDemand>();
+            logger.LogInformation("Accessing Demands from Elastic Cache");
+
             var encodedDemands = await distributedCache.GetAsync(cacheKey);
 
             try
             {
                 if (encodedDemands == null)
                 {
+                    logger.LogInformation("Loading Demands from Repository");                    
                     demands = await  demandRepo.LoadAllDemands();
                     if (demands == null)
                     {
@@ -60,6 +69,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
+                logger.LogError("Error Loading Demands from Repository " + excp.Message);
+
                 // client call must know stack exception
                 return BadRequest(excp);
             }
@@ -78,6 +89,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 try
                 {
+                    logger.LogInformation("Adding Demand in the Repository");
                     var addedDemand = await demandRepo.AddProductDemand(model);
                     if (addedDemand != null)
                     {
@@ -90,6 +102,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 }
                 catch (Exception excp)
                 {
+                    logger.LogError("Error in adding Demand in the Repository " + excp.Message);
 
                     return BadRequest(excp);
                 }
