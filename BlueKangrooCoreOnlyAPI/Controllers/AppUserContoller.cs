@@ -8,6 +8,8 @@ using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using BlueKangrooCoreOnlyAPI.Headers;
 using config = Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.Extensions.Logging;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -18,39 +20,40 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    
+    [Authorize]  
     public class AppUserController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
         config.IConfiguration configuration;
-        public AppUserController(IBlueKangrooRepository _blueRepository , config.IConfiguration _configurtaion)
+        ILogger logger;
+
+        public AppUserController(IBlueKangrooRepository _blueRepository , config.IConfiguration _configurtaion , ILogger<AppUserController> _logger)
         {
             blueRepository = _blueRepository;
             configuration = _configurtaion;
+            logger = _logger;
         }
 
-        [HttpPost]
-        [Route("LoadBearerToken")]
-        public IActionResult LoadBearerToken([FromBody]ClientCredentials model)
-        {
-            var _token =  BearerToken.GetToken( configuration["BearerUrl"]  , model);
-            return Ok(_token);
-
-
-        }
-
+        
 
         [HttpPost]
         [Route("LoginUser")]
         [Authorize]
         public async Task<IActionResult> LoginUser([FromBody]AppUser model)
         {
-            
+            if (ModelState.IsValid)
+            {
+                logger.LogInformation("Model State is Valid access data from repository");
+                var _token = await blueRepository.LoginUser(model);
+                logger.LogInformation("Returning Token Data" + _token);
+                return Ok(_token);
+            }
+            else
+            {
+                logger.LogError("Model State is Invalid returning bad request");
 
-            var _token = await blueRepository.LoginUser(model);
-            return Ok(_token);
-
-
+                return BadRequest();
+            }
         }
         
 
