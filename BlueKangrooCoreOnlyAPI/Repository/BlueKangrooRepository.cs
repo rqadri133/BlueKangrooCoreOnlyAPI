@@ -1,4 +1,5 @@
-﻿using BlueKangrooCoreOnlyAPI.Models;
+﻿using BlueKangrooCoreOnlyAPI.Headers;
+using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -118,10 +119,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         }
          #region "Login information"
          // not tested on postman
-         public async Task<string> LoginUser(AppUser user)
-         { 
-             // test for injections 
+         public async Task<CustomerToken> LoginUser(AppUser user)
+         {
+            // test for injections 
             // Don't return any user id never 
+            CustomerToken customerToken;
+
              try
              {
                   if (db != null)
@@ -152,7 +155,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                             {
                                  if(tokenInformation.TokenExpiredDate > DateTime.Now)
                                  {
-                                      return tokenInformation.AppTokenId.ToString();
+                                      customerToken = new CustomerToken() { customerTokenId = tokenInformation.AppTokenId.ToString() };  
+                                      return customerToken;
                                  }     
                             }
                             else 
@@ -177,8 +181,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                                                               });
 
                                             await  db.SaveChangesAsync();
-
-                                           return _newTokenInfo.Entity.AppTokenId.ToString();
+                                           customerToken = new CustomerToken() { customerTokenId = _newTokenInfo.Entity.AppTokenId.ToString() };          
+                                           return customerToken;
+                            
 
 
 

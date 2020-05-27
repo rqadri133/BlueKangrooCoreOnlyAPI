@@ -45,7 +45,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 logger.LogInformation("Model State is Valid access data from repository");
                 var _token = await blueRepository.LoginUser(model);
-                logger.LogInformation("Returning Token Data" + _token);
+                logger.LogInformation("Returning Token Data " + _token.customerTokenId);
                 return Ok(_token);
             }
             else

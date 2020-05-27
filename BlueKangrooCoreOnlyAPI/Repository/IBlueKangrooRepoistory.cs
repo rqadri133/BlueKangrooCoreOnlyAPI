@@ -1,4 +1,5 @@
-﻿using BlueKangrooCoreOnlyAPI.Models;
+﻿using BlueKangrooCoreOnlyAPI.Headers;
+using BlueKangrooCoreOnlyAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     public interface IBlueKangrooRepository
     {
          Task<List<AppBuyer>> GetBuyers();
-        Task<string> LoginUser(AppUser user);  
+         Task<CustomerToken> LoginUser(AppUser user);  
 
          Task<List<AppUser>> GetAllUsers();
          Task<AppUser> AddUser(AppUser user);
