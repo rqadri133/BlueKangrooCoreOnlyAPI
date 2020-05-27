@@ -31,6 +31,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ILogger), typeof(ILogger<AppDemandController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<AppBuyerController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<ActivityController>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<AppUserController>));
 
 
             services.AddScoped(typeof(ICacheManager<AppProduct>), typeof(CacheManager<AppProduct>));

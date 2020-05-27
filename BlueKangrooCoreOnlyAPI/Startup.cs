@@ -45,7 +45,18 @@ namespace BlueKangrooCoreOnlyAPI
             List<string> clientURLS = new List<string>();
             clientURLS.Add(Configuration["baseClientUrl"]);
             clientURLS.Add(Configuration["prodClientUrl"]);
-         
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "BlueCorsPolicy",
+                    builder => builder.WithOrigins(clientURLS.ToArray())
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                  );
+            });
+
+
             services.AddAuthentication(options =>
            {
                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,15 +68,6 @@ namespace BlueKangrooCoreOnlyAPI
                options.Audience = Configuration["Auth0:Audience"];
            });           
             services.AddControllers();
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "CorsPolicy",
-                    builder => builder.WithOrigins(clientURLS.ToArray())
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials()
-                    .SetIsOriginAllowedToAllowWildcardSubdomains());
-            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             services.AddHttpContextAccessor();
@@ -145,7 +147,7 @@ namespace BlueKangrooCoreOnlyAPI
                 IdentityModelEventSource.ShowPII = true;
             }
 
-            app.UseCors("CorsPolicy");
+            app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
                    
             app.UseRouting();

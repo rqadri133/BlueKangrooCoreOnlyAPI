@@ -180,12 +180,14 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 try
                 {
+                    _logger.LogInformation("Update buyer information ");
                     await blueRepository.UpdateBuyer(model);
 
                     return Ok();
                 }
                 catch (Exception excp)
                 {
+                    _logger.LogError("Error in updating buyer informaton " + excp.Message);
                     if (excp.GetType().FullName ==
                              "Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException")
                     {
