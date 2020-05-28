@@ -126,6 +126,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
             try
             {
+                logger.LogInformation("Getting Single Demand from Repository");
                 var selectedDemand = await demandRepo.GetDemandInfo(demandId);
 
                 if (selectedDemand == null)
@@ -137,6 +138,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
+                logger.LogError("Error in fetching demand from repository " + excp.Message);
                 return BadRequest(excp);
             }
         }
