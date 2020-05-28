@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,25 +14,22 @@ using Microsoft.Extensions.Configuration;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
-
-    /// <summary>
-    /// this will provide crud operations for AppBuyer 
-    /// </summary>
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Policy = "CustomGuidAuthorization")]
-    public class ActivityController : ControllerBase
+    public class AppCompanyController : ControllerBase
     {
-        IActivityRepository activityRepo;
+      /// <summary>
+    /// this will provide crud operations for AppBuyer 
+    /// </summary>
+        ICompanyRepository companyRepo;
         IDistributedCache distributedCache;
-        ICacheManager<AppActivity> cacheManager;
+        ICacheManager<AppCompany> cacheManager;
         private ILogger logger;
         private readonly IConfiguration configuration;
-
-        public ActivityController(IActivityRepository _ActivityRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppActivity> _cacheManager , ILogger<ActivityController> _logger)
+        public AppCompanyController(ICompanyRepository _companyRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppCompany> _cacheManager, ILogger<AppCompanyController> _logger)
         {
-            activityRepo = _ActivityRepository;
+            companyRepo = _companyRepository;
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
@@ -39,35 +37,35 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllActivitys")]
+        [Route("GetAllCompanies")]
         [Authorize]
-        public async Task<IActionResult> GetAllActivity()
+        public async Task<IActionResult> GetAllCompanies()
         {
 
-            var cacheKey = "GetAllActivitys_" + Request.Headers["CustomerGuidKey"];
-            List<AppActivity> Activitys = new List<AppActivity>();
+            var cacheKey = "GetAllCompanies_" + Request.Headers["CustomerGuidKey"];
+            List<AppCompany> companies = new List<AppCompany>();
 
-            var encodedActivitys = await distributedCache.GetAsync(cacheKey);
+            var encodedCompanies = await distributedCache.GetAsync(cacheKey);
 
 
             try
             {
-                if (encodedActivitys == null)
+                if (encodedCompanies == null)
                 {
-                    Activitys = await activityRepo.LoadAllActivities();
-                    if (Activitys == null)
+                    companies = await companyRepo.LoadAllCompanies();
+                    if (companies == null)
                     {
                         return NotFound();
                     }
                 }
-                logger.LogInformation("Activity Starts Caching");
-                Activitys = await cacheManager.ProcessCache(Activitys, cacheKey, encodedActivitys, configuration, distributedCache);
+                logger.LogInformation("Company Starts Caching");
+                companies = await cacheManager.ProcessCache(companies, cacheKey, encodedCompanies, configuration, distributedCache);
 
-                return Ok(Activitys);
+                return Ok(companies);
             }
             catch (Exception excp)
             {
-                logger.LogError("Error while loading all activities " + excp.Message );
+                logger.LogError("Error while loading all companies " + excp.Message);
 
                 // client call must know stack exception
                 return BadRequest(excp);
@@ -79,20 +77,20 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
         [HttpPost]
-        [Route("AddActivity")]
+        [Route("AddCompany")]
         [Authorize]
-        public async Task<IActionResult> AddActivity([FromBody]AppActivity model)
+        public async Task<IActionResult> AddCompany([FromBody]AppCompany model)
         {
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    logger.LogInformation("Adding Actiivty in Repository");
-                    var addedActivity = await activityRepo.AddActivity(model);
-                    if (addedActivity != null)
+                    logger.LogInformation("Adding Company in Repository");
+                    var addedCompany = await companyRepo.AddCompany(model);
+                    if (addedCompany != null)
                     {
-                        return Ok(addedActivity);
+                        return Ok(addedCompany);
                     }
                     else
                     {
@@ -101,7 +99,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 }
                 catch (Exception excp)
                 {
-                    logger.LogError("Error Adding Actiivty in Repository " +  excp.Message );
+                    logger.LogError("Error Adding Company in Repository " + excp.Message);
 
                     return BadRequest(excp);
                 }
@@ -115,26 +113,26 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
         [HttpGet]
-        [Route("GetActivityInfo/{ActivityId}")]
-        public async Task<IActionResult> GetActivityInfo(Guid? ActivityId)
+        [Route("GetCompanyInfo/{CompanyId}")]
+        public async Task<IActionResult> GetCompanyInfo(Guid? companyId)
         {
-            if (ActivityId == null)
+            if (companyId == null)
             {
-                logger.LogInformation("Activity is Null");
+                logger.LogInformation("Company is Null");
                 return BadRequest();
             }
 
             try
             {
-                logger.LogInformation("Load Activity information");
-                var selectedActivity = await activityRepo.GetActivityInfo(ActivityId);
+                logger.LogInformation("Load Company information");
+                var selectedCompany = await companyRepo.GetCompanyInfo(companyId);
 
-                if (selectedActivity == null)
+                if (selectedCompany == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(selectedActivity);
+                return Ok(selectedCompany);
             }
             catch (Exception excp)
             {
@@ -144,19 +142,19 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteActivity")]
-        public async Task<IActionResult> DeleteActivity(Guid ActivityId)
+        [Route("DeleteCompany")]
+        public async Task<IActionResult> DeleteCompany(Guid companyId)
         {
             int result = 0;
 
-            if (ActivityId == null)
+            if (companyId == null)
             {
                 return BadRequest();
             }
 
             try
             {
-                result = await activityRepo.DeleteActivityInfo(ActivityId);
+                result = await companyRepo.DeleteCompanyInfo(companyId);
                 if (result == 0)
                 {
                     return NotFound();
@@ -172,14 +170,14 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
         [HttpPut]
-        [Route("UpdateActivity")]
-        public async Task<IActionResult> UpdateActivity([FromBody]AppActivity Activity)
+        [Route("UpdateCompany")]
+        public async Task<IActionResult> UpdateCompany([FromBody]AppCompany company)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await activityRepo.UpdateActivity(Activity);
+                    await companyRepo.UpdateCompany(company);
 
                     return Ok();
                 }

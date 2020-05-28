@@ -6,6 +6,10 @@ using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using BlueKangrooCoreOnlyAPI.Caching;
+using Microsoft.Extensions.Configuration;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -13,10 +17,19 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     [ApiController]
     public class AppGroundActivityController : ControllerBase
     {
-            IGroundLogistics groundLogistics;
-            public AppGroundActivityController(IGroundLogistics _groundLogistics)
+        IGroundLogistics groundLogistics;
+        IDistributedCache distributedCache;
+        ICacheManager<AppGroundActivity> cacheManager;
+        private ILogger logger;
+        private readonly IConfiguration configuration;
+
+            public AppGroundActivityController(IGroundLogistics _groundLogistics , IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppGroundActivity> _cacheManager, ILogger<AppGroundActivityController> _logger)
             {
                 groundLogistics = _groundLogistics;
+               distributedCache = _distributedCache;
+               cacheManager = _cacheManager;
+               logger = _logger;
+               configuration = _configurtaion;
             }
 
             [HttpGet]
@@ -24,22 +37,37 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             [Authorize]
             public async Task<IActionResult> GetAllGroundActivities()
             {
-                  List<AppGroundActivity> lstGroundActivities = null;
-                    try
+            var cacheKey = "GetAllGroundActivitys_" + Request.Headers["CustomerGuidKey"];
+            List<AppGroundActivity> groundActivities = new List<AppGroundActivity>();
+
+            var encodedGroundActivitys = await distributedCache.GetAsync(cacheKey);
+
+
+            try
+            {
+                if (encodedGroundActivitys == null)
+                {
+                    groundActivities = await  groundLogistics.LoadAllGroundActivities();
+                    if (groundActivities == null)
                     {
-                        lstGroundActivities= await groundLogistics.GetGroundActivities();
-
+                        return NotFound();
                     }
-                    catch(Exception excp)
-                    {
-                        return BadRequest(excp.StackTrace);
+                }
+                logger.LogInformation("Ground Activity Starts Caching");
+                groundActivities = await cacheManager.ProcessCache(groundActivities, cacheKey, encodedGroundActivitys, configuration, distributedCache);
 
-                    }
-
-              return Ok(lstGroundActivities);
-
-
+                return Ok(groundActivities);
             }
+            catch (Exception excp)
+            {
+                logger.LogError("Error while loading all ground activities " + excp.Message);
+
+                // client call must know stack exception
+                return BadRequest(excp);
+            }
+
+
+        }
 
 
 
@@ -53,7 +81,9 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 {
                     try
                     {
-                        var groundActivityNew = await groundLogistics.AddGroundActity(model);
+                    logger.LogInformation("Ground Activity Starts Adding one ground activity");
+
+                    var groundActivityNew = await groundLogistics.AddGroundActity(model);
                         if (groundActivityNew != null)
                         {
                             return Ok(groundActivityNew);
@@ -65,8 +95,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                     }
                     catch (Exception excp)
                     {
-
-                        return BadRequest(excp);
+                       logger.LogError("Error in adding ground Activity issued here " + excp.Message);
+                       return BadRequest(excp);
                     }
 
                 }

@@ -11,8 +11,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         Task<AppCompany> AddCompany(AppCompany company);
         Task<List<AppCompany>> LoadAllCompanies();
         Task<int> DeleteCompanyInfo(Guid? CompanyId);
-        Task<AppCompany> GetCompanyInfo(Guid? activityInfo);
-        Task<AppCompany> UpdateCompany(AppActivity activity);
+        Task<AppCompany> GetCompanyInfo(Guid? companyInfo);
+        Task<AppCompany> UpdateCompany(AppCompany companyInfo);
     }
 }
 
