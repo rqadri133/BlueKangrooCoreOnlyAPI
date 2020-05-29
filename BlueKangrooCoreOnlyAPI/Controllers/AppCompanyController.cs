@@ -19,9 +19,9 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     [Authorize(Policy = "CustomGuidAuthorization")]
     public class AppCompanyController : ControllerBase
     {
-      /// <summary>
-    /// this will provide crud operations for AppBuyer 
-    /// </summary>
+        /// <summary>
+        /// this will provide crud operations for AppBuyer 
+        /// </summary>
         ICompanyRepository companyRepo;
         IDistributedCache distributedCache;
         ICacheManager<AppCompany> cacheManager;
