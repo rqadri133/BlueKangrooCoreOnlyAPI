@@ -83,6 +83,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppUserActivityFrame> AppUserActivityFrame { get; set; }
         public virtual DbSet<AppUserActivityInput> AppUserActivityInput { get; set; }
         public virtual DbSet<AppUserRole> AppUserRole { get; set; }
+        public virtual DbSet<AppUserRoleDetail> AppUserRoleDetail { get; set; }
         public virtual DbSet<AppUserSesion> AppUserSesion { get; set; }
         public virtual DbSet<AppUserSessionCrossRefVar> AppUserSessionCrossRefVar { get; set; }
         public virtual DbSet<AppWareHouse> AppWareHouse { get; set; }
@@ -90,13 +91,14 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppWareHouseVendor> AppWareHouseVendor { get; set; }
         public virtual DbSet<ApplicationContext> ApplicationContext { get; set; }
         public virtual DbSet<ApplicationModel> ApplicationModel { get; set; }
+        public virtual DbSet<Sysdiagrams> Sysdiagrams { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESSONE;Database=bluekangroo;UID=sam;PWD=Astaghees199;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Server=bluekangrooone.crtpqidbbpvh.us-east-2.rds.amazonaws.com;Database=bluekangroo;user id=admin;PWD=Astaghees199;");
             }
         }
 
@@ -105,7 +107,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppActivity>(entity =>
             {
                 entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName })
-                    .HasName("UQ__AppActiv__56AE0C02C29303D2")
+                    .HasName("UQ__AppActiv__56AE0C02DDE7F298")
                     .IsUnique();
 
                 entity.Property(e => e.AppActivityId)
@@ -128,7 +130,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppBuyer>(entity =>
             {
                 entity.HasIndex(e => e.AppBuyerHashedSsc)
-                    .HasName("UQ__AppBuyer__AD5E7D9CE87D2552")
+                    .HasName("UQ__AppBuyer__AD5E7D9C4DFF1D0E")
                     .IsUnique();
 
                 entity.Property(e => e.AppBuyerId)
@@ -746,11 +748,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppKey>(entity =>
             {
                 entity.HasIndex(e => e.AppClientEmailId)
-                    .HasName("UQ__AppKey__6FC0E5D4A966A0E1")
+                    .HasName("UQ__AppKey__6FC0E5D43E0A1B84")
                     .IsUnique();
 
                 entity.HasIndex(e => e.AppClientPhone)
-                    .HasName("UQ__AppKey__43F371AA8B7EFDDC")
+                    .HasName("UQ__AppKey__43F371AA95EE9E70")
                     .IsUnique();
 
                 entity.Property(e => e.AppKeyId)
@@ -1062,7 +1064,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppSeller>(entity =>
             {
                 entity.HasIndex(e => e.AppSellerHashedSsc)
-                    .HasName("UQ__AppSelle__4F1170A9C641EB4F")
+                    .HasName("UQ__AppSelle__4F1170A9A13DC066")
                     .IsUnique();
 
                 entity.Property(e => e.AppSellerId)
@@ -1251,7 +1253,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
                     .HasName("PK_AppTokenGenID");
 
                 entity.HasIndex(e => e.AppTokenGenId)
-                    .HasName("UQ__AppToken__7DA0ED630E842A84")
+                    .HasName("UQ__AppToken__7DA0ED63114C6535")
                     .IsUnique();
 
                 entity.Property(e => e.AppTokenId)
@@ -1579,6 +1581,23 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<AppUserRoleDetail>(entity =>
+            {
+                entity.Property(e => e.AppUserRoleDetailId)
+                    .HasColumnName("AppUserRoleDetailID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.AppUitemplateId).HasColumnName("AppUITemplateID");
+
+                entity.Property(e => e.AppUserRoleDetailDesc)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.AppUserRoleId).HasColumnName("AppUserRoleID");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<AppUserSesion>(entity =>
             {
                 entity.HasKey(e => e.AppSessionId)
@@ -1723,6 +1742,26 @@ namespace BlueKangrooCoreOnlyAPI.Models
                     .HasMaxLength(200);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Sysdiagrams>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("sysdiagrams");
+
+                entity.Property(e => e.Definition).HasColumnName("definition");
+
+                entity.Property(e => e.DiagramId).HasColumnName("diagram_id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(128);
+
+                entity.Property(e => e.PrincipalId).HasColumnName("principal_id");
+
+                entity.Property(e => e.Version).HasColumnName("version");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -19,6 +19,8 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<IFreightRepository, FreightRepository>();
             services.AddSingleton<IActivityRepository, ActivityRepository>();
             services.AddSingleton<IBuyerActivityRepository, BuyerActivityRepository>();
+            services.AddSingleton<IRoleRepository, RoleRepository>();
+
             services.AddSingleton<ISellerActivityRepository, SellerActivityRepository>();
             services.AddSingleton<IAuthorizationHandler, CustomGuidAuthorizationHandler>();
             services.AddSingleton<IDemandRepository, DemandRepository>();  
@@ -36,7 +38,9 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ILogger), typeof(ILogger<AppUserController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<AppCompanyController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<AppGroundActivityController>));
-
+            services.AddScoped(typeof(ILogger), typeof(ILogger<AppProductController>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<CategoryController>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<SellerActivityController>));
 
 
 
