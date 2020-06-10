@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Google.Rpc;
+using BlueKangrooCoreOnlyAPI.Enum;
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
     public class RoleRepository : IRoleRepository
@@ -40,15 +42,23 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 //Find the post for specific post id
                 var acDel = await db.AppUserRole.FirstOrDefaultAsync(p => p.AppUserRoleId == userRoleId);
-
-                if (acDel != null)
+                var appUserDetailsExist = await db.AppUserRoleDetail.FirstOrDefaultAsync<AppUserRoleDetail>(p => p.AppUserRoleId == userRoleId);
+                if (acDel != null && appUserDetailsExist == null)
                 {
                     //Delete that post
+
+                    var _exist = db.AppUserRoleDetail.FindAsync(userRoleId);
                     db.AppUserRole.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
                 }
+                else
+                {
+                    var error = await db.AppError.FindAsync(BlueKangarooErrorCode.Referential_Integrity_Code);
+                    throw new Exception(error.AppErrorDescription);
+                }
+              
             }
             return result;
 
@@ -113,11 +123,16 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         {
             if (userRoleDetail != null)
             {
-                userRoleDetail.AppUserRoleDetailId = Guid.NewGuid();
-                userRoleDetail.CreatedDate = DateTime.Now;
-                await db.AppUserRoleDetail.AddAsync(userRoleDetail);
-                await db.SaveChangesAsync();
-
+                // We dont have referential integrity so we must verify dependent legit ids 
+                var appRoleUserId =  db.AppUserRole.FindAsync(userRoleDetail.AppUserRoleId);
+                var appUITemplate = db.AppUitemplate.FindAsync(userRoleDetail.AppUitemplateId);
+                if (appRoleUserId != null && appUITemplate != null )
+                {
+                    userRoleDetail.AppUserRoleDetailId = Guid.NewGuid();
+                    userRoleDetail.CreatedDate = DateTime.Now;
+                    await db.AppUserRoleDetail.AddAsync(userRoleDetail);
+                    await db.SaveChangesAsync();
+                }
 
             }
             return userRoleDetail;

@@ -41,6 +41,8 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ILogger), typeof(ILogger<AppProductController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<CategoryController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<SellerActivityController>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<RoleController>));
+
 
 
 
@@ -58,6 +60,8 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppSellerActivity>), typeof(CacheManager<AppSellerActivity>));
             services.AddScoped(typeof(ICacheManager<AppCompany>), typeof(CacheManager<AppCompany>));
             services.AddScoped(typeof(ICacheManager<AppGroundActivity>), typeof(CacheManager<AppGroundActivity>));
+            services.AddScoped(typeof(ICacheManager<AppUserRole>), typeof(CacheManager<AppUserRole>));
+            services.AddScoped(typeof(ICacheManager<AppUserRoleDetail>), typeof(CacheManager<AppUserRoleDetail>));
 
 
         }

@@ -31,6 +31,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppDoor> AppDoor { get; set; }
         public virtual DbSet<AppDoorKey> AppDoorKey { get; set; }
         public virtual DbSet<AppDriver> AppDriver { get; set; }
+        public virtual DbSet<AppError> AppError { get; set; }
         public virtual DbSet<AppExport> AppExport { get; set; }
         public virtual DbSet<AppFactor> AppFactor { get; set; }
         public virtual DbSet<AppFinancialInstituition> AppFinancialInstituition { get; set; }
@@ -400,6 +401,25 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppDriverName)
                     .IsRequired()
                     .HasMaxLength(2000);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<AppError>(entity =>
+            {
+                entity.HasKey(e => e.AppErrorCodeId);
+
+                entity.Property(e => e.AppErrorCodeId)
+                    .HasColumnName("AppErrorCodeID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.AppErrorDescription)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.AppErrorType)
+                    .IsRequired()
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
