@@ -41,18 +41,25 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [Authorize]
         public async Task<IActionResult> LoginUser([FromBody]AppUser model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                logger.LogInformation("Model State is Valid access data from repository");
-                var _token = await blueRepository.LoginUser(model);
-                logger.LogInformation("Returning Token Data " + _token.customerTokenId);
-                return Ok(_token);
-            }
-            else
-            {
-                logger.LogError("Model State is Invalid returning bad request");
+                if (ModelState.IsValid)
+                {
+                    logger.LogInformation("Model State is Valid access data from repository");
+                    var _token = await blueRepository.LoginUser(model);
+                    logger.LogInformation("Returning Token Data " + _token.customerTokenId);
+                    return Ok(_token);
+                }
+                else
+                {
+                    logger.LogError("Model State is Invalid returning bad request");
 
-                return BadRequest();
+                    return BadRequest();
+                }
+            }
+            catch(Exception excp)
+            {
+                return BadRequest(excp.Message);
             }
         }
         
@@ -81,7 +88,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 try
                 {
-                    var user = await blueRepository.AddUser(model);
+
+                     var user = await blueRepository.AddUser(model);
                     if (user != null)
                     {
                         return Ok(user);

@@ -49,13 +49,13 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 }
                 else if(roleDetails != null )
                 {
-                    var error  = await db.AppError.FindAsync(BlueKangarooErrorCode.Referential_Integrity_Code);
+                    var error  = await db.AppError.FindAsync((int)BlueKangarooErrorCode.Referential_Integrity_Code);
                     // this error should be populated from external services with error code
                     throw new Exception(error.AppErrorDescription);
                 }
                 else
                 {
-                    var error = await db.AppError.FindAsync(BlueKangarooErrorCode.ID_NOT_EXIST);
+                    var error = await db.AppError.FindAsync((int)BlueKangarooErrorCode.ID_NOT_EXIST);
                     // this error should be populated from external services with error code
                     throw new Exception(error.AppErrorDescription);
 

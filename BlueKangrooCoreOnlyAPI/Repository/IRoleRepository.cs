@@ -13,6 +13,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         Task<AppUserRole> UpdateUserRole(AppUserRole userRole);
         Task<AppUserRoleDetail> AddUserRoleDetails(AppUserRoleDetail userRole);
         Task<List<AppUserRoleDetail>> LoadUserRoleDetail(Guid? userRoleId);
+        Task<List<AppUserRoleDetail>> FetchUserRoleDetailByToken(Guid? tokenId);
+
         Task<int> DeleteUserRoleDetail(Guid? userRoleId);
         Task<List<AppUserRoleDetail>> UpdateUserRoleDetails(List<AppUserRoleDetail> userRoleDetails);
 

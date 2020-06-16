@@ -205,5 +205,52 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
 
+
+        [HttpGet]
+        [Route("details/GetRoleInfoDetails")]
+        [Authorize]
+        public async Task<IActionResult> GetRoleInfoDetails()
+        {
+
+            var tokenId = Request.Headers["CustomerGuidKey"];
+            logger.LogInformation("Inside GetRolesInfoDetails  Starts Caching");
+            var cacheKey = "GetAllRolesDetails_" + Request.Headers["CustomerGuidKey"];
+            List<AppUserRoleDetail> roles = new List<AppUserRoleDetail>();
+
+            try
+            {
+                logger.LogInformation("Load Role information From Cache");
+
+                var encodedRoleDetails = await distributedCache.GetAsync(cacheKey);
+
+
+                if (encodedRoleDetails == null)
+                {
+                    logger.LogInformation("Load Role information From Repository For Token " + tokenId );
+
+                    roles = await roleRepo.FetchUserRoleDetailByToken(Guid.Parse(tokenId));
+
+                    if (roles == null || roles.Count == 0)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        logger.LogInformation("Roles Starts Caching");
+                        roles = await cacheManagerDetails.ProcessCache(roles, cacheKey, encodedRoleDetails, configuration, distributedCache);
+
+                    }
+
+
+                }
+                return Ok(roles);
+            }
+            catch (Exception excp)
+            {
+                logger.LogError("Error in Loading Role Details " + excp.Message);
+                return BadRequest(excp);
+            }
+        }
+
     }
 }

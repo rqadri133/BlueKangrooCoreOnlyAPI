@@ -28,6 +28,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<ISupplyRepository, SupplyRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<ICompanyRepository, CompanyRepository>();
+            services.AddSingleton<ITemplateUIRepository, TemplateUIRepository>();
 
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<CustomGuidAuthorizationHandler>));
@@ -42,6 +43,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ILogger), typeof(ILogger<CategoryController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<SellerActivityController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<RoleController>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<TempUIController>));
 
 
 
@@ -62,6 +64,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppGroundActivity>), typeof(CacheManager<AppGroundActivity>));
             services.AddScoped(typeof(ICacheManager<AppUserRole>), typeof(CacheManager<AppUserRole>));
             services.AddScoped(typeof(ICacheManager<AppUserRoleDetail>), typeof(CacheManager<AppUserRoleDetail>));
+            services.AddScoped(typeof(ICacheManager<AppUitemplate>), typeof(CacheManager<AppUitemplate>));
 
 
         }

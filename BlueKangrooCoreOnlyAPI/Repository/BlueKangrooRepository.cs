@@ -1,8 +1,11 @@
-﻿using BlueKangrooCoreOnlyAPI.Headers;
+﻿using BlueKangrooCoreOnlyAPI.Enum;
+using BlueKangrooCoreOnlyAPI.Headers;
 using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BlueKangrooCoreOnlyAPI.Repository
@@ -134,8 +137,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                            //Find the post for specific post id
                            // user name entry found
                        var userinfo = await db.AppUser.FirstOrDefaultAsync(p => p.AppUserName ==   user.AppUserName);
-                       // userinfo;
+                    // userinfo;
                      
+                    
                        if(userinfo != null)
                        { 
                             // password validated
@@ -146,8 +150,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                             // token information found and not expired
                             if(!_findMatch)
                             {
-                               // dont proceed 
-                               return null; 
+                            // dont proceed 
+                               var appError = await db.AppError.FindAsync((int)BlueKangarooErrorCode.USER_ID_PASSWORD_NOT_CORRECT);
+                               throw new Exception(appError.AppErrorDescription);
                             } 
 
                             var tokenInformation    = await db.AppToken.FirstOrDefaultAsync(token => token.AppTokenUserId == userinfo.AppUserId);    
@@ -155,8 +160,8 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                             {
                                  if(tokenInformation.TokenExpiredDate > DateTime.Now)
                                  {
-                                      customerToken = new CustomerToken() { customerTokenId = tokenInformation.AppTokenId.ToString() };  
-                                      return customerToken;
+                                     customerToken = new CustomerToken() { customerTokenId = tokenInformation.AppTokenId.ToString() };
+                                     return customerToken;
                                  }     
                             }
                             else 
@@ -181,6 +186,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                                                               });
 
                                             await  db.SaveChangesAsync();
+                                           
                                            customerToken = new CustomerToken() { customerTokenId = _newTokenInfo.Entity.AppTokenId.ToString() };          
                                            return customerToken;
                             
@@ -189,7 +195,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
                             }   
                        }     
-                    
+                        else
+                        {
+                                var appError = await db.AppError.FindAsync((int)BlueKangarooErrorCode.USER_ID_PASSWORD_NOT_CORRECT);
+                                throw new Exception(appError.AppErrorDescription);
+
+                        }
                         
                          
 
@@ -331,14 +342,26 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
             if (db != null)
             {
-                user.AppUserId = Guid.NewGuid();
-                user.AppUserPwd  = Security.SecurityLogin.CreateHash(user.AppUserPwd);
-                user.CreatedDate = DateTime.Now;
-               
-                await db.AppUser.AddAsync(user);
-                await db.SaveChangesAsync();
 
-                return user;
+                var appUserRole = await db.AppUserRole.FindAsync(user.AppRoleId);
+                if (appUserRole != null)
+                {
+
+                    user.AppUserId = Guid.NewGuid();
+                    user.AppUserPwd = Security.SecurityLogin.CreateHash(user.AppUserPwd);
+                    user.CreatedDate = DateTime.Now;
+
+                    await db.AppUser.AddAsync(user);
+                    await db.SaveChangesAsync();
+
+                    return user;
+                }
+                else
+                {
+                      var userError = await db.AppError.FindAsync((int)BlueKangarooErrorCode.USER_ROLE_NOT_DEFINED);
+                      throw new Exception(userError.AppErrorDescription);
+
+                }
             }
 
             return user;

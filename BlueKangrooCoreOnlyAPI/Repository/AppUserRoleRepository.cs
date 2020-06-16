@@ -55,7 +55,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 }
                 else
                 {
-                    var error = await db.AppError.FindAsync(BlueKangarooErrorCode.Referential_Integrity_Code);
+                    var error = await db.AppError.FindAsync((int)BlueKangarooErrorCode.Referential_Integrity_Code);
                     throw new Exception(error.AppErrorDescription);
                 }
               
@@ -72,6 +72,13 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 // One Groud Logistics per zip code
                 var selUserRole = await db.AppUserRole.FirstOrDefaultAsync<AppUserRole>(p => p.AppUserRoleId == userInfo);
+                if(selUserRole == null)
+                {
+                    var masterIdNotExist  =   await db.AppError.FindAsync((int)BlueKangarooErrorCode.ID_NOT_EXIST);
+                    throw new Exception(masterIdNotExist.AppErrorDescription); 
+
+                }
+
                 return selUserRole;
 
             }
@@ -155,6 +162,54 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
 
         }
+
+
+        public async Task<List<AppUserRoleDetail>> FetchUserRoleDetailByToken(Guid? tokenId)
+        {
+            if(db != null)
+            {
+                var tokenInfo = await db.AppToken.FindAsync(tokenId);
+                if( tokenInfo != null)
+                {
+                    var  userinfo  = await  db.AppUser.FindAsync( tokenInfo.AppTokenUserId);
+                    if(userinfo != null)
+                    {
+                        var userRoleDetails   = db.AppUserRoleDetail.Where(p => p.AppUserRoleId == userinfo.AppRoleId);
+                        if(userRoleDetails != null)
+                        {
+                                return await userRoleDetails.ToListAsync();
+
+                        }
+                        else
+                        {
+                            var errinfo = await db.AppError.FindAsync(BlueKangarooErrorCode.USER_ROLE_NOT_DEFINED);
+                            throw new Exception(errinfo.AppErrorDescription + " No User role details Defined for this user " + tokenInfo.AppTokenUserId.ToString());
+                        }
+
+                    }
+                    else
+                    {
+                        var errinfo = await db.AppError.FindAsync(BlueKangarooErrorCode.ID_NOT_EXIST);
+                        throw new Exception(errinfo.AppErrorDescription + " No User ID Defined for this user " + tokenInfo.AppTokenUserId.ToString());
+
+                    }
+
+                }
+                else
+                {
+                    var errinfo = await db.AppError.FindAsync(BlueKangarooErrorCode.ID_NOT_EXIST);
+                    throw new Exception(errinfo.AppErrorDescription + " " + tokenId.ToString());
+
+                }
+
+
+            }
+
+            return null;
+
+
+        }
+
         public async Task<int> DeleteUserRoleDetail(Guid? userRoleId)
         {
 

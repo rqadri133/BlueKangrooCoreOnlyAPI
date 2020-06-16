@@ -203,6 +203,10 @@ namespace BlueKangrooCoreOnlyAPI
             builder.RegisterType<BlueKangrooRepository>()
                     .As<IBlueKangrooRepository>()
                     .InstancePerLifetimeScope();
+            builder.RegisterType<TemplateUIRepository>()
+                    .As<ITemplateUIRepository>()
+                    .InstancePerLifetimeScope();
+
 
             builder.RegisterType<CacheManager<AppBuyer>>().As<ICacheManager<AppBuyer>>();
             builder.RegisterType<CacheManager<AppProduct>>().As<ICacheManager<AppProduct>>();
