@@ -16,6 +16,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         }
 
         public virtual DbSet<AppActivity> AppActivity { get; set; }
+        public virtual DbSet<AppBrand> AppBrand { get; set; }
         public virtual DbSet<AppBuyer> AppBuyer { get; set; }
         public virtual DbSet<AppBuyerActivity> AppBuyerActivity { get; set; }
         public virtual DbSet<AppBuyerCostSheet> AppBuyerCostSheet { get; set; }
@@ -99,7 +100,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=bluekangrooone.crtpqidbbpvh.us-east-2.rds.amazonaws.com;Database=bluekangroo;user id=admin;PWD=Astaghees199;");
+                optionsBuilder.UseSqlServer("Server=tcp:bluekangaroosql.database.windows.net,1433;Database=bluekangroo;user id=sqadri144;PWD=Astaghees@#^*144");
             }
         }
 
@@ -108,7 +109,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppActivity>(entity =>
             {
                 entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName })
-                    .HasName("UQ__AppActiv__56AE0C02DDE7F298")
+                    .HasName("UQ__AppActiv__56AE0C0200507C66")
                     .IsUnique();
 
                 entity.Property(e => e.AppActivityId)
@@ -128,10 +129,32 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<AppBrand>(entity =>
+            {
+                entity.HasIndex(e => e.AppBrandLicenseId)
+                    .HasName("UQ__AppBrand__FCFB06880C151CDF")
+                    .IsUnique();
+
+                entity.Property(e => e.AppBrandId)
+                    .HasColumnName("AppBrandID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.AppBrandLicenseId)
+                    .IsRequired()
+                    .HasColumnName("AppBrandLicenseID")
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.AppBrandName)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<AppBuyer>(entity =>
             {
                 entity.HasIndex(e => e.AppBuyerHashedSsc)
-                    .HasName("UQ__AppBuyer__AD5E7D9C4DFF1D0E")
+                    .HasName("UQ__AppBuyer__AD5E7D9C0C75194D")
                     .IsUnique();
 
                 entity.Property(e => e.AppBuyerId)
@@ -768,11 +791,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppKey>(entity =>
             {
                 entity.HasIndex(e => e.AppClientEmailId)
-                    .HasName("UQ__AppKey__6FC0E5D43E0A1B84")
+                    .HasName("UQ__AppKey__6FC0E5D40287ADD9")
                     .IsUnique();
 
                 entity.HasIndex(e => e.AppClientPhone)
-                    .HasName("UQ__AppKey__43F371AA95EE9E70")
+                    .HasName("UQ__AppKey__43F371AA4E3C769A")
                     .IsUnique();
 
                 entity.Property(e => e.AppKeyId)
@@ -1084,7 +1107,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppSeller>(entity =>
             {
                 entity.HasIndex(e => e.AppSellerHashedSsc)
-                    .HasName("UQ__AppSelle__4F1170A9A13DC066")
+                    .HasName("UQ__AppSelle__4F1170A93763E0E4")
                     .IsUnique();
 
                 entity.Property(e => e.AppSellerId)
@@ -1273,7 +1296,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
                     .HasName("PK_AppTokenGenID");
 
                 entity.HasIndex(e => e.AppTokenGenId)
-                    .HasName("UQ__AppToken__7DA0ED63114C6535")
+                    .HasName("UQ__AppToken__7DA0ED63B2851B89")
                     .IsUnique();
 
                 entity.Property(e => e.AppTokenId)
