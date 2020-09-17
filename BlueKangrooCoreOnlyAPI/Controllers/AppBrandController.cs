@@ -15,6 +15,7 @@ using Google.Api;
 using System.IO;
 using NStandard;
 using IdentityModel.Client;
+using System.Threading;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -209,6 +210,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
          
             IFormFileCollection _fileCollection =  HttpContext.Request.Form.Files;
             Microsoft.Extensions.Primitives.StringValues vals;
+            IFormFile formFile = _fileCollection[0];
+
             string brandId = Guid.NewGuid().ToString();
             if(HttpContext.Request.Form.TryGetValue("brandId", out vals))
             {
@@ -221,20 +224,26 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             string _blobName = String.Empty;
             string _filePath = Path.GetTempPath();
             string _extension = String.Empty; 
-            FileStream stream;  
+         
 
             if(_fileCollection.Count > 0 )
             {
-                if(_fileCollection[0].Length > 0 )
+                if(formFile.Length > 0 )
                 {
                     _blobName = _fileCollection[0].FileName;
                 
-                    _filePath = _filePath + "//" + _blobName;
-                     stream = new FileStream(_filePath, FileMode.Create);
-                     await  _fileCollection[0].CopyToAsync(stream);
-                    await BrandRepo.UploadBrandLogoo(Guid.Parse(brandId), _blobName, stream, configuration, logger);
+                    _filePath = _filePath  + _blobName;
+                    using (var stream = System.IO.File.Create(_filePath))
+                    {
+                        await formFile.CopyToAsync(stream);
+                        stream.Position = 0;
+                        await BrandRepo.UploadBrandLogoo(Guid.Parse(brandId), _blobName, stream, configuration, logger);
 
 
+
+                    }
+                   
+                 return new OkObjectResult("Logo uploaded ");
                     // The File is ready to be moved 
 
                 }

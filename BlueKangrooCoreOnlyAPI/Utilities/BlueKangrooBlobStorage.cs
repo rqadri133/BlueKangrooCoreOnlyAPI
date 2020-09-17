@@ -26,13 +26,13 @@ namespace BlueKangrooCoreOnlyAPI.Utilities
                 string _containerName = config["BlueKangrooContainerName"];
                 //Copy the storage account connection string from Azure portal     
                 string storageAccount_connectionString  = config["AzureBlobStorageConnection"] ;
-
+                string[] folderNames = blobName.Split("@".ToCharArray());
               
 
 
                 CloudStorageAccount mycloudStorageAccount = CloudStorageAccount.Parse(storageAccount_connectionString);
                 CloudBlobClient blobClient = mycloudStorageAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = blobClient.GetContainerReference(_containerName);
+                CloudBlobContainer container = blobClient.GetContainerReference(_containerName );
 
                 //checking the container exists or not  
                 if (container.CreateIfNotExists())
@@ -45,13 +45,15 @@ namespace BlueKangrooCoreOnlyAPI.Utilities
                     });
 
                 }
-
+                blobName = folderNames[1];
                 //reading file name & file extention    
                 string[] extension = blobName.Split(".".ToCharArray());
-                CloudBlockBlob cloudBlockBlob = container.GetBlockBlobReference(blobName);
+                CloudBlockBlob cloudBlockBlob = container.GetBlockBlobReference( folderNames[0] + "\\" + blobName);
                 cloudBlockBlob.Properties.ContentType = extension[1];
+       
              
-               return cloudBlockBlob.UploadFromStreamAsync(fileStream); // << Uploading the file to the blob >>  
+                return cloudBlockBlob.UploadFromStreamAsync(fileStream); // << Uploading the file to the blob >>  
+                
             }
             catch(Exception excp )
             {

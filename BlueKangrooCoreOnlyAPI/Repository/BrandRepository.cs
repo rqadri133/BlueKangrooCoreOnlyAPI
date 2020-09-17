@@ -119,7 +119,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                     break;
             }
 
-            return _storage.UploadFile(fileInfo,    brandId + "//" + blobName , config, logger);
+            return _storage.UploadFile(fileInfo,    brandId + "@" + blobName , config, logger);
         }
     }
 }
