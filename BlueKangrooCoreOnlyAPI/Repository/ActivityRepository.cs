@@ -5,37 +5,37 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
-    public class AppProcessRepository : IAppProcessRepository 
+    public class ActivityRepository : IActivityRepository
     {
 
         private blueKangrooContext db;
-        public AppProcessRepository(blueKangrooContext _db)
+        public ActivityRepository(blueKangrooContext _db)
         {
             db = _db;
         }
-        public async Task<AppProcess> AddProcess(AppProcess process)
+        public async Task<AppActivity> AddActivity(AppActivity activity)
         {
             if (db != null)
             {
-                process.AppProcessId = Guid.NewGuid();
-                process.CreatedDate = DateTime.Now;
-                await db.AppProcess.AddAsync(process);
+                activity.AppActivityId = Guid.NewGuid();
+                activity.CreatedDate = DateTime.Now;
+                await db.AppActivity.AddAsync(activity);
                 await db.SaveChangesAsync();
 
-                return process;
+                return activity;
             }
 
-            return process;
+            return activity;
 
 
         }
-        public async Task<List<AppProcess>> LoadAllProcesses()
+        public async Task<List<AppActivity>> LoadAllActivities()
         {
             if (db != null)
             {
 
-                var processes = await db.AppProcess.ToListAsync<AppProcess>();
-                return processes;
+                var activities = await db.AppActivity.ToListAsync<AppActivity>();
+                return activities;
 
             }
 
@@ -43,19 +43,19 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
 
         }
-        public async Task<int> DeleteProcessInfo(Guid? ProcesssId)
+        public async Task<int> DeleteActivityInfo(Guid? AcitivityId)
         {
             int result = 0;
 
             if (db != null)
             {
                 //Find the post for specific post id
-                var acDel = await db.AppProcess.FirstOrDefaultAsync(p => p.AppProcessId ==  ProcesssId);
+                var acDel = await db.AppActivity.FirstOrDefaultAsync(p => p.AppActivityId == AcitivityId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppProcess.Remove(acDel);
+                    db.AppActivity.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -68,31 +68,31 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
         }
 
-        public async Task<AppProcess> GetProcessInfo(Guid? processInfo)
+        public async Task<AppActivity> GetActivityInfo(Guid? activityInfo)
         {
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selProcess = await db.AppProcess.FirstOrDefaultAsync<AppProcess>(p => p.AppProcessId ==  processInfo);
-                return selProcess;
+                var selActivity = await db.AppActivity.FirstOrDefaultAsync<AppActivity>(p => p.AppActivityId == activityInfo);
+                return selActivity;
 
             }
 
             return null;
         }
 
-        public async Task<AppProcess> UpdateProcess(AppProcess process)
+        public async Task<AppActivity> UpdateActivity(AppActivity activity)
         {
             if (db != null)
             {
                 //Delete that post
-                db.AppProcess.Update(process);
+                db.AppActivity.Update(activity);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();
             }
 
-            return process;
+            return activity;
 
         }
     }

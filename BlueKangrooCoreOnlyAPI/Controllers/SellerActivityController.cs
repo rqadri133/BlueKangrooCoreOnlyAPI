@@ -13,6 +13,7 @@ using config = Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using BlueKangrooCoreOnlyAPI.Caching;
+using Microsoft.Extensions.Logging;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -29,14 +30,17 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         ISellerActivityRepository sellerRepository ;
         IDistributedCache distributedCache;
         ICacheManager<AppSellerActivity> cacheManager;
+        ILogger logger;
+
         private readonly config.IConfiguration configuration;
-        public SellerActivityController(ISellerActivityRepository _sellerRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache , ICacheManager<AppSellerActivity> _cacheManager )
+        public SellerActivityController(ISellerActivityRepository _sellerRepository  , config.IConfiguration _configurtaion , IDistributedCache _distributedCache , ICacheManager<AppSellerActivity> _cacheManager , ILogger<SellerActivityController> _logger )
         {
            sellerRepository = _sellerRepository;
            
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
+            logger = _logger;
         }
 
         [HttpGet]
@@ -47,7 +51,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         {
             var cacheKey = "GetAllSellersActivity_" + Request.Headers["CustomerGuidKey"];
             List<AppSellerActivity> sellersActivities = new List<AppSellerActivity>();
-          
+            logger.LogInformation("Fetching Seller Information from Cache");
             var encodedSellers = await distributedCache.GetAsync(cacheKey);
             
 
@@ -55,6 +59,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 if(encodedSellers == null)
                 {
+                    logger.LogInformation("Loading Seller Information from Repository");
                     sellersActivities = await sellerRepository.LoadAllSellerActivities();
                     if (sellersActivities == null)
                     {
@@ -68,6 +73,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             catch (Exception excp)
             {
                 // client call must know stack exception
+
+                logger.LogError("Error in seller activities " + excp.Message);
                 return BadRequest(excp);
             }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using BlueKangrooCoreOnlyAPI.Repository;
+using BlueKangrooCoreOnlyAPI.Headers;
 
 namespace BlueKangrooCoreOnlyAPI.AuthenticationHandlers
 {
@@ -32,7 +33,7 @@ namespace BlueKangrooCoreOnlyAPI.AuthenticationHandlers
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            string _token = string.Empty;
+            CustomerToken _token ;
 
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
@@ -57,8 +58,8 @@ namespace BlueKangrooCoreOnlyAPI.AuthenticationHandlers
                 return AuthenticateResult.Fail("Invalid Username or Password");
 
             var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, _token),
-                new Claim(ClaimTypes.Name, _token),
+                new Claim(ClaimTypes.NameIdentifier, _token.customerTokenId),
+                new Claim(ClaimTypes.Name, _token.customerTokenId),
             };
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);

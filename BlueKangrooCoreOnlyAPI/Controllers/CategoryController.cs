@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Distributed;
 using BlueKangrooCoreOnlyAPI.Caching;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.Extensions.Logging;
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
 
@@ -25,13 +25,15 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         ICategoryRepository categoryRepo;
         IDistributedCache distributedCache;
         ICacheManager<AppCategory> cacheManager;
+        ILogger logger;
         private readonly IConfiguration configuration;
-        public CategoryController(ICategoryRepository _CategoryRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppCategory> _cacheManager)
+        public CategoryController(ICategoryRepository _CategoryRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppCategory> _cacheManager , ILogger _logger)
         {
             categoryRepo = _CategoryRepository;
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
+            logger = _logger;
         }
 
         [HttpGet]
@@ -42,7 +44,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
             var cacheKey = "GetAllCategorys_" + Request.Headers["CustomerGuidKey"];
             List<AppCategory> Categorys = new List<AppCategory>();
-
+            logger.LogInformation("Fetching all categories in cache");
             var encodedCategorys = await distributedCache.GetAsync(cacheKey);
 
 
@@ -50,6 +52,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 if (encodedCategorys == null)
                 {
+                    logger.LogInformation("Fetching all categories from repository");
+
                     Categorys = await categoryRepo.LoadAllCategories();
                     if (Categorys == null)
                     {
@@ -62,6 +66,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
+                logger.LogError("Exception in categories " + excp.Message);
                 // client call must know stack exception
                 return BadRequest(excp);
             }

@@ -28,7 +28,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         ICacheManager<AppActivity> cacheManager;
         private ILogger logger;
         private readonly IConfiguration configuration;
-        public ActivityController(IActivityRepository _ActivityRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppActivity> _cacheManager , ILogger<ActivityController> _logger)
+
+        public ActivityController(IActivityRepository _ActivityRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppActivity> _cacheManager, ILogger<ActivityController> _logger)
         {
             activityRepo = _ActivityRepository;
             configuration = _configurtaion;
@@ -66,7 +67,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             }
             catch (Exception excp)
             {
-                logger.LogError("Error while loading all activities " + excp.Message );
+                logger.LogError("Error while loading all activities " + excp.Message);
 
                 // client call must know stack exception
                 return BadRequest(excp);
@@ -100,7 +101,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 }
                 catch (Exception excp)
                 {
-                    logger.LogError("Error Adding Actiivty in Repository " +  excp.Message );
+                    logger.LogError("Error Adding Actiivty in Repository " + excp.Message);
 
                     return BadRequest(excp);
                 }

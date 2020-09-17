@@ -42,8 +42,22 @@ namespace BlueKangrooCoreOnlyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
-           services.AddAuthentication(options =>
+            List<string> clientURLS = new List<string>();
+            clientURLS.Add(Configuration["baseClientUrl"]);
+            clientURLS.Add(Configuration["prodClientUrl"]);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "BlueCorsPolicy",
+                    builder => builder.WithOrigins(clientURLS.ToArray())
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                  );
+            });
+
+
+            services.AddAuthentication(options =>
            {
                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,7 +68,6 @@ namespace BlueKangrooCoreOnlyAPI
                options.Audience = Configuration["Auth0:Audience"];
            });           
             services.AddControllers();
-            services.AddCors(option => option.AddPolicy("CorsPolicy", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();  }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
             services.AddHttpContextAccessor();
@@ -119,14 +132,9 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddMemoryCache();
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins(Configuration["baseUrl"])
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
+
+       
+          
 
         }
 
@@ -138,21 +146,21 @@ namespace BlueKangrooCoreOnlyAPI
                 app.UseDeveloperExceptionPage();
                 IdentityModelEventSource.ShowPII = true;
             }
+
+            app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
-         
-           
+                   
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers(); 
             });
            
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            //  app.UseMvc();
-
+            
+            
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
@@ -170,8 +178,9 @@ namespace BlueKangrooCoreOnlyAPI
             });
             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("Authorization", "bearer");
+                context.Response.Headers.Add("Authorization", "bearer" );
                 context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
+                
                 await next.Invoke();
             });
 
@@ -194,6 +203,10 @@ namespace BlueKangrooCoreOnlyAPI
             builder.RegisterType<BlueKangrooRepository>()
                     .As<IBlueKangrooRepository>()
                     .InstancePerLifetimeScope();
+            builder.RegisterType<TemplateUIRepository>()
+                    .As<ITemplateUIRepository>()
+                    .InstancePerLifetimeScope();
+
 
             builder.RegisterType<CacheManager<AppBuyer>>().As<ICacheManager<AppBuyer>>();
             builder.RegisterType<CacheManager<AppProduct>>().As<ICacheManager<AppProduct>>();
