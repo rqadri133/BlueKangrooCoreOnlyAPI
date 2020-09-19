@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using BlueKangrooCoreOnlyAPI.Utilities;
 
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
@@ -113,5 +117,16 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             return product ;
 
         }
+
+        // Upload is not Async
+        public  Task  UploadProductLogo(Guid productId, string blobName, FileStream fileInfo, IConfiguration config, ILogger logger)
+        {
+           return  ProxyStorage.UploadToBlob(productId, blobName, fileInfo, config, logger);
+
+
+        }
+
+
+
     }
 }

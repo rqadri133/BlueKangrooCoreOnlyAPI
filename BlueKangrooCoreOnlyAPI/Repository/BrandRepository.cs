@@ -105,21 +105,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
         public Task UploadBrandLogoo(Guid brandId, string blobName, FileStream fileInfo, IConfiguration config, ILogger logger)
         {
-            IBlueKangrooStorage _storage = null;
-            string storagemethod = config["StorageTechnique"];
-            string _containerName = config["BlueKangrooContainerName"];
-            switch (storagemethod)
-            {
-                
-                case "AzureBlob":
-                    _storage = new BlueKangrooBlobStorage();
-                    break;
-                default:
-                    _storage = new BlueKangrooBlobStorage();
-                    break;
-            }
-
-            return _storage.UploadFile(fileInfo,    brandId + "@" + blobName , config, logger);
+            return ProxyStorage.UploadToBlob(brandId, blobName, fileInfo, config, logger);
         }
     }
 }
