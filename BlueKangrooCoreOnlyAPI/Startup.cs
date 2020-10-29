@@ -30,7 +30,7 @@ using MassTransit.BusConfigurators;
 using MassTransit.Configurators;
 using MassTransit;
 using System.Globalization;
-using BlueKangrooCoreOnlyAPI.culture;
+
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -167,13 +167,8 @@ namespace BlueKangrooCoreOnlyAPI
                 endpoints.MapControllers(); 
             });
 
-            app.UseRequestCulture();
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync(
-                    $"Hello {CultureInfo.CurrentCulture.DisplayName}");
-            });
+       
+          
 
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);

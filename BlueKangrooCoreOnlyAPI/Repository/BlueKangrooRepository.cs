@@ -162,7 +162,37 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                                  {
                                      customerToken = new CustomerToken() { customerTokenId = tokenInformation.AppTokenId.ToString() };
                                      return customerToken;
-                                 }     
+                                 }
+                                else
+                                {
+
+                                    Guid _tokenId = Guid.NewGuid();
+                                    var _newTokenInfo = await db.AppToken.AddAsync(new AppToken()
+                                    {
+                                        AppTokenId = _tokenId,
+                                        AppTokenUserId = userinfo.AppUserId,
+                                        TokenExpiredDate = DateTime.Now.AddDays(30),
+                                        CreatedDate = DateTime.Now,
+                                        // for a while just inser new id 
+                                        // later add Role through dependency injection
+                                        CreatedBy = Guid.NewGuid(),
+                                        AppClientName = Security.SecurityLogin.CreateHash(_tokenId.ToString()),
+                                        AppNameDesc = userinfo.AppUserId.ToString() + "-" + userinfo.CreatedDate.ToString(),
+                                        IsActive = true,
+                                        AppUserPwd = userinfo.AppUserPwd
+
+                                    });
+
+                                    await db.SaveChangesAsync();
+
+                                    customerToken = new CustomerToken() { customerTokenId = _newTokenInfo.Entity.AppTokenId.ToString() };
+                                    return customerToken;
+
+
+
+
+
+                            }
                             }
                             else 
                             {

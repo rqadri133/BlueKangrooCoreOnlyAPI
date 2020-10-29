@@ -46,6 +46,9 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ILogger), typeof(ILogger<RoleController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<TempUIController>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<BrandController>));
+            services.AddScoped(typeof(ILogger), typeof(ILogger<AppUserDetailsController>));
+
+
 
 
 
@@ -68,6 +71,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppUserRoleDetail>), typeof(CacheManager<AppUserRoleDetail>));
             services.AddScoped(typeof(ICacheManager<AppUitemplate>), typeof(CacheManager<AppUitemplate>));
             services.AddScoped(typeof(ICacheManager<AppBrand>), typeof(CacheManager<AppBrand>));
+            services.AddScoped(typeof(ICacheManager<AppUser>), typeof(CacheManager<AppUser>));
 
         }
 

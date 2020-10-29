@@ -64,53 +64,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         }
         
 
-          [HttpGet]
-          [Route("GetAllUsers")]
-         [Authorize]
-         public async Task<IActionResult> GetAllUser()
-        {
-
-            var users = await blueRepository.GetAllUsers();
-            return Ok(users);
-
-
-        }
-
-
-
-        [HttpPost]
-        [Route("AddUser")]
-        [Authorize]
-        public async Task<IActionResult> AddUser([FromBody]AppUser model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-
-                     var user = await blueRepository.AddUser(model);
-                    if (user != null)
-                    {
-                        return Ok(user);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
-                }
-                catch (Exception excp)
-                {
-
-                    return BadRequest(excp);
-                }
-
-            }
-
-            return BadRequest();
-
-        }
-
+        
 
 
 
