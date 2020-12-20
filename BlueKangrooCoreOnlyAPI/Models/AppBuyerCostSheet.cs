@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace BlueKangrooCoreOnlyAPI.Models
 {
     public partial class AppBuyerCostSheet
+
     {
         public Guid AppBuyerCostId { get; set; }
         public string AppBuyerId { get; set; }

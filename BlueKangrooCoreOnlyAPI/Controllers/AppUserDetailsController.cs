@@ -93,7 +93,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                     var user = await blueRepository.AddUser(model);
                     if (user != null)
                     {
-                        return Ok(user);
+                        return Ok(new { tokenId = user.AppUserName } );
                     }
                     else
                     {
