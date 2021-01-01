@@ -21,3 +21,7 @@ RUN dotnet build --no-restore "BlueKangrooCoreOnlyAPI.csproj" -c $BUILD_CONFIGUR
 RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION --" > /entrypoint.sh
 
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+
+
+
+COPY RIGHT TO SYED RAFIUDDIN QADRI , Any clone made without permission will subject to interogation and will we reported to Authorities
