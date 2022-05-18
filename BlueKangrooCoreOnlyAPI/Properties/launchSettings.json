@@ -18,22 +18,29 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BlueKangrooCoreOnlyAPI": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
-      "environmentVariables": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\syedQadri01\\Source\\Repos\\BlueKangrooCoreOnlyAPI\\BlueKangrooCoreOnlyAPI\\BlueKangrooCoreApiOnly-6d3cfabd9cfc.json",
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
-    },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
       "publishAllPorts": true,
       "useSSL": true
+    },
+    "BlueKangrooCoreOnlyAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "environmentVariables": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/syedqadri/Projects/BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI/BlueKangrooCoreApiOnly-6d3cfabd9cfc.json",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces",
+      "launchBrowser": true,
+      "resourceGroup": "Default-SQL-NorthCentralUS",
+      "aksName": "Kangroo1Cluster",
+      "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419"
     }
   }
 }

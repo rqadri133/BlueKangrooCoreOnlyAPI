@@ -6,6 +6,11 @@ using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
+using BlueKangrooCoreOnlyAPI.Headers;
+using config = Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.Extensions.Logging;
+
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
 
@@ -15,23 +20,47 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]  
     public class AppUserController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
-        public AppUserController(IBlueKangrooRepository _blueRepository)
+        config.IConfiguration configuration;
+        ILogger logger;
+
+        public AppUserController(IBlueKangrooRepository _blueRepository , config.IConfiguration _configurtaion , ILogger<AppUserController> _logger)
         {
             blueRepository = _blueRepository;
+            configuration = _configurtaion;
+            logger = _logger;
         }
+
+        
+
         [HttpPost]
         [Route("LoginUser")]
         [Authorize]
         public async Task<IActionResult> LoginUser([FromBody]AppUser model)
         {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    logger.LogInformation("Model State is Valid access data from repository");
+                    var _token = await blueRepository.LoginUser(model);
+                    logger.LogInformation("Returning Token Data " + _token.customerTokenId);
+                    return Ok(_token);
+                }
+                else
+                {
+                    logger.LogError("Model State is Invalid returning bad request");
 
-            var _token = await blueRepository.LoginUser(model);
-            return Ok(_token);
-
-
+                    return BadRequest();
+                }
+            }
+            catch(Exception excp)
+            {
+                return BadRequest(excp.Message);
+            }
         }
         
 
@@ -59,7 +88,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
             {
                 try
                 {
-                    var user = await blueRepository.AddUser(model);
+
+                     var user = await blueRepository.AddUser(model);
                     if (user != null)
                     {
                         return Ok(user);

@@ -11,7 +11,6 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
     public class CustomerGuidHandlerRequirement : IAuthorizationRequirement
     {
 
-
        
         public string Authorization
         {

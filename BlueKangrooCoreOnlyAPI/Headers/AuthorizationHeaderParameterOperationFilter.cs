@@ -14,13 +14,9 @@ namespace BlueKangrooCoreOnlyAPI.Headers
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
 
-
             if (operation.Parameters == null)
                 operation.Parameters = new List<OpenApiParameter>();
-
-
-            var descriptor = context.ApiDescription.ActionDescriptor as ControllerActionDescriptor;
-
+             var descriptor = context.ApiDescription.ActionDescriptor as ControllerActionDescriptor;
             if (descriptor != null && descriptor.ControllerName  != "AppUser")
             {
                 operation.Parameters.Add(new OpenApiParameter

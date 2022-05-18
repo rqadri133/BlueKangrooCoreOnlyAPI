@@ -6,6 +6,10 @@ using BlueKangrooCoreOnlyAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
+using BlueKangrooCoreOnlyAPI.Caching;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,9 +21,17 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     public class AppSellerController : Controller
     {
         IBlueKangrooRepository blueRepository;
-        public AppSellerController(IBlueKangrooRepository _blueRepository)
+        IDistributedCache distributedCache;
+        ICacheManager<AppSeller> cacheManager;
+        ILogger logger;
+        private readonly IConfiguration configuration;
+        public AppSellerController(IBlueKangrooRepository _blueRepository , IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppSeller> _cacheManager , ILogger<AppSellerController> _logger)
         {
             blueRepository = _blueRepository;
+            configuration = _configurtaion;
+            distributedCache = _distributedCache;
+            cacheManager = _cacheManager;
+            logger = _logger;
         }
 
 
@@ -28,21 +40,35 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetSellers()
         {
+            var cacheKey = "GetAllSellers_" + Request.Headers["CustomerGuidKey"];
+            List<AppSeller> sellers = new List<AppSeller>();
+            logger.LogInformation("Fetching Sellers from Cache Key");
+            var encodedSellers = await distributedCache.GetAsync(cacheKey);
             try
             {
-                var sellers = await blueRepository.GetSellers();
-                if (sellers == null)
+                if (encodedSellers == null)
                 {
-                    return NotFound();
+                    logger.LogInformation("Fetching Sellers from Repository");
+
+                    sellers = await blueRepository.GetSellers();
+                    if (sellers == null)
+                    {
+                        return NotFound();
+                    }
                 }
+                logger.LogInformation("Storing  Sellers in Cache");
+
+                sellers = await cacheManager.ProcessCache(sellers, cacheKey, encodedSellers, configuration, distributedCache);
 
                 return Ok(sellers);
             }
             catch (Exception excp)
             {
+                logger.LogError("Error in loading Sellers from Repository/Cache " + excp.Message  );
                 // client call must know stack exception
                 return BadRequest(excp);
             }
+
 
         }
 
