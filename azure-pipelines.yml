@@ -45,14 +45,13 @@ steps:
     command: publish
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-
-
-- task: AzureWebApp@1
+- task: AzureRmWebAppDeployment@4
   inputs:
+    ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(5a633156-9aa0-4bd8-b2f3-728b66506d6c)'
     appType: 'webApp'
-    appName: 'BlueKanrgooCoreOnlyAPI'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    deploymentMethod: 'auto'
-    
+    WebAppName: 'BlueKanrgooCoreOnlyAPI'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
+
     
