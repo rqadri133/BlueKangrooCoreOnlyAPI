@@ -40,18 +40,17 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
 
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
 - task: DotNetCoreCLI@2
   inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-- task: AzureRmWebAppDeployment@4
+    command: 'publish'
+    publishWebProjects: true
+- task: AzureWebApp@1
   inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(5a633156-9aa0-4bd8-b2f3-728b66506d6c)'
+    azureSubscription: 'Azure subscription 1'
     appType: 'webApp'
-    WebAppName: 'BlueKanrgooCoreOnlyAPI'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-
+    appName: 'BlueKanrgooCoreOnlyAPI'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
     
