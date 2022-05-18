@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   solution: '**/*.sln'
@@ -28,6 +28,10 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'hey'
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
