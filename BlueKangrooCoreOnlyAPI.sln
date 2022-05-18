@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlueKangrooCoreOnlyAPI", "BlueKangrooCoreOnlyAPI\BlueKangrooCoreOnlyAPI.csproj", "{3B78F5C4-9BC5-40B8-BEE6-53B5FE7991F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlueKangrooCoreOnlyAPI", "BlueKangrooCoreOnlyAPI\BlueKangrooCoreOnlyAPI.csproj", "{3B78F5C4-9BC5-40B8-BEE6-53B5FE7991F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
