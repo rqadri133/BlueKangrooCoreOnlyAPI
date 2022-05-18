@@ -45,7 +45,7 @@ steps:
     command: publish
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+
 
 - task: AzureWebApp@1
   inputs:
@@ -54,3 +54,5 @@ steps:
     appName: 'BlueKanrgooCoreOnlyAPI'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
+    
+    
