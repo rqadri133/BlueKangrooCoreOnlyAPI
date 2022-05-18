@@ -11,5 +11,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public string AppSellerHashedSsc { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid CreatedBy { get; set; }
+         
+        public bool EthereumAcceptable {get;set;}  
+
     }
 }
