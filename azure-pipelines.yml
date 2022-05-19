@@ -52,9 +52,9 @@ steps:
   inputs:
     azureSubscription: 'Azure subscription 1(5a633156-9aa0-4bd8-b2f3-728b66506d6c)'
     appType: 'webApp'
-    appName: 'bluekangroocore'
+    appName: 'blueKangrooAPI'
     deployToSlotOrASE: true
-    resourceGroupName: 'DefaultResourceGroup-CUS'
+    resourceGroupName: 'SyedsRepoResource'
     slotName: 'production'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
