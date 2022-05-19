@@ -46,6 +46,8 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
+- task: PublishBuildArtifacts@1
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure subscription 1(5a633156-9aa0-4bd8-b2f3-728b66506d6c)'
