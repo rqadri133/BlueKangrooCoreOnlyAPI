@@ -56,5 +56,5 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'DefaultResourceGroup-CUS'
     slotName: 'production'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
