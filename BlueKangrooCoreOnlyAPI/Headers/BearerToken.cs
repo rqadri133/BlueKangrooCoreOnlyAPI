@@ -14,7 +14,7 @@ namespace BlueKangrooCoreOnlyAPI.Headers
         {
             Token token = new Token();
             var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
+            var request = new RestRequest("",Method.Post);
             request.AddHeader("content-type", "application/json");
             request.AddParameter("application/json", JsonSerializer.Serialize(credentials), ParameterType.RequestBody);
             var response  = client.Execute(request);
