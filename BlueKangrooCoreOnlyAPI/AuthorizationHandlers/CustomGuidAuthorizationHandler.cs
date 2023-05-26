@@ -8,8 +8,9 @@ namespace BlueKangrooCoreOnlyAPI.AuthorizationHandlers
 {
     // this class will take AppToken ID
 
-    public class CustomGuidAuthorizationHandler : AuthorizationHandler<CustomerGuidHandlerRequirement>
+    public class CustomGuidAuthorizationHandler : AuthorizationHandler<CustomerGuidHandlerRequirement> , IAuthorizationRequirement
     {
+     
         IUserAuthorization userAuthorization;
         IHttpContextAccessor _httpContextAccessor = null;
         ILogger _logger = null;

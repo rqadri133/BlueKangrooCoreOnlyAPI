@@ -27,7 +27,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Policy = "CustomGuidAuthorization")]
-    public class BrandController : ControllerBase
+    public class AppBrandController : ControllerBase
     {
         IBrandRepository BrandRepo;
         IDistributedCache distributedCache;
@@ -35,7 +35,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         private ILogger logger;
         private readonly IConfiguration configuration;
 
-        public BrandController(IBrandRepository _BrandRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppBrand> _cacheManager, ILogger<BrandController> _logger)
+        public AppBrandController(IBrandRepository _BrandRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppBrand> _cacheManager, ILogger<AppBrandController> _logger)
         {
             BrandRepo = _BrandRepository;
             configuration = _configurtaion;
