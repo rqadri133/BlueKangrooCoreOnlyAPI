@@ -15,6 +15,8 @@ namespace BlueKangrooCoreOnlyAPI
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
+            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -24,7 +26,7 @@ namespace BlueKangrooCoreOnlyAPI
                 {
                     webBuilder.UseSetting("https_port", "5001");
                     webBuilder.UseStartup<Startup>();
-                    
+                    //webBuilder.UseConfigurati
                 }
                 
                 
