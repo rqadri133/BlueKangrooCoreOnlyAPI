@@ -148,6 +148,7 @@ namespace BlueKangrooCoreOnlyAPI
             }
 
      
+     
             app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
                    
