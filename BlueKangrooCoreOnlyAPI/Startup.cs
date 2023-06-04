@@ -134,7 +134,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
 
        
-          
+         
 
         }
 
@@ -147,7 +147,7 @@ namespace BlueKangrooCoreOnlyAPI
                 IdentityModelEventSource.ShowPII = true;
             }
 
-     
+           
      
             app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
