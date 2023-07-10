@@ -186,6 +186,9 @@ namespace BlueKangrooCoreOnlyAPI
                 await next.Invoke();
             });
 
+            app.UseHttpsRedirection();
+
+
             // AWS Logging configurati
             var awsconfig =Configuration.GetAWSLoggingConfigSection();
     
