@@ -134,7 +134,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
 
        
-          
+         
 
         }
 
@@ -147,6 +147,8 @@ namespace BlueKangrooCoreOnlyAPI
                 IdentityModelEventSource.ShowPII = true;
             }
 
+           
+     
             app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
                    
@@ -184,6 +186,9 @@ namespace BlueKangrooCoreOnlyAPI
                 await next.Invoke();
             });
 
+            app.UseHttpsRedirection();
+
+
             // AWS Logging configurati
             var awsconfig =Configuration.GetAWSLoggingConfigSection();
     
@@ -216,5 +221,21 @@ namespace BlueKangrooCoreOnlyAPI
 
 
         }
+
+        static void HandleMapTest1(IApplicationBuilder app)
+{
+    app.Run(async context =>
+    {
+        await context.Response.WriteAsync("Map Test 1");
+    });
+}
+
+static void HandleMapTest2(IApplicationBuilder app)
+{
+    app.Run(async context =>
+    {
+        await context.Response.WriteAsync("Map Test 2");
+    });
+}
     }
 }
