@@ -19,7 +19,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 demand.AppDemandId = Guid.NewGuid();
                 demand.CreatedDate = DateTime.Now;
-                await db.AppDemand.AddAsync(demand);
+                await db.AppDemands.AddAsync(demand);
                 await db.SaveChangesAsync();
 
                 return demand;
@@ -34,7 +34,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var demands = await db.AppDemand.ToListAsync<AppDemand>();
+                var demands = await db.AppDemands.ToListAsync<AppDemand>();
                 return demands;
 
             }
@@ -50,12 +50,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var acDel = await db.AppDemand.FirstOrDefaultAsync(p => p.AppDemandId == demandId);
+                var acDel = await db.AppDemands.FirstOrDefaultAsync(p => p.AppDemandId == demandId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppDemand.Remove(acDel);
+                    db.AppDemands.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selDemand = await db.AppDemand.FirstOrDefaultAsync<AppDemand>(p => p.AppDemandId == demandInfo);
+                var selDemand = await db.AppDemands.FirstOrDefaultAsync<AppDemand>(p => p.AppDemandId == demandInfo);
                 return selDemand;
 
             }
@@ -86,7 +86,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppDemand.Update(demand);
+                db.AppDemands.Update(demand);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

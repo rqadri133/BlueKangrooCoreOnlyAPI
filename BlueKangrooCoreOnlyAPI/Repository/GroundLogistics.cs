@@ -15,7 +15,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         {
             db = _db;
         }
-        public async Task<AppGroundLogistics> AddGroundLogistics(AppGroundLogistics groundLogistics)
+        public async Task<AppGroundLogistic> AddGroundLogistics(AppGroundLogistic groundLogistics)
         {
             if (db != null)
             {
@@ -56,26 +56,26 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
 
         }
-        public async Task<AppGroundLogistics> UpdateGroundLogistics(AppGroundLogistics groundLogistics)
+        public async Task<AppGroundLogistic> UpdateGroundLogistics(AppGroundLogistic groundLogistic)
         {
             if (db != null)
             {
                 //Delete that post
-                db.AppGroundLogistics.Update(groundLogistics);
+                db.AppGroundLogistics.Update(groundLogistic);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();
             }
 
-            return groundLogistics;
+            return groundLogistic;
         }
 
-        public async Task<List<AppGroundLogistics>> GetAllGroundLogistics()
+        public async Task<List<AppGroundLogistic>> GetAllGroundLogistics()
         {
             if (db != null)
             {
 
-                var groundLogistics = await db.AppGroundLogistics.ToListAsync<AppGroundLogistics>();
+                var groundLogistics = await db.AppGroundLogistics.ToListAsync<AppGroundLogistic>();
                 return groundLogistics;
 
             }
@@ -88,7 +88,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
         {
             if(db != null)
             {
-                var groundActivities = await db.AppGroundActivity.ToListAsync<AppGroundActivity>();
+                var groundActivities = await db.AppGroundActivities.ToListAsync<AppGroundActivity>();
                 return groundActivities;
 
 
@@ -98,14 +98,14 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
 
         }
-        public async Task<AppGroundLogistics> GetGroundLogisticsByZipCode(string zipCode)
+        public async Task<AppGroundLogistic> GetGroundLogisticsByZipCode(string zipCode)
         {
             try
             {
                 if (db != null)
                 {
                     // One Groud Logistics per zip code
-                    var groundLogistics = await db.AppGroundLogistics.FirstOrDefaultAsync<AppGroundLogistics>(p => p.AppGroundSourceZipCode == zipCode);
+                    var groundLogistics = await db.AppGroundLogistics.FirstOrDefaultAsync<AppGroundLogistic>(p => p.AppGroundLogisticZipCode == zipCode);
                     return groundLogistics;
 
                 }
@@ -126,7 +126,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 groundActivity.AppGroundActivityId = Guid.NewGuid();
                 groundActivity.CreatedDate = DateTime.Now;
-                await db.AppGroundActivity.AddAsync(groundActivity);
+                await db.AppGroundActivities.AddAsync(groundActivity);
                 await db.SaveChangesAsync();
 
                 return groundActivity;
@@ -142,7 +142,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var groundActivities = await db.AppGroundActivity.ToListAsync<AppGroundActivity>();
+                var groundActivities = await db.AppGroundActivities.ToListAsync<AppGroundActivity>();
                 return groundActivities;
 
             }
@@ -159,12 +159,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var grlDel = await db.AppGroundActivity.FirstOrDefaultAsync(p => p.AppGroundActivityId == groundActivity);
+                var grlDel = await db.AppGroundActivities.FirstOrDefaultAsync(p => p.AppGroundActivityId == groundActivity);
 
                 if (grlDel != null)
                 {
                     //Delete that post
-                    db.AppGroundActivity.Remove(grlDel);
+                    db.AppGroundActivities.Remove(grlDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -210,7 +210,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
                     // One Groud Logistics per zip code
-                    var groundLogistics = await db.AppGroundActivity.FirstOrDefaultAsync<AppGroundActivity>(p => p.AppGroundActivityId == groundActivityId);
+                    var groundLogistics = await db.AppGroundActivities.FirstOrDefaultAsync<AppGroundActivity>(p => p.AppGroundActivityId == groundActivityId);
                     return groundLogistics;
 
                 }
@@ -227,7 +227,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppGroundActivity.Update(activity);
+                db.AppGroundActivities.Update(activity);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

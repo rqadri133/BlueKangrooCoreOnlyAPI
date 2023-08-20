@@ -40,7 +40,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [HttpPost]
         [Route("AddGroundLogistics")]
         [Authorize]
-        public async Task<IActionResult> AddGroundLogistics([FromBody]AppGroundLogistics model)
+        public async Task<IActionResult> AddGroundLogistics([FromBody]AppGroundLogistic model)
         {
 
             if (ModelState.IsValid)
@@ -127,7 +127,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
         [HttpPut]
         [Route("UpdateGroundLogistics")]
-        public async Task<IActionResult> UpdateGroundLogistics([FromBody]AppGroundLogistics grLogistics)
+        public async Task<IActionResult> UpdateGroundLogistics([FromBody]AppGroundLogistic grLogistics)
         {
             if (ModelState.IsValid)
             {

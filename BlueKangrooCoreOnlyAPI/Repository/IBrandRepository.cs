@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
-    
+    // Branding will be separate microservice
 
     public interface IBrandRepository
     {

@@ -19,7 +19,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 activity.AppActivityId = Guid.NewGuid();
                 activity.CreatedDate = DateTime.Now;
-                await db.AppActivity.AddAsync(activity);
+                await db.AppActivities.AddAsync(activity);
                 await db.SaveChangesAsync();
 
                 return activity;
@@ -34,7 +34,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var activities = await db.AppActivity.ToListAsync<AppActivity>();
+                var activities = await db.AppActivities.ToListAsync<AppActivity>();
                 return activities;
 
             }
@@ -50,12 +50,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var acDel = await db.AppActivity.FirstOrDefaultAsync(p => p.AppActivityId == AcitivityId);
+                var acDel = await db.AppActivities.FirstOrDefaultAsync(p => p.AppActivityId == AcitivityId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppActivity.Remove(acDel);
+                    db.AppActivities.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selActivity = await db.AppActivity.FirstOrDefaultAsync<AppActivity>(p => p.AppActivityId == activityInfo);
+                var selActivity = await db.AppActivities.FirstOrDefaultAsync<AppActivity>(p => p.AppActivityId == activityInfo);
                 return selActivity;
 
             }
@@ -86,7 +86,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppActivity.Update(activity);
+                db.AppActivities.Update(activity);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

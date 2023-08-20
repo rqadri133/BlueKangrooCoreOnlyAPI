@@ -19,7 +19,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 templateInfo.AppUitemplateId = Guid.NewGuid();
                 templateInfo.CreatedDate = DateTime.Now;
-                await db.AppUitemplate.AddAsync(templateInfo);
+                await db.AppUitemplates.AddAsync(templateInfo);
                 await db.SaveChangesAsync();
 
                 return templateInfo;
@@ -36,42 +36,28 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var acTemplate = await db.AppUitemplate.FirstOrDefaultAsync(p => p.AppUitemplateId == templateUid);
+                var acTemplate = await db.AppUitemplates.FirstOrDefaultAsync(p => p.AppUitemplateId == templateUid);
                 // Cannot delete if theres a dependencies defined for it
-                var roleDetails = await db.AppUserRoleDetail.FirstOrDefaultAsync(p => p.AppUitemplateId == templateUid);
-                if (acTemplate != null && roleDetails == null)
+                if (acTemplate != null)
                 {
                     //Delete that post
-                    db.AppUitemplate.Remove(acTemplate);
+                    db.AppUitemplates.Remove(acTemplate);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
-                }
-                else if(roleDetails != null )
-                {
-                    var error  = await db.AppError.FindAsync((int)BlueKangarooErrorCode.Referential_Integrity_Code);
-                    // this error should be populated from external services with error code
-                    throw new Exception(error.AppErrorDescription);
-                }
-                else
-                {
-                    var error = await db.AppError.FindAsync((int)BlueKangarooErrorCode.ID_NOT_EXIST);
-                    // this error should be populated from external services with error code
-                    throw new Exception(error.AppErrorDescription);
-
                 }
                 return result;
             }
 
             return result;
         }
-
+   // The role will only be assign to User
         public async Task<AppUitemplate> GetTemplateInfo(Guid? templateInfo)
         {
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selTemplate = await db.AppUitemplate.FirstOrDefaultAsync<AppUitemplate>(p => p.AppUitemplateId == templateInfo);
+                var selTemplate = await db.AppUitemplates.FirstOrDefaultAsync<AppUitemplate>(p => p.AppUitemplateId == templateInfo);
                 return selTemplate;
 
             }
@@ -84,7 +70,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var uiTemplates = await db.AppUitemplate.ToListAsync<AppUitemplate>();
+                var uiTemplates = await db.AppUitemplates.ToListAsync<AppUitemplate>();
                 return uiTemplates;
 
             }
@@ -97,7 +83,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppUitemplate.Update(templateInfo);
+                db.AppUitemplates.Update(templateInfo);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

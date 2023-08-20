@@ -115,142 +115,14 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
         }
 
-        [HttpPost]
-        [Route("AddRoleDetails")]
-        [Authorize]
-        public async Task<IActionResult> AddRoleDetails([FromBody]AppUserRoleDetail model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    logger.LogInformation("Adding Role Details in Repository");
-
-                    var addedRoleDetails = await roleRepo.AddUserRoleDetails(model);
-                    if (addedRoleDetails != null)
-                    {
-                        return Ok(addedRoleDetails);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
-                }
-                catch (Exception excp)
-                {
-                    logger.LogError("Error Adding Role Details in Repository " + excp.Message);
-
-                    return BadRequest(excp);
-                }
-
-            }
-
-            return BadRequest();
-
-        }
-
-
-
-        [HttpGet]
-        [Route("GetRoleInfo/{roleId}")]
-        public async Task<IActionResult> LoadRoleTemplateInfoDetails(Guid? roleId)
-        {
-
-            if (roleId == null)
-            {
-                logger.LogInformation("role Id is Null");
-                return BadRequest();
-            }
-
-            var cacheKey = "GetAllRolesDetails_" + Request.Headers["CustomerGuidKey"];
-            List<AppUserRoleDetail> roles = new List<AppUserRoleDetail>();
-
-            try
-            {
-                logger.LogInformation("Load Role information From Cache");
-
-                var encodedRoleDetails = await distributedCache.GetAsync(cacheKey);
-
-              
-                if (encodedRoleDetails == null)
-                {
-                    logger.LogInformation("Load Role information From Repository");
-
-                    roles = await roleRepo.LoadUserRoleDetail(roleId);
-                   
-                    if (roles == null || roles.Count == 0)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        logger.LogInformation("Roles Starts Caching");
-                         roles = await cacheManagerDetails.ProcessCache(roles, cacheKey, encodedRoleDetails, configuration, distributedCache);
-
-                    }
-
-                   
-                }
-                return Ok(roles);
-            }
-            catch (Exception excp)
-            {
-                logger.LogError("Error in Loading Role Details " + excp.Message);
-                return BadRequest(excp);
-            }
-        }
+      // Separate Role Security Microservices no role details needed here 
+     // Separete RolesMicroservices
+       // Product , User , Role , TemplateRoles , UserRoles
+     
 
 
 
 
-
-
-        [HttpGet]
-        [Route("details/GetRoleInfoDetails")]
-        [Authorize]
-        public async Task<IActionResult> GetRoleInfoDetails()
-        {
-
-            var tokenId = Request.Headers["CustomerGuidKey"];
-            logger.LogInformation("Inside GetRolesInfoDetails  Starts Caching");
-            var cacheKey = "GetAllRolesDetails_" + Request.Headers["CustomerGuidKey"];
-            List<AppUserRoleDetail> roles = new List<AppUserRoleDetail>();
-
-            try
-            {
-                logger.LogInformation("Load Role information From Cache");
-
-                var encodedRoleDetails = await distributedCache.GetAsync(cacheKey);
-
-
-                if (encodedRoleDetails == null)
-                {
-                    logger.LogInformation("Load Role information From Repository For Token " + tokenId );
-
-                    roles = await roleRepo.FetchUserRoleDetailByToken(Guid.Parse(tokenId));
-
-                    if (roles == null || roles.Count == 0)
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        logger.LogInformation("Roles Starts Caching");
-                        roles = await cacheManagerDetails.ProcessCache(roles, cacheKey, encodedRoleDetails, configuration, distributedCache);
-
-                    }
-
-
-                }
-                return Ok(roles);
-            }
-            catch (Exception excp)
-            {
-                logger.LogError("Error in Loading Role Details " + excp.Message);
-                return BadRequest(excp);
-            }
-        }
 
     }
 }

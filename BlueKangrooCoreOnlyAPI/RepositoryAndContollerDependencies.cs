@@ -29,8 +29,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<ICompanyRepository, CompanyRepository>();
             services.AddSingleton<ITemplateUIRepository, TemplateUIRepository>();
-            services.AddSingleton<IBrandRepository, BrandRepository>();
-
+        
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<CustomGuidAuthorizationHandler>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<UserAuthorization>));

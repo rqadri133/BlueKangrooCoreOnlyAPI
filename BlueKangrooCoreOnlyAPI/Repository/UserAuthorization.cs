@@ -26,7 +26,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
                     logger.LogInformation("Before Making Call to DB Context Blue kangaroo");
-                    var user = await db.AppToken.FirstOrDefaultAsync<AppToken>(p => p.AppTokenId == customerGuid && p.TokenExpiredDate > DateTime.Now );
+                    var user = await db.AppTokens.FirstOrDefaultAsync<AppToken>(p => p.AppTokenId == customerGuid && p.TokenExpiredDate > DateTime.Now );
                    
                     if(user != null)
                     {

@@ -28,7 +28,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 product.AppProductId = Guid.NewGuid();
                 product.CreatedDate = DateTime.Now;
-                await db.AppProduct.AddAsync(product);
+                await db.AppProducts.AddAsync(product);
                 await db.SaveChangesAsync();
 
                 return product;
@@ -44,7 +44,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var products = await db.AppProduct.ToListAsync<AppProduct>();
+                var products = await db.AppProducts.ToListAsync<AppProduct>();
                 return products;
 
             }
@@ -62,12 +62,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var prdDel = await db.AppProduct.FirstOrDefaultAsync(p => p.AppProductId == productId);
+                var prdDel = await db.AppProducts.FirstOrDefaultAsync(p => p.AppProductId == productId);
 
                 if (prdDel != null)
                 {
                     //Delete that post
-                    db.AppProduct.Remove( prdDel);
+                    db.AppProducts.Remove( prdDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -87,7 +87,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selProduct = await db.AppProduct.FirstOrDefaultAsync<AppProduct>(p => p.AppProductId == productId);
+                var selProduct = await db.AppProducts.FirstOrDefaultAsync<AppProduct>(p => p.AppProductId == productId);
                 return selProduct;
 
             }
@@ -104,7 +104,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppProduct.Update(product);
+                db.AppProducts.Update(product);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

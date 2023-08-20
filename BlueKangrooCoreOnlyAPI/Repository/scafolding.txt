@@ -1,0 +1,1 @@
+ dotnet ef dbcontext scaffold "Server=tcp:blueserver.database.windows.net;Database=blueKangroo;user id=sqadri166;PWD=Astaghees@#^*166;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c blueKangrooContext -f
