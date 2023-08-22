@@ -14,7 +14,6 @@ namespace BlueKangrooCoreOnlyAPI.Repository
          Task<AppGroundLogistic> UpdateGroundLogistics(AppGroundLogistic groundLogistics);
          Task<List<AppGroundLogistic>> GetAllGroundLogistics();
          Task<List<AppGroundActivity>> GetGroundActivities();
-         Task<AppGroundLogistic> GetGroundLogisticsByZipCode(string zipCode);
         
         Task<AppGroundActivity> AddGroundActity(AppGroundActivity groundActivity);
         Task<List<AppGroundActivity>> LoadAllGroundActivities();

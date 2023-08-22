@@ -69,6 +69,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppSaleActivity> AppSaleActivities { get; set; }
         public virtual DbSet<AppSeller> AppSellers { get; set; }
         public virtual DbSet<AppSellerActivity> AppSellerActivities { get; set; }
+        public virtual DbSet<AppSender> AppSenders { get; set; }
         public virtual DbSet<AppSensitiveMaterial> AppSensitiveMaterials { get; set; }
         public virtual DbSet<AppShelve> AppShelves { get; set; }
         public virtual DbSet<AppSupply> AppSupplies { get; set; }
@@ -1282,6 +1283,41 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppSellerId).HasColumnName("AppSellerID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<AppSender>(entity =>
+            {
+                entity.ToTable("AppSender");
+
+                entity.Property(e => e.AppSenderId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSenderID");
+
+                entity.Property(e => e.AppSenderCity)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.AppSenderCountry)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.AppSenderName)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.AppSenderStreetAddress)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.AppSenderZipCode)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.SenderInstructionsNotes)
+                    .IsRequired()
+                    .HasMaxLength(2000);
             });
 
             modelBuilder.Entity<AppSensitiveMaterial>(entity =>

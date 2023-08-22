@@ -98,28 +98,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
 
         }
-        public async Task<AppGroundLogistic> GetGroundLogisticsByZipCode(string zipCode)
-        {
-            try
-            {
-                if (db != null)
-                {
-                    // One Groud Logistics per zip code
-                    var groundLogistics = await db.AppGroundLogistics.FirstOrDefaultAsync<AppGroundLogistic>(p => p.AppGroundLogisticZipCode == zipCode);
-                    return groundLogistics;
-
-                }
-            }
-            catch (Exception excp)
-            {
-                // Controller should catch exception and return as BadRequest
-                throw excp;
-            }
-
-            return null;
-
-        }
-
+       
         public async Task<AppGroundActivity> AddGroundActity(AppGroundActivity groundActivity)
         {
             if (db != null)

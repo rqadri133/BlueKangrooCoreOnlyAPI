@@ -14,52 +14,35 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     public class DispatchRepository : IDispatchRepository
     {
 
-   // Task<AppDispatch> CreateDispatchActivity(DispatchDetails details);
-     //   Task<List<AppDispatch>> LoadAllDispatcherDetails();
-       // Task<int> CancelDispatchOrder(AppDispatcher dispatcher);
-       // Task<AppDispatch> GetDispatchInfoById(Guid? dispatchID);
-       // Task<List<AppDispatch>> LoadDispatchLocations( );
         private blueKangrooContext db;
         public DispatchRepository(blueKangrooContext _db)
         {
             db = _db;
         }
-        public async Task<AppDispatch> CreateDispatchActivity(DispatchDetails details)
+
+        public Task<AppDispatch> CreateDispatchActivity(DispatchDetails details)
         {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AppDispatch>> LoadAllDispatcherDetailsBySenderID(Guid SenderID) {
            throw new NotImplementedException();
-        }
-        
-        public async  Task<List<AppDispatch>> LoadAllDispatcherDetails()
-        {
 
-          throw new NotImplementedException();
 
         }
+        public Task<int> CancelDispatchOrder(AppSender senderInformation) {
 
-       public async Task<int> CancelDispatchOrder(AppDispatch dispatcher)
-       {
-
-          throw new NotImplementedException();
-
-      }
-
-      public async Task<AppDispatch> GetDispatchInfoById(Guid? dispatchID) 
-      {
-          throw new NotImplementedException();
-
-
-      }
-
-     public async  Task<List<AppDispatch>> LoadDispatchLocations( )
-     {
-
-         throw new NotImplementedException();
-
-     }
-
-
-
-
+            throw new NotImplementedException();
+        }
+        public Task<AppDispatch> GetDispatchInfoByRecipientId(Guid? recipient) {
+            throw new NotImplementedException();
+        }
+        public Task<List<AppDispatch>> LoadDispatchLocations(Guid SenderID) {
+                throw new NotImplementedException();
+     
+            
+        }
+     
 
 
 }

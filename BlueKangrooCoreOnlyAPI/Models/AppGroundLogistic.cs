@@ -12,8 +12,6 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public string AppGroundSourceAddress { get; set; }
         public string AppGroundLogisticsInternalOrExternal { get; set; }
         public string AppGroundLogisticsDesc { get; set; }
-
-        public string AppGroundLogisticZipCode { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid CreatedBy { get; set; }

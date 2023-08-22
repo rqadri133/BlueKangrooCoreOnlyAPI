@@ -71,32 +71,6 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
 
-        [HttpGet]
-        [Route("GetGroundLogistics/{zipCode}")]
-        public async Task<IActionResult> GetGroundLogistics(string zipCode)
-        {
-            if (zipCode == null)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                var selectedLogistics = await groundLogistics.GetGroundLogisticsByZipCode(zipCode);
-
-                if (selectedLogistics == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(selectedLogistics);
-            }
-            catch (Exception excp)
-            {
-                return BadRequest(excp);
-            }
-        }
-
         [HttpDelete]
         [Route("DeleteGroundLogistics")]
         public async Task<IActionResult> DeleteGroundLogistics(Guid groundLogisticsId)
