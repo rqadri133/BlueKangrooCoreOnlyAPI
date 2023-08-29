@@ -55,6 +55,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppMetalCombinationAlloy> AppMetalCombinationAlloys { get; set; }
         public virtual DbSet<AppPackage> AppPackages { get; set; }
         public virtual DbSet<AppPackageHandler> AppPackageHandlers { get; set; }
+        public virtual DbSet<AppPackageHanlder> AppPackageHanlders { get; set; }
         public virtual DbSet<AppPallete> AppPalletes { get; set; }
         public virtual DbSet<AppPriceParityCheck> AppPriceParityChecks { get; set; }
         public virtual DbSet<AppProcess> AppProcesses { get; set; }
@@ -949,29 +950,77 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppPackageHandler>(entity =>
             {
+                entity.HasKey(e => e.PackageId)
+                    .HasName("PK_PackageHandlerID");
+
                 entity.ToTable("AppPackageHandler");
 
-                entity.Property(e => e.AppPackageHandlerId)
+                entity.Property(e => e.PackageId)
                     .ValueGeneratedNever()
-                    .HasColumnName("AppPackageHandlerID");
+                    .HasColumnName("PackageID");
 
-                entity.Property(e => e.AppPackageHandlerFitnessNotes)
-                    .HasMaxLength(3000)
-                    .HasColumnName("AppPAckageHandlerFitnessNotes");
-
-                entity.Property(e => e.AppPackageHandlerStateId)
-                    .HasMaxLength(14)
-                    .HasColumnName("AppPackageHandlerStateID");
-
-                entity.Property(e => e.AppPakageHandlerName)
+                entity.Property(e => e.BoxHeight)
                     .IsRequired()
-                    .HasMaxLength(2000);
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.BoxWidth)
+                    .IsRequired()
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.LastHandledFreightIdref).HasColumnName("LastHandledFreightIDRef");
+                entity.Property(e => e.DepthZindex)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnName("depthZIndex");
 
-                entity.Property(e => e.LastPackageHandledDate).HasColumnType("datetime");
+                entity.Property(e => e.MaxPoundsOccupancy).HasColumnType("decimal(5, 2)");
+
+                entity.Property(e => e.PackageDescription)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.PackageName)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.PackageTrackerUpdateInfo)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+            });
+
+            modelBuilder.Entity<AppPackageHanlder>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("AppPackageHanlder");
+
+                entity.Property(e => e.BoxHeight)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.BoxWidth)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DepthZindex)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnName("depthZIndex");
+
+                entity.Property(e => e.MaxPoundsOccupancy).HasColumnType("decimal(5, 2)");
+
+                entity.Property(e => e.PackageDescription)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.PackageId).HasColumnName("PackageID");
+
+                entity.Property(e => e.PackageName)
+                    .IsRequired()
+                    .HasMaxLength(200);
             });
 
             modelBuilder.Entity<AppPallete>(entity =>
