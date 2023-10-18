@@ -9,11 +9,13 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     public interface ISenderRepository
     {
         public Task<AppSender> AddSenderInformation(AppSender sender);
-        public Task<AppSender> UpdateSenderInformation(AppSender appSender , DateTime lastmodifiedDate);
+        public Task<AppSender> UpdateSenderInformation(AppSender appSender );
 
-        public int DeleteSenderInformation(AppSender appSender);
+        public Task<AppSender> DeleteSenderInformation(AppSender appSender);
 
         public Task<AppSender> GetSenderInformation(string phoneNumber);
+        public Task<AppSender> GetSenderInformationById(Guid SenderId);
+
 
         public Task<List<AppSender>> GetAllSenders(string zipCode);
 

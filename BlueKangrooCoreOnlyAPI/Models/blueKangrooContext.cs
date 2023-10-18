@@ -364,9 +364,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppRecipientId).HasColumnName("AppRecipientID");
 
+                entity.Property(e => e.AppSenderId).HasColumnName("AppSenderID");
+
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ItemCombinationListId).HasColumnName("ItemCombinationListID");
+                entity.Property(e => e.ItemCombinationJsonNvarcharMaxNotNullCreatedBy).HasColumnName("ItemCombinationJSON  NVARCHAR(MAX) NOT NULL,\r\n	[CreatedBy");
             });
 
             modelBuilder.Entity<AppDocumentAssigned>(entity =>
@@ -1345,6 +1347,10 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppSenderCity)
                     .IsRequired()
                     .HasMaxLength(300);
+
+                entity.Property(e => e.AppSenderContactPhone)
+                    .IsRequired()
+                    .HasMaxLength(17);
 
                 entity.Property(e => e.AppSenderCountry)
                     .IsRequired()
