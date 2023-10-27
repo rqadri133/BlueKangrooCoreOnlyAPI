@@ -11,7 +11,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public Guid AppSenderId { get; set; }
         public string AppDispatchNameDecs { get; set; }
         public Guid AppRecipientId { get; set; }
-        public Guid ItemCombinationJsonNvarcharMaxNotNullCreatedBy { get; set; }
+        public Guid ItemCombinationJsonNvarchar2000NotNullCreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

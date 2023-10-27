@@ -368,7 +368,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ItemCombinationJsonNvarcharMaxNotNullCreatedBy).HasColumnName("ItemCombinationJSON  NVARCHAR(MAX) NOT NULL,\r\n	[CreatedBy");
+                entity.Property(e => e.ItemCombinationJsonNvarchar2000NotNullCreatedBy).HasColumnName("ItemCombinationJSON  NVARCHAR(2000) NOT NULL,\r\n	[CreatedBy");
             });
 
             modelBuilder.Entity<AppDocumentAssigned>(entity =>
