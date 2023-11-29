@@ -66,10 +66,18 @@ namespace BlueKangrooCoreOnlyAPI
            {
                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
                options.Audience = Configuration["Auth0:Audience"];
-           });           
-            services.AddControllers();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
-            services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+           });       
+          
+             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+              
+
+            services.AddControllers()
+              .AddNewtonsoftJson(options =>
+              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+               );        
+               
+               
+                   services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddHttpContextAccessor();
             
             
@@ -125,10 +133,6 @@ namespace BlueKangrooCoreOnlyAPI
           });
 
 
-            services.AddControllers()
-              .AddNewtonsoftJson(options =>
-              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-               );
 
             services.AddMemoryCache();
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
@@ -194,11 +198,7 @@ namespace BlueKangrooCoreOnlyAPI
     
             logger.AddAWSProvider(awsconfig);
 
-            var credential = GoogleCredential.FromFile("BlueKangrooCoreApiOnly-6d3cfabd9cfc.json");
-            var storage = StorageClient.Create(credential);
-
-            Console.WriteLine(env.EnvironmentName);
-    
+          
         }
 
          // If using Scrutor the folllowing is not required

@@ -30,6 +30,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppDataType> AppDataTypes { get; set; }
         public virtual DbSet<AppDemand> AppDemands { get; set; }
         public virtual DbSet<AppDispatch> AppDispatches { get; set; }
+        public virtual DbSet<AppDispatchAssigned> AppDispatchAssigneds { get; set; }
         public virtual DbSet<AppDocumentAssigned> AppDocumentAssigneds { get; set; }
         public virtual DbSet<AppDocumentTransaction> AppDocumentTransactions { get; set; }
         public virtual DbSet<AppDoor> AppDoors { get; set; }
@@ -53,6 +54,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppJsonfile> AppJsonfiles { get; set; }
         public virtual DbSet<AppKey> AppKeys { get; set; }
         public virtual DbSet<AppMetalCombinationAlloy> AppMetalCombinationAlloys { get; set; }
+        public virtual DbSet<AppNotification> AppNotifications { get; set; }
         public virtual DbSet<AppPackage> AppPackages { get; set; }
         public virtual DbSet<AppPackageHandler> AppPackageHandlers { get; set; }
         public virtual DbSet<AppPackageHanlder> AppPackageHanlders { get; set; }
@@ -99,6 +101,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppWareHouseVendor> AppWareHouseVendors { get; set; }
         public virtual DbSet<ApplicationContext> ApplicationContexts { get; set; }
         public virtual DbSet<ApplicationModel> ApplicationModels { get; set; }
+        public virtual DbSet<DispatherLink> DispatherLinks { get; set; }
+        public virtual DbSet<NotificationMessageNode> NotificationMessageNodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -368,7 +372,26 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ItemCombinationJsonNvarchar2000NotNullCreatedBy).HasColumnName("ItemCombinationJSON  NVARCHAR(2000) NOT NULL,\r\n	[CreatedBy");
+                entity.Property(e => e.ItemCombinationJsonNvarcharMaxNotNullCreatedBy).HasColumnName("ItemCombinationJSON  NVARCHAR(MAX) NOT NULL,\r\n	[CreatedBy");
+            });
+
+            modelBuilder.Entity<AppDispatchAssigned>(entity =>
+            {
+                entity.ToTable("AppDispatchAssigned");
+
+                entity.Property(e => e.AppDispatchAssignedId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppDispatchAssignedID");
+
+                entity.Property(e => e.AppDispatchRefId).HasColumnName("AppDispatchRefID");
+
+                entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
+
+                entity.Property(e => e.AppRecipientId).HasColumnName("AppRecipientID");
+
+                entity.Property(e => e.AppSenderId).HasColumnName("AppSenderID");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppDocumentAssigned>(entity =>
@@ -927,6 +950,30 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.MaximumHeatingAppliedTemp).HasColumnType("decimal(4, 2)");
+            });
+
+            modelBuilder.Entity<AppNotification>(entity =>
+            {
+                entity.ToTable("AppNotification");
+
+                entity.HasIndex(e => e.AppNotificationSendNodeId, "UQ__AppNotif__901354EA28AA02EC")
+                    .IsUnique();
+
+                entity.Property(e => e.AppNotificationId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppNotificationID");
+
+                entity.Property(e => e.AppNotificationMessageJson)
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppNotificationMessageJSON");
+
+                entity.Property(e => e.AppNotificationName)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.AppNotificationSendNodeId).HasColumnName("AppNotificationSendNodeID");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppPackage>(entity =>
@@ -2042,6 +2089,54 @@ namespace BlueKangrooCoreOnlyAPI.Models
                     .HasColumnName("AppServerIPHashed");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<DispatherLink>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("DispatherLink");
+
+                entity.Property(e => e.EdgeIdF85c8b902bd64e63b0c0b332d18142fc)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("$edge_id_F85C8B902BD64E63B0C0B332D18142FC");
+
+                entity.Property(e => e.FromIdD846d9d2c5a24180bc115110fa4b35a8)
+                    .HasMaxLength(1000)
+                    .HasColumnName("$from_id_D846D9D2C5A24180BC115110FA4B35A8");
+
+                entity.Property(e => e.NetworkTipCalMicrosecs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("networkTipCalMicrosecs");
+
+                entity.Property(e => e.ToId5e57849cb134449382604812b9c111c6)
+                    .HasMaxLength(1000)
+                    .HasColumnName("$to_id_5E57849CB134449382604812B9C111C6");
+            });
+
+            modelBuilder.Entity<NotificationMessageNode>(entity =>
+            {
+                entity.ToTable("NotificationMessageNode");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+
+                entity.Property(e => e.EmailAddress).HasMaxLength(200);
+
+                entity.Property(e => e.NodeIdCee2728acb144e4aa5e20067929a8a1f)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("$node_id_CEE2728ACB144E4AA5E20067929A8A1F");
+
+                entity.Property(e => e.NotificationNodeName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NotificationUserId).HasColumnName("NotificationUserID");
+
+                entity.Property(e => e.PhoneNumber).HasMaxLength(33);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -41,8 +41,8 @@
       "launchBrowser": true,
       "environmentVariables": {},
       "resourceGroup": "Default-SQL-NorthCentralUS",
-      "aksName": "Kangroo1Cluster",
-      "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419"
+      "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419",
+      "aksName": "Kangroo1Cluster"
     }
   }
 }
