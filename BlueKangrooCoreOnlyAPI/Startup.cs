@@ -193,10 +193,7 @@ namespace BlueKangrooCoreOnlyAPI
             app.UseHttpsRedirection();
 
 
-            // AWS Logging configurati
-            var awsconfig =Configuration.GetAWSLoggingConfigSection();
-    
-            logger.AddAWSProvider(awsconfig);
+         
 
           
         }
