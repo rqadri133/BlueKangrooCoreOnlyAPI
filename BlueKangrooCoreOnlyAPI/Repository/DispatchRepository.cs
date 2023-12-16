@@ -7,7 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using BlueKangrooCoreOnlyAPI.Utilities;
-using BlueKangrooCoreOnlyAPI.Models;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Threading.Tasks;
+
 
 namespace BlueKangrooCoreOnlyAPI.Repository
 {
@@ -20,13 +23,67 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             db = _db;
         }
 
-        public Task<AppDispatch> CreateDispatchActivity(DispatchDetails details)
+        public async Task<AppDispatch> CreateDispatchActivity(DispatchDetails details)
         {
-            throw new NotImplementedException();
+            AppDispatch assigned  = new AppDispatch();
+
+           
+          // var userType = dbContext.Set().FromSql("dbo.SomeSproc @Id = {0}, @Name = {1}", 45, "Ada");
+             ParallelOptions parallelOptions = new()
+            {
+              MaxDegreeOfParallelism = 3
+            };
+ 
+             // Send to each Queue messages 
+            await Parallel.ForEachAsync<DispatchItemList>(details.ItemsToDsipatch, async (dispatchList,token) =>
+            {
+                // Service Bus Security 
+                // this entry set of transaction will save routes
+                // check route availibility 
+                // override routing feature from Grpah Routes  
+                // dispatchList.CurrentRoutes
+                // Problem with design here add routing ID in Dispatch details
+                 
+                foreach(AppDispatchAssigned dispatchAssigned in dispatchList.AllItems)
+                {
+                      
+
+
+                }
+                //var user = await client.GetFromJsonAsync<GitHubUser>(uri, token);
+                // Send to Service Bus Saga
+                // Console.WriteLine($"Name: {user.Name}\nBio: {user.Bio}\n");
+            });
+            
+              return assigned;
+
+             
         }
 
-        public Task<List<AppDispatch>> LoadAllDispatcherDetailsBySenderID(Guid SenderID) {
-           throw new NotImplementedException();
+        public async Task<List<AppDispatchAssigned>> LoadAllDispatcherDetailsBySenderID(Guid SenderID) {
+
+            List<AppDispatchAssigned> lstDispatchesAssigned = new List<AppDispatchAssigned>(); 
+            if (db != null)
+            {
+                var dispatchedData = await db.AppDispatches.FirstOrDefaultAsync<AppDispatch>(p=>p.AppSenderId == SenderID);
+                
+                if(dispatchedData != null)
+                {
+                   var currentID = dispatchedData.AppDispatchId ;
+                   // Send Current ID
+                   if(currentID != null)
+                   {
+                       lstDispatchesAssigned = db.AppDispatchAssigneds.ToList().FindAll(p=>p.AppDispatchRefId == currentID);
+                   }
+
+                   return lstDispatchesAssigned;
+
+
+
+                }
+
+            } 
+            return lstDispatchesAssigned;
 
 
         }

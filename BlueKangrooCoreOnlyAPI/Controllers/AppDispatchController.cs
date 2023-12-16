@@ -10,6 +10,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using BlueKangrooCoreOnlyAPI.Caching;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
 
 namespace BlueKangrooCoreOnlyAPI.Controllers
 {
@@ -28,12 +29,100 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         private readonly IConfiguration configuration;
         public AppDisptachController(IDispatchRepository _dispatchRepository, IConfiguration _configurtaion, IDistributedCache _distributedCache, ICacheManager<AppDispatch> _cacheManager, ILogger<AppDisptachController> _logger)
         {
-              dispatchRepository = _dispatchRepository;
+            dispatchRepository = _dispatchRepository;
             configuration = _configurtaion;
             distributedCache = _distributedCache;
             cacheManager = _cacheManager;
             logger = _logger;
         }
+
+
+       [HttpGet]
+       [Route("dispatchinformation/{senderId}")]
+       public async Task<IActionResult> LoadDispatchInformationBySender(Guid senderId)
+       {
+           // Validate Sender active 
+           // Load Dispatch AssignedList
+           // Dispatch Rule loadd as well finish this feature tonight 
+          List<AppDispatchAssigned> dispatchAssigned = new List<AppDispatchAssigned>();
+          try
+          {
+               dispatchAssigned   =  await dispatchRepository.LoadAllDispatcherDetailsBySenderID(senderId);
+               if(dispatchAssigned == null)
+               {
+                 return BadRequest("No Data Found");
+               }
+
+
+          }
+          catch(SqlException excp)
+          {
+            return BadRequest(excp);
+
+          }
+          catch(Exception excp)
+          {
+
+          }
+          finally
+          {
+
+          }
+
+          return Ok(dispatchAssigned);
+ 
+
+
+                 
+
+
+       }
+
+
+       [HttpPost]
+       [Route("dispatchItems/{senderId}")]
+       public async Task<IActionResult> AddDispatchInformationBySender(Guid senderId)
+       {
+           // Validate Sender active 
+           // Load Dispatch AssignedList
+           // Dispatch Rule loadd as well finish this feature tonight 
+          List<AppDispatchAssigned> dispatchAssigned = new List<AppDispatchAssigned>();
+          try
+          {
+               dispatchAssigned   =  await dispatchRepository.LoadAllDispatcherDetailsBySenderID(senderId);
+               if(dispatchAssigned == null)
+               {
+                 return BadRequest("No Data Found");
+               }
+
+
+          }
+          catch(SqlException excp)
+          {
+            return BadRequest(excp);
+
+          }
+          catch(Exception excp)
+          {
+
+          }
+          finally
+          {
+
+          }
+
+          return Ok(dispatchAssigned);
+ 
+
+
+                 
+
+
+       }
+
+       
+
+
 
       
 
