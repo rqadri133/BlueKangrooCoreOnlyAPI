@@ -68,6 +68,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppProduct> AppProducts { get; set; }
         public virtual DbSet<AppProperty> AppProperties { get; set; }
         public virtual DbSet<AppRecipient> AppRecipients { get; set; }
+        public virtual DbSet<AppRoute> AppRoutes { get; set; }
         public virtual DbSet<AppRouteAlert> AppRouteAlerts { get; set; }
         public virtual DbSet<AppSaleActivity> AppSaleActivities { get; set; }
         public virtual DbSet<AppSeller> AppSellers { get; set; }
@@ -372,7 +373,10 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ItemCombinationJsonNvarcharMaxNotNullCreatedBy).HasColumnName("ItemCombinationJSON  NVARCHAR(MAX) NOT NULL,\r\n	[CreatedBy");
+                entity.Property(e => e.ItemCombinationJson).HasColumnName("ItemCombinationJSON  NVARCHAR(MAX) NOT NULL,\r\n	[CreatedBy");
+                entity.Property(e => e.CreatedBy).HasColumnName("CreatedBy");
+          
+          
             });
 
             modelBuilder.Entity<AppDispatchAssigned>(entity =>
@@ -388,6 +392,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
 
                 entity.Property(e => e.AppRecipientId).HasColumnName("AppRecipientID");
+
+                entity.Property(e => e.AppRouteId).HasColumnName("AppRouteID");
 
                 entity.Property(e => e.AppSenderId).HasColumnName("AppSenderID");
 
@@ -1291,6 +1297,31 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppRecipientStateProvinceCode)
                     .IsRequired()
                     .HasMaxLength(200);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<AppRoute>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("AppRoute");
+
+                entity.Property(e => e.AppLocationEndId)
+                    .IsRequired()
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppLocationEndID");
+
+                entity.Property(e => e.AppLocationStartId)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .HasColumnName("AppLocationStartID");
+
+                entity.Property(e => e.AppRouteDesc)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.AppRouteId).HasColumnName("AppRouteID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });

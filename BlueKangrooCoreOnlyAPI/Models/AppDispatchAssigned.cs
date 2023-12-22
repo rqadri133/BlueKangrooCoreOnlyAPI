@@ -9,6 +9,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
     {
         public Guid AppDispatchAssignedId { get; set; }
         public Guid AppDispatchRefId { get; set; }
+        public Guid AppRouteId { get; set; }
         public Guid AppProductId { get; set; }
         public Guid AppSenderId { get; set; }
         public Guid AppRecipientId { get; set; }

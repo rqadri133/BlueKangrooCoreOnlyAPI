@@ -10,6 +10,11 @@ using BlueKangrooCoreOnlyAPI.Utilities;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Threading.Tasks;
+using Google.Protobuf;
+using System.Net.Http.Json;
+using System.Text.RegularExpressions;
+using System.Text.Json;
+using Google.Rpc;
 
 
 namespace BlueKangrooCoreOnlyAPI.Repository
@@ -40,13 +45,14 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 // Service Bus Security 
                 // this entry set of transaction will save routes
                 // check route availibility 
-                // override routing feature from Grpah Routes  
+                // override routing feature from Graph Routes  
                 // dispatchList.CurrentRoutes
                 // Problem with design here add routing ID in Dispatch details
+
                  
                 foreach(AppDispatchAssigned dispatchAssigned in dispatchList.AllItems)
                 {
-                      
+                      // Keep sending to Queue for Processing 
 
 
                 }
@@ -99,9 +105,41 @@ namespace BlueKangrooCoreOnlyAPI.Repository
      
             
         }
-     
+   
 
+       // Assuming this dispacth has ITem Json and json structure needs to be vaildated
+        public async Task<AppDispatch> AddDispatchPrimaryData(AppDispatch dispatch)
+        {
+            
+           if (db != null)
+            {
+                
+                 dispatch.AppDispatchId = Guid.NewGuid();
+                 dispatch.CreatedDate = DateTime.Now;
+                 
+                  try 
+                  { 
+                     JsonDocument.Parse(dispatch.ItemCombinationJson);
+                  }
+                  catch(Exception excp)
+                  {
+                     return null;
 
-}
+                  }
+
+            }
+
+                await db.AppDispatches.AddAsync(dispatch);
+                await db.SaveChangesAsync();
+
+                return dispatch;
+            }
+
+              
+
+            
+        }
+
+    
 
 }
