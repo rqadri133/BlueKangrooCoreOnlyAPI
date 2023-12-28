@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Data;
 using Microsoft.EntityFrameworkCore;
-using Amazon.Runtime.Internal.Util;
 
 namespace BlueKangrooCoreOnlyAPI.Repository
     {
