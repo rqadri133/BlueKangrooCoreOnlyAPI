@@ -2,6 +2,7 @@
 using BlueKangrooCoreOnlyAPI.Caching;
 using BlueKangrooCoreOnlyAPI.Controllers;
 using BlueKangrooCoreOnlyAPI.Models;
+using BlueKangrooCoreOnlyAPI.Repositories;
 using BlueKangrooCoreOnlyAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,6 +68,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppUserRoleDetail>), typeof(CacheManager<AppUserRoleDetail>));
             services.AddScoped(typeof(ICacheManager<AppUitemplate>), typeof(CacheManager<AppUitemplate>));
             services.AddScoped(typeof(ICacheManager<AppBrand>), typeof(CacheManager<AppBrand>));
+            services.AddScoped(typeof(IServiceBus<AppDispatchAssigned>), typeof(DispatchItemServiceBus<AppDispatchAssigned>));
 
         }
 

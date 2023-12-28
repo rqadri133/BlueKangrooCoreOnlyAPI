@@ -15,6 +15,7 @@ using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using Google.Rpc;
+using BlueKangrooCoreOnlyAPI.Repositories;
 
 
 namespace BlueKangrooCoreOnlyAPI.Repository
@@ -23,15 +24,16 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     {
 
         private blueKangrooContext db;
+        private IServiceBus<AppDispatchAssigned> _serviceBus ;
         public DispatchRepository(blueKangrooContext _db)
         {
             db = _db;
         }
 
-        public async Task<AppDispatch> CreateDispatchActivity(DispatchDetails details)
+        public async Task<AppDispatch> CreateDispatchActivity(DispatchDetails details , IServiceBus<AppDispatchAssigned> serviceBus)
         {
             AppDispatch assigned  = new AppDispatch();
-
+            _serviceBus = serviceBus;
            
           // var userType = dbContext.Set().FromSql("dbo.SomeSproc @Id = {0}, @Name = {1}", 45, "Ada");
              ParallelOptions parallelOptions = new()
@@ -52,7 +54,9 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                  
                 foreach(AppDispatchAssigned dispatchAssigned in dispatchList.AllItems)
                 {
-                      // Keep sending to Queue for Processing 
+                    // 
+                      // sending to service bus to process 
+                      await   serviceBus.SendMessageAsync(dispatchAssigned);
 
 
                 }
@@ -110,6 +114,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
        // Assuming this dispacth has ITem Json and json structure needs to be vaildated
         public async Task<AppDispatch> AddDispatchPrimaryData(AppDispatch dispatch)
         {
+            // earlier you have to validate the items provided as well 
             
            if (db != null)
             {
@@ -119,12 +124,13 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                  
                   try 
                   { 
+
                      JsonDocument.Parse(dispatch.ItemCombinationJson);
                   }
                   catch(Exception excp)
                   {
-                     return null;
-
+                      // tell client app not a valid json if not valid
+                     throw new JsonException("Unable to parse items json Not a valid Json format " + excp.Message);
                   }
 
             }
@@ -135,10 +141,11 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 return dispatch;
             }
 
-              
-
-            
+        public Task<AppDispatch> CreateDispatchActivity(DispatchDetails details)
+        {
+            throw new NotImplementedException();
         }
+    }
 
     
 
