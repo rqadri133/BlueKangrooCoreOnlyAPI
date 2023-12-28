@@ -22,7 +22,6 @@ using Scrutor;
 using System;
 using System.Collections.Generic;
 using m = BlueKangrooCoreOnlyAPI.options;
-using AWS.Logger.AspNetCore;
 using Microsoft.AspNetCore.Http;
 
 namespace BlueKangrooCoreOnlyAPI
