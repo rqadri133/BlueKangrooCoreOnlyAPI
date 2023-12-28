@@ -24,7 +24,6 @@ jobs:
       - name: Clean with dotnet
         run: dotnet clean --configuration Release Clean all
 
-
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
