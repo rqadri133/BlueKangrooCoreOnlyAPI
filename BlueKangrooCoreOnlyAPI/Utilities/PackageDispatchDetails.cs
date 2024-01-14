@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-
+namespace BlueKangrooCoreOnlyAPI.Utilities
+{
 
 public class PackageDetails
 {
@@ -15,5 +16,7 @@ public class PackageDetails
 
 
 
+
+}
 
 }

@@ -4,9 +4,11 @@ using BlueKangrooCoreOnlyAPI.Controllers;
 using BlueKangrooCoreOnlyAPI.Models;
 using BlueKangrooCoreOnlyAPI.Repositories;
 using BlueKangrooCoreOnlyAPI.Repository;
+using BlueKangrooCoreOnlyAPI.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BlueKangrooCoreOnlyAPI.Utilities;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -69,8 +71,10 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppUitemplate>), typeof(CacheManager<AppUitemplate>));
             services.AddScoped(typeof(ICacheManager<AppBrand>), typeof(CacheManager<AppBrand>));
             services.AddScoped(typeof(IServiceBus<AppDispatchAssigned>), typeof(DispatchItemServiceBus<AppDispatchAssigned>));
+            services.AddScoped(typeof(ICacheManager<PackageDetails>),  typeof(CacheManager<PackageDetails>));
+            services.AddScoped(typeof(ILogger<PackageHandlerController> ),typeof(ILogger<PackageHandlerController>));
 
-        }
 
     }
+}
 }
