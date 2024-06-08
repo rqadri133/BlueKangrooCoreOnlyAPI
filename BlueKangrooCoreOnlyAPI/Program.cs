@@ -24,7 +24,7 @@ namespace BlueKangrooCoreOnlyAPI
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSetting("https_port", "5001");
+                    webBuilder.UseSetting("https_port", "5003");
                     webBuilder.UseStartup<Startup>();
                     //webBuilder.UseConfigurati
                 }

@@ -21,6 +21,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     /// this will provide crud operations for We are only going to Load Packages 
     /// this will only cache the packages in sever memory as per customer Guid 
     /// will retrive from it and add it to package handlers
+    /// PAckage will only be picked from Redis Cache dotnet
     /// </summary>
 
     [Route("api/[controller]")]
@@ -42,7 +43,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllPackages")]
+        [Route("GetAllPackages/{packageList}")]
         [Authorize]
         public async Task<IActionResult> AddorRetreivetAllPAckages(List<PackageDetails> packageList)
         {

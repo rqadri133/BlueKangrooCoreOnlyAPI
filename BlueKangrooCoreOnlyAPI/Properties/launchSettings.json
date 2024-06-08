@@ -30,7 +30,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:5002;http://localhost:5003",
       "environmentVariables": {
         "GOOGLE_APPLICATION_CREDENTIALS": "/Users/syedqadri/Projects/BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI/BlueKangrooCoreApiOnly-6d3cfabd9cfc.json",
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -40,9 +40,9 @@
       "commandName": "AzureDevSpaces",
       "launchBrowser": true,
       "environmentVariables": {},
-      "resourceGroup": "Default-SQL-NorthCentralUS",
+      "aksName": "Kangroo1Cluster",
       "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419",
-      "aksName": "Kangroo1Cluster"
+      "resourceGroup": "Default-SQL-NorthCentralUS"
     }
   }
 }

@@ -13,6 +13,7 @@ namespace BlueKangrooCoreOnlyAPI.Headers
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
+            
 
             if (operation.Parameters == null)
                 operation.Parameters = new List<OpenApiParameter>();

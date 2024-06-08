@@ -21,6 +21,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Policy = "CustomGuidAuthorization")]
+    [AutoValidateAntiforgeryToken]
     public class RoleController : ControllerBase
     {
         IRoleRepository roleRepo;

@@ -21,6 +21,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]  
+    [AutoValidateAntiforgeryToken]    
     public class AppUserController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;

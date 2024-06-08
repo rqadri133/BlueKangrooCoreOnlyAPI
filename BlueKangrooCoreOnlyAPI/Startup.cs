@@ -134,9 +134,15 @@ namespace BlueKangrooCoreOnlyAPI
 
 
             services.AddMemoryCache();
+            // Global validation no need at Class levels but question is its API 
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
 
-       
+            // prevent from froegry token it must be added afetr Add Stack
+            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
          
 
         }
@@ -191,8 +197,9 @@ namespace BlueKangrooCoreOnlyAPI
 
             app.UseHttpsRedirection();
 
-
-         
+           app.UseAntiforgeryTokens();
+            // stored tokens shifting redirect
+                 
 
           
         }
@@ -218,7 +225,7 @@ namespace BlueKangrooCoreOnlyAPI
 
         }
 
-        static void HandleMapTest1(IApplicationBuilder app)
+static void HandleMapTest1(IApplicationBuilder app)
 {
     app.Run(async context =>
     {
