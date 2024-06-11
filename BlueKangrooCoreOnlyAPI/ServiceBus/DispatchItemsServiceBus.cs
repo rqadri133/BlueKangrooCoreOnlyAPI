@@ -24,7 +24,7 @@ namespace BlueKangrooCoreOnlyAPI.Repositories {
             //Serialize car details object
             var messageBody = JsonSerializer.Serialize(dispatchAssigned);
             //Set content type and Guid
-            var message = new Message(Encoding.UTF8.GetBytes(messageBody)) {
+            var message = new Message(Encoding.UTF32.GetBytes(messageBody)) {
                 MessageId = Guid.NewGuid().ToString(),
                     ContentType = "application/json"
             };

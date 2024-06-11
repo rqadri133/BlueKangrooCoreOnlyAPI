@@ -42,7 +42,7 @@ namespace BlueKangrooCoreOnlyAPI.AuthenticationHandlers
             {
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
                 var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
-                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
+                var credentials = Encoding.UTF32.GetString(credentialBytes).Split(new[] { ':' }, 2);
                 var username = credentials[0];
                 var password = credentials[1];
                 _token = await _repository.LoginUser(new Models.AppUser() { AppUserName = username, AppUserPwd = password });

@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
-COPY ["BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj", "BlueKangrooCoreOnlyAPI/"]
+COPY ["BlueKangrooCoreOnlyAPI.csproj", "BlueKangrooCoreOnlyAPI/"]
 RUN dotnet restore "BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj"
 COPY . .
 WORKDIR "/src/BlueKangrooCoreOnlyAPI"
