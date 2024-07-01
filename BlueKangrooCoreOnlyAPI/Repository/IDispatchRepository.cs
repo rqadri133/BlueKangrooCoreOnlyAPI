@@ -9,7 +9,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     public interface IDispatchRepository
     {
         Task<AppDispatch> CreateDispatchActivity(DispatchDetails details);
-        Task<List<AppDispatchAssigned>> LoadAllDispatcherDetailsBySenderID(Guid SenderID);
+        Task<AppDispatch> LoadAllDispatcherDetailsBySenderID(Guid SenderID);
         Task<AppDispatch> AddDispatchPrimaryData(AppDispatch model);
         Task<int> CancelDispatchOrder(AppSender senderInformation);
         Task<AppDispatch> GetDispatchInfoByRecipientId(Guid? recipient);

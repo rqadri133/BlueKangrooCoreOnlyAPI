@@ -8,12 +8,17 @@ using BlueKangrooCoreOnlyAPI.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using BlueKangrooCoreOnlyAPI.Utilities;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace BlueKangrooCoreOnlyAPI
 {
     public static class RepositoryAndContollerDependencies
     {
+    
         public static void AddDependencies(this IServiceCollection services)
         {
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
@@ -76,5 +81,11 @@ namespace BlueKangrooCoreOnlyAPI
 
 
     }
+
+
 }
+
+
+
 }
+

@@ -24,13 +24,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppBuyerSellerTrade> AppBuyerSellerTrades { get; set; }
         public virtual DbSet<AppCategory> AppCategories { get; set; }
         public virtual DbSet<AppClass> AppClasses { get; set; }
-        public virtual DbSet<AppCombinationPackage> AppCombinationPackages { get; set; }
         public virtual DbSet<AppCompany> AppCompanies { get; set; }
         public virtual DbSet<AppCrossRefProcess> AppCrossRefProcesses { get; set; }
         public virtual DbSet<AppDataType> AppDataTypes { get; set; }
         public virtual DbSet<AppDemand> AppDemands { get; set; }
         public virtual DbSet<AppDispatch> AppDispatches { get; set; }
-        public virtual DbSet<AppDispatchAssigned> AppDispatchAssigneds { get; set; }
         public virtual DbSet<AppDocumentAssigned> AppDocumentAssigneds { get; set; }
         public virtual DbSet<AppDocumentTransaction> AppDocumentTransactions { get; set; }
         public virtual DbSet<AppDoor> AppDoors { get; set; }
@@ -50,14 +48,12 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppIndustrialRegion> AppIndustrialRegions { get; set; }
         public virtual DbSet<AppIndustrialZone> AppIndustrialZones { get; set; }
         public virtual DbSet<AppInstruementation> AppInstruementations { get; set; }
-        public virtual DbSet<AppItemCombination> AppItemCombinations { get; set; }
         public virtual DbSet<AppJsonfile> AppJsonfiles { get; set; }
         public virtual DbSet<AppKey> AppKeys { get; set; }
         public virtual DbSet<AppMetalCombinationAlloy> AppMetalCombinationAlloys { get; set; }
-        public virtual DbSet<AppNotification> AppNotifications { get; set; }
+        public virtual DbSet<AppOrder> AppOrders { get; set; }
         public virtual DbSet<AppPackage> AppPackages { get; set; }
         public virtual DbSet<AppPackageHandler> AppPackageHandlers { get; set; }
-        public virtual DbSet<AppPackageHanlder> AppPackageHanlders { get; set; }
         public virtual DbSet<AppPallete> AppPalletes { get; set; }
         public virtual DbSet<AppPriceParityCheck> AppPriceParityChecks { get; set; }
         public virtual DbSet<AppProcess> AppProcesses { get; set; }
@@ -67,13 +63,10 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppProcessRunningOnServer> AppProcessRunningOnServers { get; set; }
         public virtual DbSet<AppProduct> AppProducts { get; set; }
         public virtual DbSet<AppProperty> AppProperties { get; set; }
-        public virtual DbSet<AppRecipient> AppRecipients { get; set; }
-        public virtual DbSet<AppRoute> AppRoutes { get; set; }
         public virtual DbSet<AppRouteAlert> AppRouteAlerts { get; set; }
         public virtual DbSet<AppSaleActivity> AppSaleActivities { get; set; }
         public virtual DbSet<AppSeller> AppSellers { get; set; }
         public virtual DbSet<AppSellerActivity> AppSellerActivities { get; set; }
-        public virtual DbSet<AppSender> AppSenders { get; set; }
         public virtual DbSet<AppSensitiveMaterial> AppSensitiveMaterials { get; set; }
         public virtual DbSet<AppShelve> AppShelves { get; set; }
         public virtual DbSet<AppSupply> AppSupplies { get; set; }
@@ -100,17 +93,17 @@ namespace BlueKangrooCoreOnlyAPI.Models
         public virtual DbSet<AppWareHouse> AppWareHouses { get; set; }
         public virtual DbSet<AppWareHouseNode> AppWareHouseNodes { get; set; }
         public virtual DbSet<AppWareHouseVendor> AppWareHouseVendors { get; set; }
+        public virtual DbSet<Appcart> Appcarts { get; set; }
         public virtual DbSet<ApplicationContext> ApplicationContexts { get; set; }
         public virtual DbSet<ApplicationModel> ApplicationModels { get; set; }
-        public virtual DbSet<DispatherLink> DispatherLinks { get; set; }
-        public virtual DbSet<NotificationMessageNode> NotificationMessageNodes { get; set; }
+        public virtual DbSet<Applocation> Applocations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=tcp:blueserver.database.windows.net;Database=blueKangroo;user id=sqadri166;PWD=Astaghees@#^*166;");
+                optionsBuilder.UseSqlServer("Data Source=tcp:blueserverdb.database.windows.net,1433;user id=sqlserveradmin;Password=Tango@#^*199;Initial Catalog=blueKangroo;Trusted_Connection=True; Integrated Security=false;Connection Timeout=1800");
             }
         }
 
@@ -122,7 +115,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.ToTable("AppActivity");
 
-                entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName }, "UQ__AppActiv__56AE0C02010472EB")
+                entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName }, "UQ__AppActiv__56AE0C02A6A26594")
                     .IsUnique();
 
                 entity.Property(e => e.AppActivityId)
@@ -146,7 +139,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.ToTable("AppBuyer");
 
-                entity.HasIndex(e => e.AppBuyerHashedSsc, "UQ__AppBuyer__AD5E7D9CDB59963D")
+                entity.HasIndex(e => e.AppBuyerHashedSsc, "UQ__AppBuyer__AD5E7D9CF0129169")
                     .IsUnique();
 
                 entity.Property(e => e.AppBuyerId)
@@ -268,21 +261,6 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppCombinationPackage>(entity =>
-            {
-                entity.ToTable("AppCombinationPackage");
-
-                entity.Property(e => e.AppCombinationPackageId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AppCombinationPackageID");
-
-                entity.Property(e => e.AppCombinationPackageDescription)
-                    .IsRequired()
-                    .HasMaxLength(1000);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<AppCompany>(entity =>
             {
                 entity.ToTable("AppCompany");
@@ -357,47 +335,35 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppDispatch>(entity =>
             {
+                entity.HasNoKey();
+
                 entity.ToTable("AppDispatch");
 
-                entity.Property(e => e.AppDispatchId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AppDispatchID");
+                entity.Property(e => e.AppActualDeliveryDate).HasColumnType("datetime");
 
-                entity.Property(e => e.AppDispatchNameDecs)
+                entity.Property(e => e.AppActualDipatchDate).HasColumnType("datetime");
+
+                entity.Property(e => e.AppCartId).HasColumnName("AppCartID");
+
+                entity.Property(e => e.AppDipatchDetailsDesc)
                     .IsRequired()
-                    .HasMaxLength(200);
+                    .HasMaxLength(1000);
 
-                entity.Property(e => e.AppRecipientId).HasColumnName("AppRecipientID");
+                entity.Property(e => e.AppDispatchId).HasColumnName("AppDispatchID");
 
-                entity.Property(e => e.AppSenderId).HasColumnName("AppSenderID");
+                entity.Property(e => e.AppEstimatedDeliveryDate).HasColumnType("datetime");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.AppLocationId).HasColumnName("AppLocationID");
 
-                entity.Property(e => e.ItemCombinationJson).HasColumnName("ItemCombinationJSON  NVARCHAR(MAX) NOT NULL,\r\n	[CreatedBy");
-                entity.Property(e => e.CreatedBy).HasColumnName("CreatedBy"); 
-          
-          
-            });
+                entity.Property(e => e.AppPackageHandlerId).HasColumnName("AppPackageHandlerID");
 
-            modelBuilder.Entity<AppDispatchAssigned>(entity =>
-            {
-                entity.ToTable("AppDispatchAssigned");
+                entity.Property(e => e.AppPackageId).HasColumnName("AppPackageID");
 
-                entity.Property(e => e.AppDispatchAssignedId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AppDispatchAssignedID");
-
-                entity.Property(e => e.AppDispatchRefId).HasColumnName("AppDispatchRefID");
-
-                entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
-
-                entity.Property(e => e.AppRecipientId).HasColumnName("AppRecipientID");
-
-                entity.Property(e => e.AppRouteId).HasColumnName("AppRouteID");
-
-                entity.Property(e => e.AppSenderId).HasColumnName("AppSenderID");
+                entity.Property(e => e.AppScheduledDispatchDate).HasColumnType("datetime");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.RecallCancelDispatchedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppDocumentAssigned>(entity =>
@@ -509,7 +475,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             modelBuilder.Entity<AppError>(entity =>
             {
                 entity.HasKey(e => e.AppErrorCodeId)
-                    .HasName("PK_AppErrorCodeID");
+                    .HasName("PK__AppError__63EE91F77153D529");
 
                 entity.ToTable("AppError");
 
@@ -517,7 +483,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppErrorDescription)
                     .IsRequired()
-                    .HasMaxLength(100);
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.AppErrorType)
                     .IsRequired()
@@ -866,21 +832,6 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppItemCombination>(entity =>
-            {
-                entity.ToTable("AppItemCombination");
-
-                entity.Property(e => e.AppItemCombinationId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AppItemCombinationID");
-
-                entity.Property(e => e.AppItemCombinationPackageId).HasColumnName("AppItemCombinationPackageID");
-
-                entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<AppJsonfile>(entity =>
             {
                 entity.ToTable("AppJSONFile");
@@ -905,10 +856,10 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.ToTable("AppKey");
 
-                entity.HasIndex(e => e.AppClientPhone, "UQ__AppKey__43F371AA1B31A097")
+                entity.HasIndex(e => e.AppClientPhone, "UQ__AppKey__43F371AA09D3B6D0")
                     .IsUnique();
 
-                entity.HasIndex(e => e.AppClientEmailId, "UQ__AppKey__6FC0E5D4A5161E93")
+                entity.HasIndex(e => e.AppClientEmailId, "UQ__AppKey__6FC0E5D4D42DDE5E")
                     .IsUnique();
 
                 entity.Property(e => e.AppKeyId)
@@ -958,28 +909,45 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.MaximumHeatingAppliedTemp).HasColumnType("decimal(4, 2)");
             });
 
-            modelBuilder.Entity<AppNotification>(entity =>
+            modelBuilder.Entity<AppOrder>(entity =>
             {
-                entity.ToTable("AppNotification");
+                entity.ToTable("AppOrder");
 
-                entity.HasIndex(e => e.AppNotificationSendNodeId, "UQ__AppNotif__901354EA28AA02EC")
-                    .IsUnique();
-
-                entity.Property(e => e.AppNotificationId)
+                entity.Property(e => e.AppOrderId)
                     .ValueGeneratedNever()
-                    .HasColumnName("AppNotificationID");
+                    .HasColumnName("AppOrderID");
 
-                entity.Property(e => e.AppNotificationMessageJson)
-                    .HasMaxLength(2000)
-                    .HasColumnName("AppNotificationMessageJSON");
+                entity.Property(e => e.AppOrderAmountTotal).HasColumnType("decimal(6, 2)");
 
-                entity.Property(e => e.AppNotificationName)
+                entity.Property(e => e.AppOrderCountryCode)
+                    .IsRequired()
+                    .HasMaxLength(35);
+
+                entity.Property(e => e.AppOrderDate).HasColumnType("datetime");
+
+                entity.Property(e => e.AppOrderDesc)
                     .IsRequired()
                     .HasMaxLength(2000);
 
-                entity.Property(e => e.AppNotificationSendNodeId).HasColumnName("AppNotificationSendNodeID");
+                entity.Property(e => e.AppOrderPersonName)
+                    .IsRequired()
+                    .HasMaxLength(200);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+                entity.Property(e => e.AppOrderRefundTotal).HasColumnType("decimal(6, 2)");
+
+                entity.Property(e => e.AppOrderShippingStreetAddress)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.AppOrderStateCode)
+                    .IsRequired()
+                    .HasMaxLength(35);
+
+                entity.Property(e => e.AppOrderZipCode)
+                    .IsRequired()
+                    .HasMaxLength(21);
+
+                entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
             });
 
             modelBuilder.Entity<AppPackage>(entity =>
@@ -1005,77 +973,29 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppPackageHandler>(entity =>
             {
-                entity.HasKey(e => e.PackageId)
-                    .HasName("PK_PackageHandlerID");
-
                 entity.ToTable("AppPackageHandler");
 
-                entity.Property(e => e.PackageId)
+                entity.Property(e => e.AppPackageHandlerId)
                     .ValueGeneratedNever()
-                    .HasColumnName("PackageID");
+                    .HasColumnName("AppPackageHandlerID");
 
-                entity.Property(e => e.BoxHeight)
-                    .IsRequired()
-                    .HasMaxLength(300);
+                entity.Property(e => e.AppPackageHandlerFitnessNotes)
+                    .HasMaxLength(3000)
+                    .HasColumnName("AppPAckageHandlerFitnessNotes");
 
-                entity.Property(e => e.BoxWidth)
+                entity.Property(e => e.AppPackageHandlerStateId)
+                    .HasMaxLength(14)
+                    .HasColumnName("AppPackageHandlerStateID");
+
+                entity.Property(e => e.AppPakageHandlerName)
                     .IsRequired()
-                    .HasMaxLength(30);
+                    .HasMaxLength(2000);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.DepthZindex)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnName("depthZIndex");
+                entity.Property(e => e.LastHandledFreightIdref).HasColumnName("LastHandledFreightIDRef");
 
-                entity.Property(e => e.MaxPoundsOccupancy).HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.PackageDescription)
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                entity.Property(e => e.PackageName)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.PackageTrackerUpdateInfo)
-                    .IsRequired()
-                    .HasMaxLength(2000);
-            });
-
-            modelBuilder.Entity<AppPackageHanlder>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("AppPackageHanlder");
-
-                entity.Property(e => e.BoxHeight)
-                    .IsRequired()
-                    .HasMaxLength(300);
-
-                entity.Property(e => e.BoxWidth)
-                    .IsRequired()
-                    .HasMaxLength(30);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DepthZindex)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnName("depthZIndex");
-
-                entity.Property(e => e.MaxPoundsOccupancy).HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.PackageDescription)
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                entity.Property(e => e.PackageId).HasColumnName("PackageID");
-
-                entity.Property(e => e.PackageName)
-                    .IsRequired()
-                    .HasMaxLength(200);
+                entity.Property(e => e.LastPackageHandledDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppPallete>(entity =>
@@ -1270,62 +1190,6 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppRecipient>(entity =>
-            {
-                entity.ToTable("AppRecipient");
-
-                entity.Property(e => e.AppRecipientId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AppRecipientID");
-
-                entity.Property(e => e.AppRecipientAddress)
-                    .IsRequired()
-                    .HasMaxLength(500);
-
-                entity.Property(e => e.AppRecipientCity)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.AppRecipientCountryCode)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.AppRecipientName)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.AppRecipientStateProvinceCode)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<AppRoute>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("AppRoute");
-
-                entity.Property(e => e.AppLocationEndId)
-                    .IsRequired()
-                    .HasMaxLength(2000)
-                    .HasColumnName("AppLocationEndID");
-
-                entity.Property(e => e.AppLocationStartId)
-                    .IsRequired()
-                    .HasMaxLength(1)
-                    .HasColumnName("AppLocationStartID");
-
-                entity.Property(e => e.AppRouteDesc)
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                entity.Property(e => e.AppRouteId).HasColumnName("AppRouteID");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<AppRouteAlert>(entity =>
             {
                 entity.ToTable("AppRouteAlert");
@@ -1375,7 +1239,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.ToTable("AppSeller");
 
-                entity.HasIndex(e => e.AppSellerHashedSsc, "UQ__AppSelle__4F1170A95B52C94C")
+                entity.HasIndex(e => e.AppSellerHashedSsc, "UQ__AppSelle__4F1170A917BDE38A")
                     .IsUnique();
 
                 entity.Property(e => e.AppSellerId)
@@ -1412,45 +1276,6 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppSellerId).HasColumnName("AppSellerID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<AppSender>(entity =>
-            {
-                entity.ToTable("AppSender");
-
-                entity.Property(e => e.AppSenderId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("AppSenderID");
-
-                entity.Property(e => e.AppSenderCity)
-                    .IsRequired()
-                    .HasMaxLength(300);
-
-                entity.Property(e => e.AppSenderContactPhone)
-                    .IsRequired()
-                    .HasMaxLength(17);
-
-                entity.Property(e => e.AppSenderCountry)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.AppSenderName)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.AppSenderStreetAddress)
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                entity.Property(e => e.AppSenderZipCode)
-                    .IsRequired()
-                    .HasMaxLength(30);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.SenderInstructionsNotes)
-                    .IsRequired()
-                    .HasMaxLength(2000);
             });
 
             modelBuilder.Entity<AppSensitiveMaterial>(entity =>
@@ -1613,7 +1438,7 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.ToTable("AppTokenGeneration");
 
-                entity.HasIndex(e => e.AppTokenGenId, "UQ__AppToken__7DA0ED6397930F51")
+                entity.HasIndex(e => e.AppTokenGenId, "UQ__AppToken__7DA0ED636349C82B")
                     .IsUnique();
 
                 entity.Property(e => e.AppTokenId)
@@ -2078,6 +1903,30 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<Appcart>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("APPCART");
+
+                entity.Property(e => e.AppOrderdetailsId).HasColumnName("APP_ORDERDETAILS_ID");
+
+                entity.Property(e => e.Appcartdesc)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("APPCARTDESC");
+
+                entity.Property(e => e.Appcartid).HasColumnName("APPCARTID");
+
+                entity.Property(e => e.Createdby).HasColumnName("CREATEDBY");
+
+                entity.Property(e => e.Createddate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDDATE");
+
+                entity.Property(e => e.PaymentHistoryId).HasColumnName("PaymentHistory_ID");
+            });
+
             modelBuilder.Entity<ApplicationContext>(entity =>
             {
                 entity.ToTable("ApplicationContext");
@@ -2122,52 +1971,46 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<DispatherLink>(entity =>
+            modelBuilder.Entity<Applocation>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToTable("DispatherLink");
+                entity.ToTable("APPLOCATION");
 
-                entity.Property(e => e.EdgeIdF85c8b902bd64e63b0c0b332d18142fc)
+                entity.Property(e => e.Appgeolocation)
                     .IsRequired()
-                    .HasMaxLength(1000)
-                    .HasColumnName("$edge_id_F85C8B902BD64E63B0C0B332D18142FC");
+                    .HasMaxLength(20)
+                    .HasColumnName("APPGEOLOCATION");
 
-                entity.Property(e => e.FromIdD846d9d2c5a24180bc115110fa4b35a8)
-                    .HasMaxLength(1000)
-                    .HasColumnName("$from_id_D846D9D2C5A24180BC115110FA4B35A8");
-
-                entity.Property(e => e.NetworkTipCalMicrosecs)
-                    .HasColumnType("decimal(5, 2)")
-                    .HasColumnName("networkTipCalMicrosecs");
-
-                entity.Property(e => e.ToId5e57849cb134449382604812b9c111c6)
-                    .HasMaxLength(1000)
-                    .HasColumnName("$to_id_5E57849CB134449382604812B9C111C6");
-            });
-
-            modelBuilder.Entity<NotificationMessageNode>(entity =>
-            {
-                entity.ToTable("NotificationMessageNode");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.EmailAddress).HasMaxLength(200);
-
-                entity.Property(e => e.NodeIdCee2728acb144e4aa5e20067929a8a1f)
+                entity.Property(e => e.Applocationaddress)
                     .IsRequired()
-                    .HasMaxLength(1000)
-                    .HasColumnName("$node_id_CEE2728ACB144E4AA5E20067929A8A1F");
+                    .HasMaxLength(400)
+                    .HasColumnName("APPLOCATIONADDRESS");
 
-                entity.Property(e => e.NotificationNodeName)
+                entity.Property(e => e.Applocationcity)
+                    .IsRequired()
+                    .HasMaxLength(400)
+                    .HasColumnName("APPLOCATIONCITY");
+
+                entity.Property(e => e.Applocationcountrycode)
+                    .IsRequired()
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .HasColumnName("APPLOCATIONCOUNTRYCODE");
 
-                entity.Property(e => e.NotificationUserId).HasColumnName("NotificationUserID");
+                entity.Property(e => e.Applocationid).HasColumnName("APPLOCATIONID");
 
-                entity.Property(e => e.PhoneNumber).HasMaxLength(33);
+                entity.Property(e => e.Applocationstatecode)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("APPLOCATIONSTATECODE");
+
+                entity.Property(e => e.Createdby)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDBY");
+
+                entity.Property(e => e.Createddate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDDATE");
             });
 
             OnModelCreatingPartial(modelBuilder);

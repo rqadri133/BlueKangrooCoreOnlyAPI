@@ -38,9 +38,9 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         
 
         [HttpPost]
-        [Route("LoginUser")]
+        [Route("authenticateCurrentUser")]
         [Authorize]
-        public async Task<IActionResult> LoginUser([FromBody]AppUser model)
+        public async Task<IActionResult> LoginUser([FromBody] AppUser model)
         {
             try
             {

@@ -70,30 +70,17 @@ namespace BlueKangrooCoreOnlyAPI.Repository
              
         }
 
-        public async Task<List<AppDispatchAssigned>> LoadAllDispatcherDetailsBySenderID(Guid SenderID) {
+        public async Task<AppDispatch> LoadAllDispatcherDetailsBySenderID(Guid SenderID) {
+             AppDispatch appDispatch = new AppDispatch();
 
-            List<AppDispatchAssigned> lstDispatchesAssigned = new List<AppDispatchAssigned>(); 
             if (db != null)
             {
-                var dispatchedData = await db.AppDispatches.FirstOrDefaultAsync<AppDispatch>(p=>p.AppSenderId == SenderID);
+                appDispatch = await db.AppDispatches.FirstOrDefaultAsync<AppDispatch>(p=>p.AppSenderId == SenderID);
                 
-                if(dispatchedData != null)
-                {
-                   var currentID = dispatchedData.AppDispatchId ;
-                   // Send Current ID
-                   if(currentID != null)
-                   {
-                       lstDispatchesAssigned = db.AppDispatchAssigneds.ToList().FindAll(p=>p.AppDispatchRefId == currentID);
-                   }
-
-                   return lstDispatchesAssigned;
-
-
-
-                }
+               
 
             } 
-            return lstDispatchesAssigned;
+            return appDispatch;
 
 
         }

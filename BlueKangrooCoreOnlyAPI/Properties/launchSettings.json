@@ -23,8 +23,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
       "environmentVariables": {},
-      "useSSL": true,
-      "publishAllPorts": true
+      "publishAllPorts": true,
+      "useSSL": true
     },
     "BlueKangrooCoreOnlyAPI": {
       "commandName": "Project",
@@ -40,9 +40,9 @@
       "commandName": "AzureDevSpaces",
       "launchBrowser": true,
       "environmentVariables": {},
-      "aksName": "Kangroo1Cluster",
+      "resourceGroup": "Default-SQL-NorthCentralUS",
       "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419",
-      "resourceGroup": "Default-SQL-NorthCentralUS"
+      "aksName": "Kangroo1Cluster"
     }
   }
 }

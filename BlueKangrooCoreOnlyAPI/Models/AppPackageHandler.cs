@@ -7,14 +7,12 @@ namespace BlueKangrooCoreOnlyAPI.Models
 {
     public partial class AppPackageHandler
     {
-        public Guid PackageId { get; set; }
-        public string PackageName { get; set; }
-        public string PackageDescription { get; set; }
-        public string PackageTrackerUpdateInfo { get; set; }
-        public string BoxWidth { get; set; }
-        public string BoxHeight { get; set; }
-        public string DepthZindex { get; set; }
-        public decimal MaxPoundsOccupancy { get; set; }
+        public Guid AppPackageHandlerId { get; set; }
+        public string AppPakageHandlerName { get; set; }
+        public string AppPackageHandlerStateId { get; set; }
+        public string AppPackageHandlerFitnessNotes { get; set; }
+        public Guid LastHandledFreightIdref { get; set; }
+        public DateTime LastPackageHandledDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid CreatedBy { get; set; }
     }

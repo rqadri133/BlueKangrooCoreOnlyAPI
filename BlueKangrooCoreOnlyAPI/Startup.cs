@@ -76,9 +76,8 @@ namespace BlueKangrooCoreOnlyAPI
                );        
                
                
-                   services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
             services.AddHttpContextAccessor();
-            
+                    
             
 
 
@@ -98,7 +97,21 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddSwaggerGen(c =>
           {
-             c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
+             c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" ,TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Blue MAchines Inc",
+            Url = new Uri("https://http.bluemachines-inc.com")
+        },
+        License = new OpenApiLicense
+        {
+            Name = " License",
+            Url = new Uri("https://http.bluemachines-inc.com")
+        }} 
+             
+             
+             
+             );
               c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                   Description =
@@ -106,7 +119,8 @@ namespace BlueKangrooCoreOnlyAPI
                   Name = "Authorization",
                   In = ParameterLocation.Header,
                   Type = SecuritySchemeType.ApiKey,
-                  Scheme = "Bearer"
+                  Scheme = "Bearer" ,
+
               });
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
             {
@@ -143,6 +157,7 @@ namespace BlueKangrooCoreOnlyAPI
 
             // prevent from froegry token it must be added afetr Add Stack
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+            
          
 
         }
@@ -178,9 +193,12 @@ namespace BlueKangrooCoreOnlyAPI
             /*Enabling Swagger ui, consider doing it on Development env only*/
             app.UseSwagger(option =>
           {
+                option.SerializeAsV2 = true;
+
               option.RouteTemplate = swaggerOptions.JsonRoute;
       
           });
+            app.UseHttpsRedirection();
 
            app.UseSwaggerUI(option =>
              {
@@ -191,11 +209,10 @@ namespace BlueKangrooCoreOnlyAPI
             {
                 context.Response.Headers.Add("Authorization", "bearer" );
                 context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
-                
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 await next.Invoke();
             });
 
-            app.UseHttpsRedirection();
 
            app.UseAntiforgeryTokens();
             // stored tokens shifting redirect

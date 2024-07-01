@@ -44,7 +44,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
            // Validate Sender active 
            // Load Dispatch AssignedList
            // Dispatch Rule loadd as well finish this feature tonight 
-          List<AppDispatchAssigned> dispatchAssigned = new List<AppDispatchAssigned>();
+           AppDispatch dispatchAssigned = new AppDispatch();
           try
           {
                dispatchAssigned   =  await dispatchRepository.LoadAllDispatcherDetailsBySenderID(senderId);
@@ -86,7 +86,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
            // Validate Sender active 
            // Load Dispatch AssignedList
            // Dispatch Rule loadd as well finish this feature tonight 
-          List<AppDispatchAssigned> dispatchAssigned = new List<AppDispatchAssigned>();
+            AppDispatch dispatchAssigned = new AppDispatch();
           try
           {
                dispatchAssigned   =  await dispatchRepository.LoadAllDispatcherDetailsBySenderID(senderId);

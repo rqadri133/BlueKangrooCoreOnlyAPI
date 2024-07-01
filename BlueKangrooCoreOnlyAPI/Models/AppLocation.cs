@@ -1,22 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+#nullable disable
 
 namespace BlueKangrooCoreOnlyAPI.Models
 {
-
- public class AppLocation
- {
-    public Guid? LocationID {get;set;}
-    public String City {get;set;}
-    public string State {get;set;}
-    public string StreetAddress {get;set;}
-    public string SuitNameNumber {get;set;}
-    public string ParkingLotNumberDesc {get;set;}
-    public string PickUpReserveSpotParking {get;set;}
-
-    public AppLoader LoaderDetails {get;set;}  
-    
-
- }
-
+    public partial class Applocation
+    {
+        public Guid Applocationid { get; set; }
+        public string Appgeolocation { get; set; }
+        public string Applocationaddress { get; set; }
+        public string Applocationcity { get; set; }
+        public string Applocationcountrycode { get; set; }
+        public string Applocationstatecode { get; set; }
+        public DateTime Createddate { get; set; }
+        public DateTime Createdby { get; set; }
+    }
 }
