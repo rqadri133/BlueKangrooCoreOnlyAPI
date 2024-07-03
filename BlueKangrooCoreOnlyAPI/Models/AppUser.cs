@@ -5,7 +5,18 @@ using System.Collections.Generic;
 
 namespace BlueKangrooCoreOnlyAPI.Models
 {
-    public partial class AppUser
+
+    public   class AppUserModelDTO
+    {
+
+        public string AppUserId { get; set; }
+        public string AppUserName { get; set; }
+        public string AppNameDesc { get; set; }
+        public string AppRoleId { get; set; }
+        public string AppUserPwd { get; set; }
+        public string CreatedBy { get; set; }  
+    }
+    public partial  class AppUser
     {
         public Guid AppUserId { get; set; }
         public string AppUserName { get; set; }

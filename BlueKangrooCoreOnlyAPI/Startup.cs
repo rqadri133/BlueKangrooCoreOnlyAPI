@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using m = BlueKangrooCoreOnlyAPI.options;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -95,23 +96,10 @@ namespace BlueKangrooCoreOnlyAPI
              services.AddDependencies();
 
 
+           
             services.AddSwaggerGen(c =>
           {
-             c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" ,TermsOfService = new Uri("https://example.com/terms"),
-        Contact = new OpenApiContact
-        {
-            Name = "Blue MAchines Inc",
-            Url = new Uri("https://http.bluemachines-inc.com")
-        },
-        License = new OpenApiLicense
-        {
-            Name = " License",
-            Url = new Uri("https://http.bluemachines-inc.com")
-        }} 
-             
-             
-             
-             );
+             c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
               c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                   Description =
@@ -119,8 +107,7 @@ namespace BlueKangrooCoreOnlyAPI
                   Name = "Authorization",
                   In = ParameterLocation.Header,
                   Type = SecuritySchemeType.ApiKey,
-                  Scheme = "Bearer" ,
-
+                  Scheme = "Bearer"
               });
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
             {
@@ -145,6 +132,10 @@ namespace BlueKangrooCoreOnlyAPI
 
           });
 
+   services.AddControllers()
+              .AddNewtonsoftJson(options =>
+              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+               );
 
 
             services.AddMemoryCache();
@@ -156,36 +147,46 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
 
             // prevent from froegry token it must be added afetr Add Stack
-            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-            
+                        services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+     
+        
+            services.AddMvc();
          
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger , IAntiforgery antiforgery)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 IdentityModelEventSource.ShowPII = true;
             }
+            else
+            {          
+                app.UseHttpsRedirection();
+            }
 
            
      
             app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
-                   
+         
+
             app.UseRouting();
 
-            app.UseAuthorization();
+               app.UseAuthorization();  
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers(); 
             });
            
-            
+             
+
+             
+         
             
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
@@ -193,34 +194,33 @@ namespace BlueKangrooCoreOnlyAPI
             /*Enabling Swagger ui, consider doing it on Development env only*/
             app.UseSwagger(option =>
           {
-                option.SerializeAsV2 = true;
-
+              
               option.RouteTemplate = swaggerOptions.JsonRoute;
       
           });
-            app.UseHttpsRedirection();
 
            app.UseSwaggerUI(option =>
              {
                  option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
                  option.DisplayOperationId();
             });
-            app.Use(async (context, next) =>
+        
+           app.UseHttpsRedirection();
+
+            app.UseAntiforgeryTokens();
+
+
+             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("Authorization", "bearer" );
-                context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
-                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                context.Response.Headers.Add("Authorization", "Bearer" );
+                
                 await next.Invoke();
             });
 
-
-           app.UseAntiforgeryTokens();
             // stored tokens shifting redirect
-                 
 
-          
         }
-
+          
          // If using Scrutor the folllowing is not required
         public void ConfigureContainer(ContainerBuilder builder)
         {
