@@ -29,7 +29,7 @@ namespace BlueKangrooCoreOnlyAPI.Headers
                     Schema = new OpenApiSchema
                     {
                         Type = "string",
-                        Default = new OpenApiString("apitoken") ,
+                        Default = new OpenApiString("Customer Guid") ,
                         Format = "string"
                     } 
                     
@@ -38,6 +38,8 @@ namespace BlueKangrooCoreOnlyAPI.Headers
                 });
 
             }
+          
+            
         }
         
     }

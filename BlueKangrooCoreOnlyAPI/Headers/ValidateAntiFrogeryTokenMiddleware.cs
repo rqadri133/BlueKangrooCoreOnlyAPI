@@ -19,13 +19,16 @@ public class ValidateAntiForgeryTokenMiddleware
     public async Task Invoke(HttpContext context)
     {
     
+       
+            // validate authenticate header information here 
         if (HttpMethods.IsPost(context.Request.Method))
         {
-            // validate authenticate header information here 
+            Console.WriteLine($"Display  {_antiforgery.GetTokens(context)}");
             await _antiforgery.ValidateRequestAsync(context);
         }
 
-        await _next(context);
+
+           await _next(context);
     }
 }
 

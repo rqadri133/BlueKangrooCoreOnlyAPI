@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using m = BlueKangrooCoreOnlyAPI.options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Antiforgery;
+using BlueKangrooCoreOnlyAPI.Utilities;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -73,7 +74,8 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddControllers()
               .AddNewtonsoftJson(options =>
-              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore 
+
                );        
                
                
@@ -100,6 +102,36 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSwaggerGen(c =>
           {
              c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
+             c.AddSecurityDefinition("XSRF-TOKEN", new OpenApiSecurityScheme
+              {
+                  Description =
+                   "XSRF Token send",
+                  Name = "XSRF-TOKEN",
+                  In = ParameterLocation.Header,
+                  Type = SecuritySchemeType.ApiKey,
+                  Scheme = "X-XSRF-TOKEN"
+              });
+
+               c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+               {
+                         new OpenApiSecurityScheme
+                        {
+                     Reference = new OpenApiReference
+                       {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "XSRF-TOKEN"
+                            },
+                    Scheme = "Http",
+                    Name = "XSRF-TOKEN",
+                    In = ParameterLocation.Header,
+
+           },
+
+           
+             new List<string>()
+            }
+         });
               c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                   Description =
@@ -124,6 +156,8 @@ namespace BlueKangrooCoreOnlyAPI
                     In = ParameterLocation.Header,
 
            },
+
+           
              new List<string>()
             }
          }); 
@@ -132,11 +166,7 @@ namespace BlueKangrooCoreOnlyAPI
 
           });
 
-   services.AddControllers()
-              .AddNewtonsoftJson(options =>
-              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-               );
-
+   
 
             services.AddMemoryCache();
             // Global validation no need at Class levels but question is its API 
@@ -144,14 +174,20 @@ namespace BlueKangrooCoreOnlyAPI
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
+            
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
 
             // prevent from froegry token it must be added afetr Add Stack
-                        services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+                          services.AddAntiforgery(options => { 
+                            options.HeaderName = "XSRF-TOKEN";
+                            options.SuppressXFrameOptionsHeader = false; });
+
      
         
-            services.AddMvc();
-         
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                });         
 
         }
 
@@ -177,7 +213,30 @@ namespace BlueKangrooCoreOnlyAPI
             app.UseRouting();
 
                app.UseAuthorization();  
+   
 
+            app.Use((context, next) =>
+{
+    var requestPath = context.Request.Path.Value;
+
+    if (string.Equals(requestPath, "/", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(requestPath, "/index.html", StringComparison.OrdinalIgnoreCase))
+    {
+        var tokenSet = antiforgery.GetAndStoreTokens(context);
+        Console.WriteLine($"Token Found here as {tokenSet.RequestToken!}");
+        context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
+            new CookieOptions { HttpOnly = false });
+    }
+    else 
+    {
+        var tokenSet = antiforgery.GetAndStoreTokens(context);
+        context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
+            new CookieOptions { HttpOnly = false });
+
+    }
+
+    return next(context);
+});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers(); 
@@ -204,18 +263,13 @@ namespace BlueKangrooCoreOnlyAPI
                  option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
                  option.DisplayOperationId();
             });
-        
-           app.UseHttpsRedirection();
-
             app.UseAntiforgeryTokens();
 
+         	app.UseMiddleware<ValidateAntiForgeryTokenMiddleware>();
 
-             app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("Authorization", "Bearer" );
-                
-                await next.Invoke();
-            });
+           app.UseHttpsRedirection();
+
+
 
             // stored tokens shifting redirect
 

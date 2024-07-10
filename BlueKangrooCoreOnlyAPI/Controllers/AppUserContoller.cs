@@ -68,6 +68,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
           [HttpGet]
           [Route("GetAllUsers")]
          [Authorize]
+         
+
          public async Task<IActionResult> GetAllUser()
         {
 
@@ -82,7 +84,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [HttpPost]
         [Route("InsertUser")]
         [Authorize]
-        public async Task<IActionResult> AddUser(AppUserModelDTO model)
+
+        public async Task<IActionResult> AddUser([FromBody] AppUserModelDTO model)
         {
 
             if (ModelState.IsValid)
