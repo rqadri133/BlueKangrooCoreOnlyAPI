@@ -102,36 +102,6 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSwaggerGen(c =>
           {
              c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
-             c.AddSecurityDefinition("XSRF-TOKEN", new OpenApiSecurityScheme
-              {
-                  Description =
-                   "XSRF Token send",
-                  Name = "XSRF-TOKEN",
-                  In = ParameterLocation.Header,
-                  Type = SecuritySchemeType.ApiKey,
-                  Scheme = "X-XSRF-TOKEN"
-              });
-
-               c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            {
-               {
-                         new OpenApiSecurityScheme
-                        {
-                     Reference = new OpenApiReference
-                       {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "XSRF-TOKEN"
-                            },
-                    Scheme = "Http",
-                    Name = "XSRF-TOKEN",
-                    In = ParameterLocation.Header,
-
-           },
-
-           
-             new List<string>()
-            }
-         });
               c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                   Description =
@@ -175,20 +145,26 @@ namespace BlueKangrooCoreOnlyAPI
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
             
+
+
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
-
-            // prevent from froegry token it must be added afetr Add Stack
-                          services.AddAntiforgery(options => { 
-                            options.HeaderName = "XSRF-TOKEN";
-                            options.SuppressXFrameOptionsHeader = false; });
-
-     
         
-            services.AddMvc(options =>
-                {
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                });         
+            // prevent from froegry token it must be added afetr Add Stack
+                      
+                          services.AddAntiforgery(options => { 
+                            options.HeaderName = "X-XSRF-TOKEN";
+                                options.FormFieldName = "AntiforgeryFieldname";
 
+                            options.SuppressXFrameOptionsHeader = false;
+                            
+                            });
+
+        
+         services.AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -212,38 +188,41 @@ namespace BlueKangrooCoreOnlyAPI
 
             app.UseRouting();
 
-               app.UseAuthorization();  
-   
+            app.UseAuthorization(); 
+                
+              
 
-            app.Use((context, next) =>
-{
-    var requestPath = context.Request.Path.Value;
 
-    if (string.Equals(requestPath, "/", StringComparison.OrdinalIgnoreCase)
-        || string.Equals(requestPath, "/index.html", StringComparison.OrdinalIgnoreCase))
-    {
-        var tokenSet = antiforgery.GetAndStoreTokens(context);
-        Console.WriteLine($"Token Found here as {tokenSet.RequestToken!}");
-        context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
-            new CookieOptions { HttpOnly = false });
-    }
-    else 
-    {
-        var tokenSet = antiforgery.GetAndStoreTokens(context);
-        context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
-            new CookieOptions { HttpOnly = false });
 
-    }
+            
 
-    return next(context);
-});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers(); 
             });
            
-             
+            app.UseAntiforgeryTokens();
+   
+     app.Use(next => context =>
+    {
+        string path = context.Request.Path.Value!;
 
+        if (
+            string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(path, "/swagger", StringComparison.OrdinalIgnoreCase))
+        {
+            // The request token can be sent as a JavaScript-readable cookie, 
+            // and Angular uses it by default.s
+            var tokens = antiforgery.GetAndStoreTokens(context);
+             context.Response.Cookies.Append(tokens.CookieToken! , tokens.RequestToken!, 
+             new CookieOptions() { HttpOnly = false });
+
+            context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, 
+                new CookieOptions() { HttpOnly = false });
+        }
+
+        return next(context);
+    });
              
          
             
@@ -251,6 +230,8 @@ namespace BlueKangrooCoreOnlyAPI
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
             /*Enabling Swagger ui, consider doing it on Development env only*/
+          
+          
             app.UseSwagger(option =>
           {
               
@@ -258,18 +239,17 @@ namespace BlueKangrooCoreOnlyAPI
       
           });
 
+
            app.UseSwaggerUI(option =>
              {
                  option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
                  option.DisplayOperationId();
             });
-            app.UseAntiforgeryTokens();
 
-         	app.UseMiddleware<ValidateAntiForgeryTokenMiddleware>();
-
+         
            app.UseHttpsRedirection();
 
-
+         
 
             // stored tokens shifting redirect
 

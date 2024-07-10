@@ -40,6 +40,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [HttpPost]
         [Route("LoginUser")]
         [Authorize]
+            
+
         public async Task<IActionResult> LoginUser([FromBody] AppUser model)
         {
             try
@@ -68,7 +70,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
           [HttpGet]
           [Route("GetAllUsers")]
          [Authorize]
-         
+
 
          public async Task<IActionResult> GetAllUser()
         {
@@ -84,6 +86,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [HttpPost]
         [Route("InsertUser")]
         [Authorize]
+
 
         public async Task<IActionResult> AddUser([FromBody] AppUserModelDTO model)
         {
