@@ -83,17 +83,33 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
 
 
-        [HttpPost]
-        [Route("InsertUser")]
+       [HttpPost]
+        [Route("AddUser")]
         [Authorize]
-
-
-        public async Task<IActionResult> AddUser([FromBody] AppUserModelDTO model)
+        public async Task<IActionResult> AddUser([FromBody]AppUser model)
         {
 
             if (ModelState.IsValid)
             {
-                return Ok(model);
+                try
+                {
+
+                     var user = await blueRepository.AddUser(model);
+                    if (user != null)
+                    {
+                        return Ok(user);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                }
+                catch (Exception excp)
+                {
+
+                    return BadRequest(excp);
+                }
+
             }
 
             return BadRequest();

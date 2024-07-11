@@ -77,7 +77,8 @@ namespace BlueKangrooCoreOnlyAPI
               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore 
 
                );        
-               
+        services.AddMvc(); 
+
                
             services.AddHttpContextAccessor();
                     
@@ -151,13 +152,7 @@ namespace BlueKangrooCoreOnlyAPI
         
             // prevent from froegry token it must be added afetr Add Stack
                       
-                          services.AddAntiforgery(options => { 
-                            options.HeaderName = "XSRF-TOKEN";
-                                options.FormFieldName = "AntiforgeryFieldname";
-
-                            options.SuppressXFrameOptionsHeader = false;
-                            
-                            });
+                          
 
         
         
@@ -198,14 +193,13 @@ namespace BlueKangrooCoreOnlyAPI
                 endpoints.MapControllers(); 
             });
            
-            app.UseAntiforgeryTokens();
+          // app.UseAntiforgeryTokens();
    
-     app.Use(next => context =>
+    /* app.Use(next => context =>
     {
         string path = context.Request.Path.Value!;
 
-        if (
-            string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+        if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(path, "/swagger", StringComparison.OrdinalIgnoreCase))
         {
             // The request token can be sent as a JavaScript-readable cookie, 
@@ -218,7 +212,7 @@ namespace BlueKangrooCoreOnlyAPI
         }
 
         return next(context);
-    });
+    }); */
              
          
             
