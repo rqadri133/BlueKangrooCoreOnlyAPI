@@ -25,6 +25,7 @@ using m = BlueKangrooCoreOnlyAPI.options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Antiforgery;
 using BlueKangrooCoreOnlyAPI.Utilities;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -151,10 +152,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
         
             // prevent from froegry token it must be added afetr Add Stack
-                      
-                          
-
-        
+          
         
         
         }
