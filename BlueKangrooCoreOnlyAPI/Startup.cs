@@ -152,7 +152,7 @@ namespace BlueKangrooCoreOnlyAPI
             // prevent from froegry token it must be added afetr Add Stack
                       
                           services.AddAntiforgery(options => { 
-                            options.HeaderName = "X-XSRF-TOKEN";
+                            options.HeaderName = "XSRF-TOKEN";
                                 options.FormFieldName = "AntiforgeryFieldname";
 
                             options.SuppressXFrameOptionsHeader = false;
@@ -160,10 +160,7 @@ namespace BlueKangrooCoreOnlyAPI
                             });
 
         
-         services.AddMvc(options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            });
+        
         
         }
 
@@ -214,8 +211,7 @@ namespace BlueKangrooCoreOnlyAPI
             // The request token can be sent as a JavaScript-readable cookie, 
             // and Angular uses it by default.s
             var tokens = antiforgery.GetAndStoreTokens(context);
-             context.Response.Cookies.Append(tokens.CookieToken! , tokens.RequestToken!, 
-             new CookieOptions() { HttpOnly = false });
+            
 
             context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, 
                 new CookieOptions() { HttpOnly = false });

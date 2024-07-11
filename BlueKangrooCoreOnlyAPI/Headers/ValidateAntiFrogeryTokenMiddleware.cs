@@ -32,11 +32,10 @@ public class ValidateAntiForgeryTokenMiddleware
         {
                 var requestPath = context.Request.Path.Value;
                 
-                context.Response.Cookies.Append(tokenSet.CookieToken! , tokenSet.RequestToken!,
-                    new CookieOptions { HttpOnly = false });
+           
             context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
                     new CookieOptions { HttpOnly = false });
-            Console.WriteLine($"Display  {_antiforgery.GetTokens(context)}");
+            Console.WriteLine($"Display  {_antiforgery.GetTokens(context)}");   
             await _antiforgery.ValidateRequestAsync(context);
         }
 
