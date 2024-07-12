@@ -191,7 +191,7 @@ namespace BlueKangrooCoreOnlyAPI
                 endpoints.MapControllers(); 
             });
            
-          // app.UseAntiforgeryTokens();
+          app.UseAntiforgeryTokens();
    
     /* app.Use(next => context =>
     {
