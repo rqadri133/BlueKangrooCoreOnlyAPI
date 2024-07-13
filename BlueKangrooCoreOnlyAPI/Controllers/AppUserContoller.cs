@@ -21,7 +21,6 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]  
-    [AutoValidateAntiforgeryToken]
     public class AppUserController : ControllerBase
     {
         IBlueKangrooRepository blueRepository ;
@@ -40,7 +39,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [HttpPost]
         [Route("LoginUser")]
         [Authorize]
-            
+        [ValidateAntiForgeryToken]
+   
 
         public async Task<IActionResult> LoginUser([FromBody] AppUser model)
         {
@@ -86,6 +86,8 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
        [HttpPost]
         [Route("AddUser")]
         [Authorize]
+        [ValidateAntiForgeryToken]
+   
         public async Task<IActionResult> AddUser([FromBody]AppUser model)
         {
 
