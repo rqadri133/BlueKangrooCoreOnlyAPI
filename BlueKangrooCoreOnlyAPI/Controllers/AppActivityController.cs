@@ -16,11 +16,14 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
     /// <summary>
     /// this will provide crud operations for AppBuyer 
+    /// https://www.pollydocs.org/strategies/timeout.html 
+    /// Add REsilence and Circuit braker Pipelines for retry /// 
     /// </summary>
 
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Policy = "CustomGuidAuthorization")]
+    [AutoValidateAntiforgeryToken]
     public class ActivityController : ControllerBase
     {
         IActivityRepository activityRepo;

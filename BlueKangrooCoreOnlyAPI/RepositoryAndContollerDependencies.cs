@@ -2,15 +2,23 @@
 using BlueKangrooCoreOnlyAPI.Caching;
 using BlueKangrooCoreOnlyAPI.Controllers;
 using BlueKangrooCoreOnlyAPI.Models;
+using BlueKangrooCoreOnlyAPI.Repositories;
 using BlueKangrooCoreOnlyAPI.Repository;
+using BlueKangrooCoreOnlyAPI.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace BlueKangrooCoreOnlyAPI
 {
     public static class RepositoryAndContollerDependencies
     {
+    
         public static void AddDependencies(this IServiceCollection services)
         {
             services.AddSingleton<IBlueKangrooRepository, BlueKangrooRepository>();
@@ -29,8 +37,7 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<ICompanyRepository, CompanyRepository>();
             services.AddSingleton<ITemplateUIRepository, TemplateUIRepository>();
-            services.AddSingleton<IBrandRepository, BrandRepository>();
-
+        
             services.AddScoped(typeof(ICacheManager<AppBuyer>), typeof(CacheManager<AppBuyer>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<CustomGuidAuthorizationHandler>));
             services.AddScoped(typeof(ILogger), typeof(ILogger<UserAuthorization>));
@@ -68,8 +75,17 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddScoped(typeof(ICacheManager<AppUserRoleDetail>), typeof(CacheManager<AppUserRoleDetail>));
             services.AddScoped(typeof(ICacheManager<AppUitemplate>), typeof(CacheManager<AppUitemplate>));
             services.AddScoped(typeof(ICacheManager<AppBrand>), typeof(CacheManager<AppBrand>));
+            services.AddScoped(typeof(IServiceBus<AppDispatchAssigned>), typeof(DispatchItemServiceBus<AppDispatchAssigned>));
+            services.AddScoped(typeof(ICacheManager<PackageDetails>),  typeof(CacheManager<PackageDetails>));
+            services.AddScoped(typeof(ILogger<PackageHandlerController> ),typeof(ILogger<PackageHandlerController>));
 
-        }
 
     }
+
+
 }
+
+
+
+}
+

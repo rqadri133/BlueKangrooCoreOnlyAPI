@@ -10,6 +10,8 @@ using Microsoft.Extensions.Caching.Distributed;
 using BlueKangrooCoreOnlyAPI.Caching;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Google.Rpc;
+using System.Net.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -133,28 +135,35 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteSeller")]
-        public async Task<IActionResult> DeleteSeller([FromBody]AppSeller seller)
+        public async Task<HttpResponseMessage> DeleteSeller([FromBody]AppSeller seller)
         {
-            int result = 0;
-
-            if (seller == null)
-            {
-                return BadRequest();
-            }
+              int result = 0;
+              // The microservice response messages must be handled properly 
+             if (seller == null)
+             {
+                var responses = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest);
+                return responses;   
+             
+             }
 
             try
             {
                 result = await blueRepository.DeleteSeller(seller);
                 if (result == 0)
                 {
-                    return NotFound();
+                    var responses = new HttpResponseMessage(System.Net.HttpStatusCode.NotFound);
+                    return responses; 
                 }
-                return Ok();
+                // Means this data no longer exist its gone 
+                var deletedResponse = new HttpResponseMessage(System.Net.HttpStatusCode.Gone);  
+                return deletedResponse;
             }
             catch (Exception excp)
             {
 
-                return BadRequest(excp);
+               // Means this data no longer exist its gone 
+                var expenseResponse = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest);  
+                return expenseResponse;
             }
         }
 

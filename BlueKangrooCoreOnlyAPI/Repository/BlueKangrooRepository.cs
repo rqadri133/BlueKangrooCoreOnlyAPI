@@ -24,7 +24,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
             if (db != null)
             {
-                await db.AppBuyer.AddAsync(buyer);
+                await db.AppBuyers.AddAsync(buyer);
                 await db.SaveChangesAsync();
 
                 return buyer;
@@ -38,7 +38,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
             if (db != null)
             {
-                await db.AppSeller.AddAsync(seller);
+                await db.AppSellers.AddAsync(seller);
                 await db.SaveChangesAsync();
 
                 return seller;
@@ -53,12 +53,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var buyerDel = await db.AppBuyer.FirstOrDefaultAsync(p=>p.AppBuyerId == buyer.AppBuyerId);
+                var buyerDel = await db.AppBuyers.FirstOrDefaultAsync(p=>p.AppBuyerId == buyer.AppBuyerId);
 
                 if (buyerDel != null)
                 {
                     //Delete that post
-                    db.AppBuyer.Remove(buyerDel);
+                    db.AppBuyers.Remove(buyerDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -78,7 +78,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
              if(db != null)
               {
 
-                var  users = await db.AppUser.ToListAsync<AppUser>();
+                var  users = await db.AppUsers.ToListAsync<AppUser>();
                 return users;
 
              }
@@ -104,12 +104,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var sellerDel = await db.AppSeller.FirstOrDefaultAsync(p => p.AppSellerId == seller.AppSellerId);
+                var sellerDel = await db.AppSellers.FirstOrDefaultAsync(p => p.AppSellerId == seller.AppSellerId);
 
                 if (sellerDel != null)
                 {
                     //Delete that post
-                    db.AppSeller.Remove(sellerDel);
+                    db.AppSellers.Remove(sellerDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -136,7 +136,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
                            //Find the post for specific post id
                            // user name entry found
-                       var userinfo = await db.AppUser.FirstOrDefaultAsync(p => p.AppUserName ==   user.AppUserName);
+                       var userinfo = await db.AppUsers.FirstOrDefaultAsync(p => p.AppUserName ==   user.AppUserName);
                     // userinfo;
                      
                     
@@ -151,11 +151,11 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                             if(!_findMatch)
                             {
                             // dont proceed 
-                               var appError = await db.AppError.FindAsync((int)BlueKangarooErrorCode.USER_ID_PASSWORD_NOT_CORRECT);
+                               var appError = await db.AppErrors.FindAsync((int)BlueKangarooErrorCode.USER_ID_PASSWORD_NOT_CORRECT);
                                throw new Exception(appError.AppErrorDescription);
                             } 
 
-                            var tokenInformation    = await db.AppToken.FirstOrDefaultAsync(token => token.AppTokenUserId == userinfo.AppUserId);    
+                            var tokenInformation    = await db.AppTokens.FirstOrDefaultAsync(token => token.AppTokenUserId == userinfo.AppUserId);    
                             if(tokenInformation != null)
                             {
                                  if(tokenInformation.TokenExpiredDate > DateTime.Now)
@@ -170,7 +170,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                                 // the method is accessible earlier only with bearer token 
                                  // this is add on token to return to client 
                                  Guid _tokenId = Guid.NewGuid();
-                                 var _newTokenInfo  = await db.AppToken.AddAsync(new AppToken() {  
+                                 var _newTokenInfo  = await db.AppTokens.AddAsync(new AppToken() {  
                                                               AppTokenId = _tokenId , 
                                                               AppTokenUserId = userinfo.AppUserId , 
                                                               TokenExpiredDate = DateTime.Now.AddDays(30) ,
@@ -197,7 +197,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                        }     
                         else
                         {
-                                var appError = await db.AppError.FindAsync((int)BlueKangarooErrorCode.USER_ID_PASSWORD_NOT_CORRECT);
+                                var appError = await db.AppErrors.FindAsync((int)BlueKangarooErrorCode.USER_ID_PASSWORD_NOT_CORRECT);
                                 throw new Exception(appError.AppErrorDescription);
 
                         }
@@ -231,7 +231,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if(db != null)
             {
 
-               var  buyers = await db.AppBuyer.ToListAsync<AppBuyer>();
+               var  buyers = await db.AppBuyers.ToListAsync<AppBuyer>();
                 return buyers;
 
             }
@@ -248,7 +248,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
 
-                    var buyer = await db.AppBuyer.FirstOrDefaultAsync<AppBuyer>(p=>p.AppBuyerId == buyerId  );
+                    var buyer = await db.AppBuyers.FirstOrDefaultAsync<AppBuyer>(p=>p.AppBuyerId == buyerId  );
                     return buyer;
 
                 }
@@ -269,7 +269,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
 
-                    var seller = await db.AppSeller.FirstOrDefaultAsync<AppSeller>(p => p.AppSellerId == sellerId);
+                    var seller = await db.AppSellers.FirstOrDefaultAsync<AppSeller>(p => p.AppSellerId == sellerId);
                     return seller;
 
                 }
@@ -293,7 +293,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                     if (db != null)
                     {
 
-                        var sellers = await db.AppSeller.ToListAsync<AppSeller>();
+                        var sellers = await db.AppSellers.ToListAsync<AppSeller>();
                         return sellers;
 
                     }
@@ -312,7 +312,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppBuyer.Update(buyer);
+                db.AppBuyers.Update(buyer);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();
@@ -327,7 +327,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppSeller.Update(seller);
+                db.AppSellers.Update(seller);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();
@@ -343,7 +343,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var appUserRole = await db.AppUserRole.FindAsync(user.AppRoleId);
+                var appUserRole = await db.AppUserRoles.FindAsync(user.AppRoleId);
                 if (appUserRole != null)
                 {
 
@@ -351,14 +351,14 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                     user.AppUserPwd = Security.SecurityLogin.CreateHash(user.AppUserPwd);
                     user.CreatedDate = DateTime.Now;
 
-                    await db.AppUser.AddAsync(user);
+                    await db.AppUsers.AddAsync(user);
                     await db.SaveChangesAsync();
 
                     return user;
                 }
                 else
                 {
-                      var userError = await db.AppError.FindAsync((int)BlueKangarooErrorCode.USER_ROLE_NOT_DEFINED);
+                      var userError = await db.AppErrors.FindAsync((int)BlueKangarooErrorCode.USER_ROLE_NOT_DEFINED);
                       throw new Exception(userError.AppErrorDescription);
 
                 }

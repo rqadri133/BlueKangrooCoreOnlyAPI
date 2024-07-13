@@ -7,10 +7,10 @@ namespace BlueKangrooCoreOnlyAPI.Enum
 {
     public enum BlueKangarooErrorCode
     {
-        Referential_Integrity_Code = 1001 ,
-        ID_NOT_EXIST = 1002,
-        USER_ROLE_NOT_DEFINED = 1003 ,
-        USER_ID_PASSWORD_NOT_CORRECT = 1004
+        Referential_Integrity_Code = 101 ,
+        ID_NOT_EXIST = 102,
+        USER_ROLE_NOT_DEFINED = 103 ,
+        USER_ID_PASSWORD_NOT_CORRECT = 104
 
     }
 }

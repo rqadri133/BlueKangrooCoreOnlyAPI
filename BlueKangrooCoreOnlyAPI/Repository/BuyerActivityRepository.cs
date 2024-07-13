@@ -19,7 +19,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 activity.AppBuyerActivityId = Guid.NewGuid();
                 activity.CreatedDate = DateTime.Now;
-                await db.AppBuyerActivity.AddAsync(activity);
+                await db.AppBuyerActivities.AddAsync(activity);
                 await db.SaveChangesAsync();
 
                 return activity;
@@ -34,7 +34,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var activities = await db.AppBuyerActivity.ToListAsync<AppBuyerActivity>();
+                var activities = await db.AppBuyerActivities.ToListAsync<AppBuyerActivity>();
                 return activities;
 
             }
@@ -50,12 +50,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var acDel = await db.AppBuyerActivity.FirstOrDefaultAsync(p => p.AppBuyerActivityId == buyerActivityId);
+                var acDel = await db.AppBuyerActivities.FirstOrDefaultAsync(p => p.AppBuyerActivityId == buyerActivityId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppBuyerActivity.Remove(acDel);
+                    db.AppBuyerActivities.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selActivity = await db.AppBuyerActivity.FirstOrDefaultAsync<AppBuyerActivity>(p => p.AppBuyerActivityId == activityInfo);
+                var selActivity = await db.AppBuyerActivities.FirstOrDefaultAsync<AppBuyerActivity>(p => p.AppBuyerActivityId == activityInfo);
                 return selActivity;
 
             }
@@ -86,7 +86,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppBuyerActivity.Update(activity);
+                db.AppBuyerActivities.Update(activity);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

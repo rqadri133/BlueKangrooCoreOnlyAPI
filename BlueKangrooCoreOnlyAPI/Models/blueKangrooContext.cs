@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+#nullable disable
+
 namespace BlueKangrooCoreOnlyAPI.Models
 {
     public partial class blueKangrooContext : DbContext
@@ -15,106 +17,110 @@ namespace BlueKangrooCoreOnlyAPI.Models
         {
         }
 
-        public virtual DbSet<AppActivity> AppActivity { get; set; }
-        public virtual DbSet<AppBrand> AppBrand { get; set; }
-        public virtual DbSet<AppBuyer> AppBuyer { get; set; }
-        public virtual DbSet<AppBuyerActivity> AppBuyerActivity { get; set; }
-        public virtual DbSet<AppBuyerCostSheet> AppBuyerCostSheet { get; set; }
-        public virtual DbSet<AppBuyerSellerTrade> AppBuyerSellerTrade { get; set; }
-        public virtual DbSet<AppCategory> AppCategory { get; set; }
-        public virtual DbSet<AppClass> AppClass { get; set; }
-        public virtual DbSet<AppCompany> AppCompany { get; set; }
-        public virtual DbSet<AppCrossRefProcess> AppCrossRefProcess { get; set; }
-        public virtual DbSet<AppDataType> AppDataType { get; set; }
-        public virtual DbSet<AppDemand> AppDemand { get; set; }
-        public virtual DbSet<AppDocumentAssigned> AppDocumentAssigned { get; set; }
-        public virtual DbSet<AppDocumentTransaction> AppDocumentTransaction { get; set; }
-        public virtual DbSet<AppDoor> AppDoor { get; set; }
-        public virtual DbSet<AppDoorKey> AppDoorKey { get; set; }
-        public virtual DbSet<AppDriver> AppDriver { get; set; }
-        public virtual DbSet<AppError> AppError { get; set; }
-        public virtual DbSet<AppExport> AppExport { get; set; }
-        public virtual DbSet<AppFactor> AppFactor { get; set; }
-        public virtual DbSet<AppFinancialInstituition> AppFinancialInstituition { get; set; }
-        public virtual DbSet<AppFreight> AppFreight { get; set; }
-        public virtual DbSet<AppFreightType> AppFreightType { get; set; }
-        public virtual DbSet<AppGroundActivity> AppGroundActivity { get; set; }
-        public virtual DbSet<AppGroundLifter> AppGroundLifter { get; set; }
-        public virtual DbSet<AppGroundLogistics> AppGroundLogistics { get; set; }
-        public virtual DbSet<AppGroundPlacementParkNumber> AppGroundPlacementParkNumber { get; set; }
-        public virtual DbSet<AppImport> AppImport { get; set; }
-        public virtual DbSet<AppIndustrialRegion> AppIndustrialRegion { get; set; }
-        public virtual DbSet<AppIndustrialZone> AppIndustrialZone { get; set; }
-        public virtual DbSet<AppInstruementation> AppInstruementation { get; set; }
-        public virtual DbSet<AppJsonfile> AppJsonfile { get; set; }
-        public virtual DbSet<AppKey> AppKey { get; set; }
-        public virtual DbSet<AppMetalCombinationAlloy> AppMetalCombinationAlloy { get; set; }
-        public virtual DbSet<AppPackage> AppPackage { get; set; }
-        public virtual DbSet<AppPackageHandler> AppPackageHandler { get; set; }
-        public virtual DbSet<AppPallete> AppPallete { get; set; }
-        public virtual DbSet<AppPriceParityCheck> AppPriceParityCheck { get; set; }
-        public virtual DbSet<AppProcess> AppProcess { get; set; }
-        public virtual DbSet<AppProcessLanguageTokens> AppProcessLanguageTokens { get; set; }
-        public virtual DbSet<AppProcessLog> AppProcessLog { get; set; }
-        public virtual DbSet<AppProcessPipeLine> AppProcessPipeLine { get; set; }
-        public virtual DbSet<AppProcessRunningOnServer> AppProcessRunningOnServer { get; set; }
-        public virtual DbSet<AppProduct> AppProduct { get; set; }
-        public virtual DbSet<AppProperty> AppProperty { get; set; }
-        public virtual DbSet<AppRouteAlert> AppRouteAlert { get; set; }
-        public virtual DbSet<AppSaleActivity> AppSaleActivity { get; set; }
-        public virtual DbSet<AppSeller> AppSeller { get; set; }
-        public virtual DbSet<AppSellerActivity> AppSellerActivity { get; set; }
-        public virtual DbSet<AppSensitiveMaterial> AppSensitiveMaterial { get; set; }
-        public virtual DbSet<AppShelve> AppShelve { get; set; }
-        public virtual DbSet<AppSupply> AppSupply { get; set; }
-        public virtual DbSet<AppSupplyDemandChart> AppSupplyDemandChart { get; set; }
-        public virtual DbSet<AppToken> AppToken { get; set; }
-        public virtual DbSet<AppTokenDetails> AppTokenDetails { get; set; }
-        public virtual DbSet<AppTokenGeneration> AppTokenGeneration { get; set; }
-        public virtual DbSet<AppTray> AppTray { get; set; }
-        public virtual DbSet<AppTruck> AppTruck { get; set; }
-        public virtual DbSet<AppTruckRoute> AppTruckRoute { get; set; }
-        public virtual DbSet<AppTruckRouteAssigned> AppTruckRouteAssigned { get; set; }
-        public virtual DbSet<AppUidataDependencyInjection> AppUidataDependencyInjection { get; set; }
-        public virtual DbSet<AppUitemplate> AppUitemplate { get; set; }
-        public virtual DbSet<AppUitemplateData> AppUitemplateData { get; set; }
-        public virtual DbSet<AppUser> AppUser { get; set; }
-        public virtual DbSet<AppUserActivityDetails> AppUserActivityDetails { get; set; }
-        public virtual DbSet<AppUserActivityErrors> AppUserActivityErrors { get; set; }
-        public virtual DbSet<AppUserActivityExecutedTime> AppUserActivityExecutedTime { get; set; }
-        public virtual DbSet<AppUserActivityFrame> AppUserActivityFrame { get; set; }
-        public virtual DbSet<AppUserActivityInput> AppUserActivityInput { get; set; }
-        public virtual DbSet<AppUserRole> AppUserRole { get; set; }
-        public virtual DbSet<AppUserRoleDetail> AppUserRoleDetail { get; set; }
-        public virtual DbSet<AppUserSesion> AppUserSesion { get; set; }
-        public virtual DbSet<AppUserSessionCrossRefVar> AppUserSessionCrossRefVar { get; set; }
-        public virtual DbSet<AppWareHouse> AppWareHouse { get; set; }
-        public virtual DbSet<AppWareHouseNode> AppWareHouseNode { get; set; }
-        public virtual DbSet<AppWareHouseVendor> AppWareHouseVendor { get; set; }
-        public virtual DbSet<ApplicationContext> ApplicationContext { get; set; }
-        public virtual DbSet<ApplicationModel> ApplicationModel { get; set; }
-        public virtual DbSet<Sysdiagrams> Sysdiagrams { get; set; }
+        public virtual DbSet<AppActivity> AppActivities { get; set; }
+        public virtual DbSet<AppBuyer> AppBuyers { get; set; }
+        public virtual DbSet<AppBuyerActivity> AppBuyerActivities { get; set; }
+        public virtual DbSet<AppBuyerCostSheet> AppBuyerCostSheets { get; set; }
+        public virtual DbSet<AppBuyerSellerTrade> AppBuyerSellerTrades { get; set; }
+        public virtual DbSet<AppCategory> AppCategories { get; set; }
+        public virtual DbSet<AppClass> AppClasses { get; set; }
+        public virtual DbSet<AppCompany> AppCompanies { get; set; }
+        public virtual DbSet<AppCrossRefProcess> AppCrossRefProcesses { get; set; }
+        public virtual DbSet<AppDataType> AppDataTypes { get; set; }
+        public virtual DbSet<AppDemand> AppDemands { get; set; }
+        public virtual DbSet<AppDispatch> AppDispatches { get; set; }
+        public virtual DbSet<AppDocumentAssigned> AppDocumentAssigneds { get; set; }
+        public virtual DbSet<AppDocumentTransaction> AppDocumentTransactions { get; set; }
+        public virtual DbSet<AppDoor> AppDoors { get; set; }
+        public virtual DbSet<AppDoorKey> AppDoorKeys { get; set; }
+        public virtual DbSet<AppDriver> AppDrivers { get; set; }
+        public virtual DbSet<AppError> AppErrors { get; set; }
+        public virtual DbSet<AppExport> AppExports { get; set; }
+        public virtual DbSet<AppFactor> AppFactors { get; set; }
+        public virtual DbSet<AppFinancialInstituition> AppFinancialInstituitions { get; set; }
+        public virtual DbSet<AppFreight> AppFreights { get; set; }
+        public virtual DbSet<AppFreightType> AppFreightTypes { get; set; }
+        public virtual DbSet<AppGroundActivity> AppGroundActivities { get; set; }
+        public virtual DbSet<AppGroundLifter> AppGroundLifters { get; set; }
+        public virtual DbSet<AppGroundLogistic> AppGroundLogistics { get; set; }
+        public virtual DbSet<AppGroundPlacementParkNumber> AppGroundPlacementParkNumbers { get; set; }
+        public virtual DbSet<AppImport> AppImports { get; set; }
+        public virtual DbSet<AppIndustrialRegion> AppIndustrialRegions { get; set; }
+        public virtual DbSet<AppIndustrialZone> AppIndustrialZones { get; set; }
+        public virtual DbSet<AppInstruementation> AppInstruementations { get; set; }
+        public virtual DbSet<AppJsonfile> AppJsonfiles { get; set; }
+        public virtual DbSet<AppKey> AppKeys { get; set; }
+        public virtual DbSet<AppMetalCombinationAlloy> AppMetalCombinationAlloys { get; set; }
+        public virtual DbSet<AppOrder> AppOrders { get; set; }
+        public virtual DbSet<AppPackage> AppPackages { get; set; }
+        public virtual DbSet<AppPackageHandler> AppPackageHandlers { get; set; }
+        public virtual DbSet<AppPallete> AppPalletes { get; set; }
+        public virtual DbSet<AppPriceParityCheck> AppPriceParityChecks { get; set; }
+        public virtual DbSet<AppProcess> AppProcesses { get; set; }
+        public virtual DbSet<AppProcessLanguageToken> AppProcessLanguageTokens { get; set; }
+        public virtual DbSet<AppProcessLog> AppProcessLogs { get; set; }
+        public virtual DbSet<AppProcessPipeLine> AppProcessPipeLines { get; set; }
+        public virtual DbSet<AppProcessRunningOnServer> AppProcessRunningOnServers { get; set; }
+        public virtual DbSet<AppProduct> AppProducts { get; set; }
+        public virtual DbSet<AppProperty> AppProperties { get; set; }
+        public virtual DbSet<AppRouteAlert> AppRouteAlerts { get; set; }
+        public virtual DbSet<AppSaleActivity> AppSaleActivities { get; set; }
+        public virtual DbSet<AppSeller> AppSellers { get; set; }
+        public virtual DbSet<AppSellerActivity> AppSellerActivities { get; set; }
+        public virtual DbSet<AppSensitiveMaterial> AppSensitiveMaterials { get; set; }
+        public virtual DbSet<AppShelve> AppShelves { get; set; }
+        public virtual DbSet<AppSupply> AppSupplies { get; set; }
+        public virtual DbSet<AppSupplyDemandChart> AppSupplyDemandCharts { get; set; }
+        public virtual DbSet<AppToken> AppTokens { get; set; }
+        public virtual DbSet<AppTokenDetail> AppTokenDetails { get; set; }
+        public virtual DbSet<AppTokenGeneration> AppTokenGenerations { get; set; }
+        public virtual DbSet<AppTray> AppTrays { get; set; }
+        public virtual DbSet<AppTruck> AppTrucks { get; set; }
+        public virtual DbSet<AppTruckRoute> AppTruckRoutes { get; set; }
+        public virtual DbSet<AppTruckRouteAssigned> AppTruckRouteAssigneds { get; set; }
+        public virtual DbSet<AppUidataDependencyInjection> AppUidataDependencyInjections { get; set; }
+        public virtual DbSet<AppUitemplate> AppUitemplates { get; set; }
+        public virtual DbSet<AppUitemplateDatum> AppUitemplateData { get; set; }
+        public virtual DbSet<AppUser> AppUsers { get; set; }
+        public virtual DbSet<AppUserActivityDetail> AppUserActivityDetails { get; set; }
+        public virtual DbSet<AppUserActivityError> AppUserActivityErrors { get; set; }
+        public virtual DbSet<AppUserActivityExecutedTime> AppUserActivityExecutedTimes { get; set; }
+        public virtual DbSet<AppUserActivityFrame> AppUserActivityFrames { get; set; }
+        public virtual DbSet<AppUserActivityInput> AppUserActivityInputs { get; set; }
+        public virtual DbSet<AppUserRole> AppUserRoles { get; set; }
+        public virtual DbSet<AppUserSesion> AppUserSesions { get; set; }
+        public virtual DbSet<AppUserSessionCrossRefVar> AppUserSessionCrossRefVars { get; set; }
+        public virtual DbSet<AppWareHouse> AppWareHouses { get; set; }
+        public virtual DbSet<AppWareHouseNode> AppWareHouseNodes { get; set; }
+        public virtual DbSet<AppWareHouseVendor> AppWareHouseVendors { get; set; }
+        public virtual DbSet<Appcart> Appcarts { get; set; }
+        public virtual DbSet<ApplicationContext> ApplicationContexts { get; set; }
+        public virtual DbSet<ApplicationModel> ApplicationModels { get; set; }
+        public virtual DbSet<Applocation> Applocations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:bluekangaroosql.database.windows.net,1433;Database=bluekangroo;user id=sqadri144;PWD=Astaghees@#^*144");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=tcp:blueserverdb.database.windows.net,1433;user id=sqlserveradmin;Password=Tango@#^*199;Initial Catalog=blueKangroo;Trusted_Connection=True; Integrated Security=false;Connection Timeout=1800");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
             modelBuilder.Entity<AppActivity>(entity =>
             {
-                entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName })
-                    .HasName("UQ__AppActiv__56AE0C0200507C66")
+                entity.ToTable("AppActivity");
+
+                entity.HasIndex(e => new { e.AppProjectId, e.AppActivityName }, "UQ__AppActiv__56AE0C02A6A26594")
                     .IsUnique();
 
                 entity.Property(e => e.AppActivityId)
-                    .HasColumnName("AppActivityID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppActivityID");
 
                 entity.Property(e => e.AppActivityEndDate).HasColumnType("datetime");
 
@@ -129,46 +135,25 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppBrand>(entity =>
-            {
-                entity.HasIndex(e => e.AppBrandLicenseId)
-                    .HasName("UQ__AppBrand__FCFB06880C151CDF")
-                    .IsUnique();
-
-                entity.Property(e => e.AppBrandId)
-                    .HasColumnName("AppBrandID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.AppBrandLicenseId)
-                    .IsRequired()
-                    .HasColumnName("AppBrandLicenseID")
-                    .HasMaxLength(2000);
-
-                entity.Property(e => e.AppBrandName)
-                    .IsRequired()
-                    .HasMaxLength(2000);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<AppBuyer>(entity =>
             {
-                entity.HasIndex(e => e.AppBuyerHashedSsc)
-                    .HasName("UQ__AppBuyer__AD5E7D9C0C75194D")
+                entity.ToTable("AppBuyer");
+
+                entity.HasIndex(e => e.AppBuyerHashedSsc, "UQ__AppBuyer__AD5E7D9CF0129169")
                     .IsUnique();
 
                 entity.Property(e => e.AppBuyerId)
-                    .HasColumnName("AppBuyerID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppBuyerID");
 
                 entity.Property(e => e.AppBuyerHashedSsc)
-                    .HasColumnName("AppBuyerHashedSSC")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppBuyerHashedSSC");
 
                 entity.Property(e => e.AppBuyerLicenseHashedId)
                     .IsRequired()
-                    .HasColumnName("AppBuyerLicenseHashedID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppBuyerLicenseHashedID");
 
                 entity.Property(e => e.AppBuyerName)
                     .IsRequired()
@@ -179,9 +164,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppBuyerActivity>(entity =>
             {
+                entity.ToTable("AppBuyerActivity");
+
                 entity.Property(e => e.AppBuyerActivityId)
-                    .HasColumnName("AppBuyerActivityID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppBuyerActivityID");
 
                 entity.Property(e => e.AppActivityId).HasColumnName("AppActivityID");
 
@@ -197,14 +184,16 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppBuyerCostId)
                     .HasName("PK_AppBuyerCostID");
 
+                entity.ToTable("AppBuyerCostSheet");
+
                 entity.Property(e => e.AppBuyerCostId)
-                    .HasColumnName("AppBuyerCostID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppBuyerCostID");
 
                 entity.Property(e => e.AppBuyerId)
                     .IsRequired()
-                    .HasColumnName("AppBuyerID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppBuyerID");
 
                 entity.Property(e => e.AppDutyIdapplied).HasColumnName("AppDutyIDApplied");
 
@@ -212,8 +201,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppProductId)
                     .IsRequired()
-                    .HasColumnName("AppProductID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppProductID");
 
                 entity.Property(e => e.AppShipmentCost).HasColumnType("decimal(8, 4)");
 
@@ -225,9 +214,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppTradeId)
                     .HasName("PK_AppTradeID");
 
+                entity.ToTable("AppBuyerSellerTrade");
+
                 entity.Property(e => e.AppTradeId)
-                    .HasColumnName("AppTradeID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTradeID");
 
                 entity.Property(e => e.AppBuyerId).HasColumnName("AppBuyerID");
 
@@ -242,9 +233,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppCategory>(entity =>
             {
+                entity.ToTable("AppCategory");
+
                 entity.Property(e => e.AppCategoryId)
-                    .HasColumnName("AppCategoryID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppCategoryID");
 
                 entity.Property(e => e.AppCategoryName)
                     .IsRequired()
@@ -255,9 +248,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppClass>(entity =>
             {
+                entity.ToTable("AppClass");
+
                 entity.Property(e => e.AppClassId)
-                    .HasColumnName("AppClassID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppClassID");
 
                 entity.Property(e => e.AppClassName)
                     .IsRequired()
@@ -268,9 +263,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppCompany>(entity =>
             {
+                entity.ToTable("AppCompany");
+
                 entity.Property(e => e.AppCompanyId)
-                    .HasColumnName("AppCompanyID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppCompanyID");
 
                 entity.Property(e => e.AppCompanyOrganizationName)
                     .IsRequired()
@@ -284,8 +281,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.ToTable("AppCrossRefPRocess");
 
                 entity.Property(e => e.AppCrossRefProcessId)
-                    .HasColumnName("AppCrossRefProcessID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppCrossRefProcessID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -296,9 +293,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppDataType>(entity =>
             {
+                entity.ToTable("AppDataType");
+
                 entity.Property(e => e.AppDataTypeId)
-                    .HasColumnName("AppDataTypeID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppDataTypeID");
 
                 entity.Property(e => e.AppDataTypeName)
                     .IsRequired()
@@ -309,9 +308,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppDemand>(entity =>
             {
+                entity.ToTable("AppDemand");
+
                 entity.Property(e => e.AppDemandId)
-                    .HasColumnName("AppDemandID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppDemandID");
 
                 entity.Property(e => e.AppDemandDeprivalRate).HasColumnType("decimal(8, 2)");
 
@@ -332,14 +333,49 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<AppDispatch>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("AppDispatch");
+
+                entity.Property(e => e.AppActualDeliveryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.AppActualDipatchDate).HasColumnType("datetime");
+
+                entity.Property(e => e.AppCartId).HasColumnName("AppCartID");
+
+                entity.Property(e => e.AppDipatchDetailsDesc)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.AppDispatchId).HasColumnName("AppDispatchID");
+
+                entity.Property(e => e.AppEstimatedDeliveryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.AppLocationId).HasColumnName("AppLocationID");
+
+                entity.Property(e => e.AppPackageHandlerId).HasColumnName("AppPackageHandlerID");
+
+                entity.Property(e => e.AppPackageId).HasColumnName("AppPackageID");
+
+                entity.Property(e => e.AppScheduledDispatchDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.RecallCancelDispatchedDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<AppDocumentAssigned>(entity =>
             {
                 entity.HasKey(e => e.BusineesDocAssignedId)
                     .HasName("PK_BusinessDocAssignedID");
 
+                entity.ToTable("AppDocumentAssigned");
+
                 entity.Property(e => e.BusineesDocAssignedId)
-                    .HasColumnName("BusineesDocAssignedID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("BusineesDocAssignedID");
 
                 entity.Property(e => e.ActivityAssignedId).HasColumnName("ActivityAssignedID");
 
@@ -352,12 +388,14 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.HasNoKey();
 
+                entity.ToTable("AppDocumentTransaction");
+
                 entity.Property(e => e.AppDocumentAmount).HasColumnType("decimal(8, 2)");
 
                 entity.Property(e => e.AppDocumentSignature)
                     .IsRequired()
                     .HasMaxLength(1)
-                    .IsFixedLength();
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.AppDocumentTemplatePath)
                     .IsRequired()
@@ -374,9 +412,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppDoor>(entity =>
             {
+                entity.ToTable("AppDoor");
+
                 entity.Property(e => e.AppDoorId)
-                    .HasColumnName("AppDoorID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppDoorID");
 
                 entity.Property(e => e.AppDoorName)
                     .IsRequired()
@@ -387,9 +427,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppDoorKey>(entity =>
             {
+                entity.ToTable("AppDoorKey");
+
                 entity.Property(e => e.AppDoorKeyId)
-                    .HasColumnName("AppDoorKeyID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppDoorKeyID");
 
                 entity.Property(e => e.AppKeyCode)
                     .IsRequired()
@@ -404,9 +446,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppDriver>(entity =>
             {
+                entity.ToTable("AppDriver");
+
                 entity.Property(e => e.AppDriverId)
-                    .HasColumnName("AppDriverID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppDriverID");
 
                 entity.Property(e => e.AppDriverAddress)
                     .IsRequired()
@@ -414,8 +458,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppDriverImageUrlphoto)
                     .IsRequired()
-                    .HasColumnName("AppDriverImageURLPhoto")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppDriverImageURLPhoto");
 
                 entity.Property(e => e.AppDriverLicenseNumber)
                     .IsRequired()
@@ -430,28 +474,31 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppError>(entity =>
             {
-                entity.HasKey(e => e.AppErrorCodeId);
+                entity.HasKey(e => e.AppErrorCodeId)
+                    .HasName("PK__AppError__63EE91F77153D529");
 
-                entity.Property(e => e.AppErrorCodeId)
-                    .HasColumnName("AppErrorCodeID")
-                    .ValueGeneratedNever();
+                entity.ToTable("AppError");
+
+                entity.Property(e => e.AppErrorCodeId).ValueGeneratedNever();
 
                 entity.Property(e => e.AppErrorDescription)
                     .IsRequired()
-                    .HasMaxLength(2000);
+                    .HasMaxLength(200);
 
                 entity.Property(e => e.AppErrorType)
                     .IsRequired()
-                    .HasMaxLength(200);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppExport>(entity =>
             {
+                entity.ToTable("AppExport");
+
                 entity.Property(e => e.AppExportId)
-                    .HasColumnName("AppExportID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppExportID");
 
                 entity.Property(e => e.AppBuyerId).HasColumnName("AppBuyerID");
 
@@ -474,9 +521,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppFactor>(entity =>
             {
+                entity.ToTable("AppFactor");
+
                 entity.Property(e => e.AppFactorId)
-                    .HasColumnName("AppFactorID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppFactorID");
 
                 entity.Property(e => e.AppFactorName)
                     .IsRequired()
@@ -493,14 +542,16 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.HasNoKey();
 
+                entity.ToTable("AppFinancialInstituition");
+
                 entity.Property(e => e.AppCountryCode).HasMaxLength(20);
 
                 entity.Property(e => e.AppDocumentTransactionId).HasColumnName("AppDocumentTransactionID");
 
                 entity.Property(e => e.AppFhidapproved)
                     .IsRequired()
-                    .HasColumnName("AppFHIDApproved")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppFHIDApproved");
 
                 entity.Property(e => e.AppFinancialInstituitionId).HasColumnName("AppFinancialInstituitionID");
 
@@ -515,9 +566,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppFreight>(entity =>
             {
+                entity.ToTable("AppFreight");
+
                 entity.Property(e => e.AppFreightId)
-                    .HasColumnName("AppFreightID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppFreightID");
 
                 entity.Property(e => e.AppFreightCarrierTypeId).HasColumnName("AppFreightCarrierTypeID");
 
@@ -536,9 +589,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppFreightType>(entity =>
             {
+                entity.ToTable("AppFreightType");
+
                 entity.Property(e => e.AppFreightTypeId)
-                    .HasColumnName("AppFreightTypeID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppFreightTypeID");
 
                 entity.Property(e => e.AppFreightTypeDesc)
                     .IsRequired()
@@ -553,9 +608,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppGroundActivity>(entity =>
             {
+                entity.ToTable("AppGroundActivity");
+
                 entity.Property(e => e.AppGroundActivityId)
-                    .HasColumnName("AppGroundActivityID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppGroundActivityID");
 
                 entity.Property(e => e.AppGroundLogisticsId).HasColumnName("AppGroundLogisticsID");
 
@@ -575,9 +632,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppForkLifterId)
                     .HasName("PK_AppForkLifterID");
 
+                entity.ToTable("AppGroundLifter");
+
                 entity.Property(e => e.AppForkLifterId)
-                    .HasColumnName("AppForkLifterID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppForkLifterID");
 
                 entity.Property(e => e.AppForkLifterColor)
                     .IsRequired()
@@ -597,18 +656,15 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.Vinnumber)
                     .IsRequired()
-                    .HasColumnName("VINNumber")
-                    .HasMaxLength(45);
+                    .HasMaxLength(45)
+                    .HasColumnName("VINNumber");
             });
 
-            modelBuilder.Entity<AppGroundLogistics>(entity =>
+            modelBuilder.Entity<AppGroundLogistic>(entity =>
             {
-                entity.HasKey(e => e.AppGroundLogisticId)
-                    .HasName("PK_AppGroundLogisticID");
-
                 entity.Property(e => e.AppGroundLogisticId)
-                    .HasColumnName("AppGroundLogisticID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppGroundLogisticID");
 
                 entity.Property(e => e.AppGroundLogisticsDesc)
                     .IsRequired()
@@ -626,8 +682,6 @@ namespace BlueKangrooCoreOnlyAPI.Models
                     .IsRequired()
                     .HasMaxLength(2000);
 
-                entity.Property(e => e.AppGroundSourceZipCode).HasMaxLength(12);
-
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
@@ -636,9 +690,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.PlacementParkId)
                     .HasName("PK_AppGroundPlacementParkID");
 
+                entity.ToTable("AppGroundPlacementParkNumber");
+
                 entity.Property(e => e.PlacementParkId)
-                    .HasColumnName("PlacementParkID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("PlacementParkID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -659,9 +715,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppImport>(entity =>
             {
+                entity.ToTable("AppImport");
+
                 entity.Property(e => e.AppImportId)
-                    .HasColumnName("AppImportID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppImportID");
 
                 entity.Property(e => e.AppBuyerId).HasColumnName("AppBuyerID");
 
@@ -693,6 +751,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppIndustrialRegionD)
                     .HasName("PK_AppIndustrialRegionD");
 
+                entity.ToTable("AppIndustrialRegion");
+
                 entity.Property(e => e.AppIndustrialRegionD).ValueGeneratedNever();
 
                 entity.Property(e => e.AppIndustrialRegionName)
@@ -710,9 +770,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppIndustrialZone>(entity =>
             {
+                entity.ToTable("AppIndustrialZone");
+
                 entity.Property(e => e.AppIndustrialZoneId)
-                    .HasColumnName("AppIndustrialZoneID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppIndustrialZoneID");
 
                 entity.Property(e => e.AppIndustrialRegionId).HasColumnName("AppIndustrialRegionID");
 
@@ -727,9 +789,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppInstruementation>(entity =>
             {
+                entity.ToTable("AppInstruementation");
+
                 entity.Property(e => e.AppInstruementationId)
-                    .HasColumnName("AppInstruementationID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppInstruementationID");
 
                 entity.Property(e => e.AppAcuracyPrecesionRate).HasColumnType("decimal(8, 2)");
 
@@ -740,24 +804,24 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.AppInstrumentChemicalResistanceRate).HasColumnType("decimal(8, 2)");
 
                 entity.Property(e => e.AppInstrumentDimensionsCalcAfactor)
-                    .HasColumnName("AppInstrumentDimensionsCalcAFactor")
-                    .HasColumnType("decimal(8, 2)");
+                    .HasColumnType("decimal(8, 2)")
+                    .HasColumnName("AppInstrumentDimensionsCalcAFactor");
 
                 entity.Property(e => e.AppInstrumentDimensionsCalcBfactor)
-                    .HasColumnName("AppInstrumentDimensionsCalcBFactor")
-                    .HasColumnType("decimal(8, 2)");
+                    .HasColumnType("decimal(8, 2)")
+                    .HasColumnName("AppInstrumentDimensionsCalcBFactor");
 
                 entity.Property(e => e.AppInstrumentDimensionsCalcCfactor)
-                    .HasColumnName("AppInstrumentDimensionsCalcCFactor")
-                    .HasColumnType("decimal(8, 2)");
+                    .HasColumnType("decimal(8, 2)")
+                    .HasColumnName("AppInstrumentDimensionsCalcCFactor");
 
                 entity.Property(e => e.AppInstrumentDimensionsCalcDfactor)
-                    .HasColumnName("AppInstrumentDimensionsCalcDFactor")
-                    .HasColumnType("decimal(8, 2)");
+                    .HasColumnType("decimal(8, 2)")
+                    .HasColumnName("AppInstrumentDimensionsCalcDFactor");
 
                 entity.Property(e => e.AppInstrumentDimensionsCalcEfactor)
-                    .HasColumnName("AppInstrumentDimensionsCalcEFactor")
-                    .HasColumnType("decimal(8, 2)");
+                    .HasColumnType("decimal(8, 2)")
+                    .HasColumnName("AppInstrumentDimensionsCalcEFactor");
 
                 entity.Property(e => e.AppInstrumentMetalCombinationsId).HasColumnName("AppInstrumentMetalCombinationsID");
 
@@ -773,46 +837,46 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.ToTable("AppJSONFile");
 
                 entity.Property(e => e.AppJsonfileId)
-                    .HasColumnName("AppJSONFileID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppJSONFileID");
 
                 entity.Property(e => e.AppJsonfileName)
                     .IsRequired()
-                    .HasColumnName("AppJSONFileName")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppJSONFileName");
 
                 entity.Property(e => e.AppJsonfileUrl)
-                    .HasColumnName("AppJSONFileURL")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppJSONFileURL");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppKey>(entity =>
             {
-                entity.HasIndex(e => e.AppClientEmailId)
-                    .HasName("UQ__AppKey__6FC0E5D40287ADD9")
+                entity.ToTable("AppKey");
+
+                entity.HasIndex(e => e.AppClientPhone, "UQ__AppKey__43F371AA09D3B6D0")
                     .IsUnique();
 
-                entity.HasIndex(e => e.AppClientPhone)
-                    .HasName("UQ__AppKey__43F371AA4E3C769A")
+                entity.HasIndex(e => e.AppClientEmailId, "UQ__AppKey__6FC0E5D4D42DDE5E")
                     .IsUnique();
 
                 entity.Property(e => e.AppKeyId)
-                    .HasColumnName("AppKeyID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppKeyID");
 
                 entity.Property(e => e.AppClientCompany).HasMaxLength(200);
 
                 entity.Property(e => e.AppClientEmailId)
                     .IsRequired()
-                    .HasColumnName("AppClientEmailID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppClientEmailID");
 
                 entity.Property(e => e.AppClientIpadressAllowed)
                     .IsRequired()
-                    .HasColumnName("AppClientIPAdressAllowed")
-                    .HasMaxLength(32);
+                    .HasMaxLength(32)
+                    .HasColumnName("AppClientIPAdressAllowed");
 
                 entity.Property(e => e.AppClientPhone)
                     .IsRequired()
@@ -829,25 +893,70 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppMetalCombinationAlloy>(entity =>
             {
+                entity.ToTable("AppMetalCombinationAlloy");
+
                 entity.Property(e => e.AppMetalCombinationAlloyId)
-                    .HasColumnName("AppMetalCombinationAlloyID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppMetalCombinationAlloyID");
 
                 entity.Property(e => e.AppAtSeparatedMetalPeriodicTableId)
                     .IsRequired()
-                    .HasColumnName("AppAtSeparatedMetalPeriodicTableID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppAtSeparatedMetalPeriodicTableID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.MaximumHeatingAppliedTemp).HasColumnType("decimal(4, 2)");
             });
 
+            modelBuilder.Entity<AppOrder>(entity =>
+            {
+                entity.ToTable("AppOrder");
+
+                entity.Property(e => e.AppOrderId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppOrderID");
+
+                entity.Property(e => e.AppOrderAmountTotal).HasColumnType("decimal(6, 2)");
+
+                entity.Property(e => e.AppOrderCountryCode)
+                    .IsRequired()
+                    .HasMaxLength(35);
+
+                entity.Property(e => e.AppOrderDate).HasColumnType("datetime");
+
+                entity.Property(e => e.AppOrderDesc)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.AppOrderPersonName)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.AppOrderRefundTotal).HasColumnType("decimal(6, 2)");
+
+                entity.Property(e => e.AppOrderShippingStreetAddress)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.AppOrderStateCode)
+                    .IsRequired()
+                    .HasMaxLength(35);
+
+                entity.Property(e => e.AppOrderZipCode)
+                    .IsRequired()
+                    .HasMaxLength(21);
+
+                entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
+            });
+
             modelBuilder.Entity<AppPackage>(entity =>
             {
+                entity.ToTable("AppPackage");
+
                 entity.Property(e => e.AppPackageId)
-                    .HasColumnName("AppPackageID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppPackageID");
 
                 entity.Property(e => e.AppPackageDepth).HasColumnType("decimal(4, 2)");
 
@@ -864,17 +973,19 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppPackageHandler>(entity =>
             {
+                entity.ToTable("AppPackageHandler");
+
                 entity.Property(e => e.AppPackageHandlerId)
-                    .HasColumnName("AppPackageHandlerID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppPackageHandlerID");
 
                 entity.Property(e => e.AppPackageHandlerFitnessNotes)
-                    .HasColumnName("AppPAckageHandlerFitnessNotes")
-                    .HasMaxLength(3000);
+                    .HasMaxLength(3000)
+                    .HasColumnName("AppPAckageHandlerFitnessNotes");
 
                 entity.Property(e => e.AppPackageHandlerStateId)
-                    .HasColumnName("AppPackageHandlerStateID")
-                    .HasMaxLength(14);
+                    .HasMaxLength(14)
+                    .HasColumnName("AppPackageHandlerStateID");
 
                 entity.Property(e => e.AppPakageHandlerName)
                     .IsRequired()
@@ -892,9 +1003,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppPallateId)
                     .HasName("PK_AppPalletID");
 
+                entity.ToTable("AppPallete");
+
                 entity.Property(e => e.AppPallateId)
-                    .HasColumnName("AppPallateID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppPallateID");
 
                 entity.Property(e => e.AppPallateName)
                     .IsRequired()
@@ -911,6 +1024,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
             {
                 entity.HasNoKey();
 
+                entity.ToTable("AppPriceParityCheck");
+
                 entity.Property(e => e.AppPriceParityCheckId).HasColumnName("AppPriceParityCheckID");
 
                 entity.Property(e => e.AppPriceParityCheckReason)
@@ -926,9 +1041,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppProcess>(entity =>
             {
+                entity.ToTable("AppProcess");
+
                 entity.Property(e => e.AppProcessId)
-                    .HasColumnName("AppProcessID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppProcessID");
 
                 entity.Property(e => e.AppProcessDesc)
                     .IsRequired()
@@ -945,14 +1062,14 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppProcessLanguageTokens>(entity =>
+            modelBuilder.Entity<AppProcessLanguageToken>(entity =>
             {
                 entity.HasKey(e => e.LanguageTokenId)
                     .HasName("PK_LanguageTokenID");
 
                 entity.Property(e => e.LanguageTokenId)
-                    .HasColumnName("LanguageTokenID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("LanguageTokenID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -962,20 +1079,22 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.ReadFunctionalityOfTokenJson)
                     .IsRequired()
-                    .HasColumnName("ReadFunctionalityOfTokenJSON")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("ReadFunctionalityOfTokenJSON");
             });
 
             modelBuilder.Entity<AppProcessLog>(entity =>
             {
+                entity.ToTable("AppProcessLog");
+
                 entity.Property(e => e.AppProcessLogId)
-                    .HasColumnName("AppProcessLogID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppProcessLogID");
 
                 entity.Property(e => e.AppProcessId)
                     .IsRequired()
-                    .HasColumnName("AppProcessID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppProcessID");
 
                 entity.Property(e => e.AppProcessLogDumpings)
                     .IsRequired()
@@ -995,9 +1114,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppProcessPipleLineId)
                     .HasName("PK_AppProcessPipleLineID");
 
+                entity.ToTable("AppProcessPipeLine");
+
                 entity.Property(e => e.AppProcessPipleLineId)
-                    .HasColumnName("AppProcessPipleLineID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppProcessPipleLineID");
 
                 entity.Property(e => e.AppProcessPipeLineName)
                     .IsRequired()
@@ -1012,9 +1133,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppProcessRunningOnServer>(entity =>
             {
+                entity.ToTable("AppProcessRunningOnServer");
+
                 entity.Property(e => e.AppProcessRunningOnServerId)
-                    .HasColumnName("AppProcessRunningOnServerID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppProcessRunningOnServerID");
 
                 entity.Property(e => e.AppProcessId).HasColumnName("AppProcessID");
 
@@ -1033,9 +1156,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppProduct>(entity =>
             {
+                entity.ToTable("AppProduct");
+
                 entity.Property(e => e.AppProductId)
-                    .HasColumnName("AppProductID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppProductID");
 
                 entity.Property(e => e.AppProductBarCode).HasMaxLength(3000);
 
@@ -1050,9 +1175,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppProperty>(entity =>
             {
+                entity.ToTable("AppProperty");
+
                 entity.Property(e => e.AppPropertyId)
-                    .HasColumnName("AppPropertyID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppPropertyID");
 
                 entity.Property(e => e.AppDataTypeId).HasColumnName("AppDataTypeID");
 
@@ -1065,9 +1192,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppRouteAlert>(entity =>
             {
+                entity.ToTable("AppRouteAlert");
+
                 entity.Property(e => e.AppRouteAlertId)
-                    .HasColumnName("AppRouteAlertID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppRouteAlertID");
 
                 entity.Property(e => e.AppRouteAlertDesc)
                     .IsRequired()
@@ -1081,17 +1210,19 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppRouteId)
                     .IsRequired()
-                    .HasColumnName("AppRouteID")
-                    .HasMaxLength(1);
+                    .HasMaxLength(1)
+                    .HasColumnName("AppRouteID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppSaleActivity>(entity =>
             {
+                entity.ToTable("AppSaleActivity");
+
                 entity.Property(e => e.AppSaleActivityId)
-                    .HasColumnName("AppSaleActivityID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSaleActivityID");
 
                 entity.Property(e => e.AppActivityId).HasColumnName("AppActivityID");
 
@@ -1106,21 +1237,22 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppSeller>(entity =>
             {
-                entity.HasIndex(e => e.AppSellerHashedSsc)
-                    .HasName("UQ__AppSelle__4F1170A93763E0E4")
+                entity.ToTable("AppSeller");
+
+                entity.HasIndex(e => e.AppSellerHashedSsc, "UQ__AppSelle__4F1170A917BDE38A")
                     .IsUnique();
 
                 entity.Property(e => e.AppSellerId)
-                    .HasColumnName("AppSellerID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSellerID");
 
                 entity.Property(e => e.AppSellerHashedSsc)
-                    .HasColumnName("AppSellerHashedSSC")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppSellerHashedSSC");
 
                 entity.Property(e => e.AppSellerLicenseHashedId)
-                    .HasColumnName("AppSellerLicenseHashedID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppSellerLicenseHashedID");
 
                 entity.Property(e => e.AppSellerName)
                     .IsRequired()
@@ -1131,9 +1263,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppSellerActivity>(entity =>
             {
+                entity.ToTable("AppSellerActivity");
+
                 entity.Property(e => e.AppSellerActivityId)
-                    .HasColumnName("AppSellerActivityID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSellerActivityID");
 
                 entity.Property(e => e.AppActivityId).HasColumnName("AppActivityID");
 
@@ -1149,13 +1283,15 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppSensitiveMateriaId)
                     .HasName("PK_SensativeMaterialID");
 
+                entity.ToTable("AppSensitiveMaterial");
+
                 entity.Property(e => e.AppSensitiveMateriaId)
-                    .HasColumnName("AppSensitiveMateriaID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSensitiveMateriaID");
 
                 entity.Property(e => e.AppBuyerHashedSsc)
-                    .HasColumnName("AppBuyerHashedSSC")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppBuyerHashedSSC");
 
                 entity.Property(e => e.AppSensativeMaterialName)
                     .IsRequired()
@@ -1170,9 +1306,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppShelve>(entity =>
             {
+                entity.ToTable("AppShelve");
+
                 entity.Property(e => e.AppShelveId)
-                    .HasColumnName("AppShelveID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppShelveID");
 
                 entity.Property(e => e.AppCategoryId).HasColumnName("AppCategoryID");
 
@@ -1187,9 +1325,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppSupply>(entity =>
             {
+                entity.ToTable("AppSupply");
+
                 entity.Property(e => e.AppSupplyId)
-                    .HasColumnName("AppSupplyID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSupplyID");
 
                 entity.Property(e => e.AppProductId).HasColumnName("AppProductID");
 
@@ -1215,9 +1355,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppSupplyDemandId)
                     .HasName("PK_AppSupplyDemandID");
 
+                entity.ToTable("AppSupplyDemandChart");
+
                 entity.Property(e => e.AppSupplyDemandId)
-                    .HasColumnName("AppSupplyDemandID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSupplyDemandID");
 
                 entity.Property(e => e.AppCureencyCode)
                     .IsRequired()
@@ -1242,9 +1384,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppToken>(entity =>
             {
+                entity.ToTable("AppToken");
+
                 entity.Property(e => e.AppTokenId)
-                    .HasColumnName("AppTokenID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTokenID");
 
                 entity.Property(e => e.AppClientName)
                     .IsRequired()
@@ -1265,19 +1409,16 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.TokenExpiredDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppTokenDetails>(entity =>
+            modelBuilder.Entity<AppTokenDetail>(entity =>
             {
-                entity.HasKey(e => e.AppTokenDetailId)
-                    .HasName("PK_AppTokenDetailID");
-
                 entity.Property(e => e.AppTokenDetailId)
-                    .HasColumnName("AppTokenDetailID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTokenDetailID");
 
                 entity.Property(e => e.AppCompanyId)
                     .IsRequired()
-                    .HasColumnName("AppCompanyID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppCompanyID");
 
                 entity.Property(e => e.AppSecurePhoneNumber)
                     .IsRequired()
@@ -1295,23 +1436,24 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppTokenId)
                     .HasName("PK_AppTokenGenID");
 
-                entity.HasIndex(e => e.AppTokenGenId)
-                    .HasName("UQ__AppToken__7DA0ED63B2851B89")
+                entity.ToTable("AppTokenGeneration");
+
+                entity.HasIndex(e => e.AppTokenGenId, "UQ__AppToken__7DA0ED636349C82B")
                     .IsUnique();
 
                 entity.Property(e => e.AppTokenId)
-                    .HasColumnName("AppTokenID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTokenID");
 
                 entity.Property(e => e.AppTokenGenId)
                     .IsRequired()
-                    .HasColumnName("AppTokenGenID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppTokenGenID");
 
                 entity.Property(e => e.AppTokenGenOid)
                     .IsRequired()
-                    .HasColumnName("AppTokenGenOID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppTokenGenOID");
 
                 entity.Property(e => e.AppUserId).HasColumnName("AppUserID");
 
@@ -1326,9 +1468,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppTray>(entity =>
             {
+                entity.ToTable("AppTray");
+
                 entity.Property(e => e.AppTrayId)
-                    .HasColumnName("AppTrayID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTrayID");
 
                 entity.Property(e => e.AppTrayName)
                     .IsRequired()
@@ -1343,9 +1487,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppTruck>(entity =>
             {
+                entity.ToTable("AppTruck");
+
                 entity.Property(e => e.AppTruckId)
-                    .HasColumnName("AppTruckID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTruckID");
 
                 entity.Property(e => e.AppTruckColorModelDecs)
                     .IsRequired()
@@ -1353,66 +1499,70 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppTruckVehicleIdnVin)
                     .IsRequired()
-                    .HasColumnName("AppTruckVehicleIDN_VIN")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppTruckVehicleIDN_VIN");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppTruckRoute>(entity =>
             {
+                entity.ToTable("AppTruckRoute");
+
                 entity.Property(e => e.AppTruckRouteId)
-                    .HasColumnName("AppTruckRouteID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTruckRouteID");
 
                 entity.Property(e => e.AppTrouteDestinationNode)
                     .IsRequired()
-                    .HasColumnName("AppTRouteDestinationNode")
-                    .HasMaxLength(20);
+                    .HasMaxLength(20)
+                    .HasColumnName("AppTRouteDestinationNode");
 
                 entity.Property(e => e.AppTrouteManualIntersectionPointA)
                     .IsRequired()
-                    .HasColumnName("AppTRouteManualIntersectionPointA")
-                    .HasMaxLength(300);
+                    .HasMaxLength(300)
+                    .HasColumnName("AppTRouteManualIntersectionPointA");
 
                 entity.Property(e => e.AppTrouteManualIntersectionPointB)
                     .IsRequired()
-                    .HasColumnName("AppTRouteManualIntersectionPointB")
-                    .HasMaxLength(300);
+                    .HasMaxLength(300)
+                    .HasColumnName("AppTRouteManualIntersectionPointB");
 
                 entity.Property(e => e.AppTrouteManualIntersectionPointC)
                     .IsRequired()
-                    .HasColumnName("AppTRouteManualIntersectionPointC")
-                    .HasMaxLength(300);
+                    .HasMaxLength(300)
+                    .HasColumnName("AppTRouteManualIntersectionPointC");
 
                 entity.Property(e => e.AppTrouteManualIntersectionPointD)
                     .IsRequired()
-                    .HasColumnName("AppTRouteManualIntersectionPointD")
-                    .HasMaxLength(300);
+                    .HasMaxLength(300)
+                    .HasColumnName("AppTRouteManualIntersectionPointD");
 
                 entity.Property(e => e.AppTrouteSourceNode)
                     .IsRequired()
-                    .HasColumnName("AppTRouteSourceNode")
-                    .HasMaxLength(20);
+                    .HasMaxLength(20)
+                    .HasColumnName("AppTRouteSourceNode");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppTruckRouteAssigned>(entity =>
             {
+                entity.ToTable("AppTruckRouteAssigned");
+
                 entity.Property(e => e.AppTruckRouteAssignedId)
-                    .HasColumnName("AppTruckRouteAssignedID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppTruckRouteAssignedID");
 
                 entity.Property(e => e.AppTrouteDestinationNode)
                     .IsRequired()
-                    .HasColumnName("AppTRouteDestinationNode")
-                    .HasMaxLength(20);
+                    .HasMaxLength(20)
+                    .HasColumnName("AppTRouteDestinationNode");
 
                 entity.Property(e => e.AppTrouteSourceNode)
                     .IsRequired()
-                    .HasColumnName("AppTRouteSourceNode")
-                    .HasMaxLength(20);
+                    .HasMaxLength(20)
+                    .HasColumnName("AppTRouteSourceNode");
 
                 entity.Property(e => e.AppTruckId).HasColumnName("AppTruckID");
 
@@ -1429,8 +1579,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.ToTable("AppUIDataDependencyInjection");
 
                 entity.Property(e => e.AppUidataInjectionId)
-                    .HasColumnName("AppUIDataInjectionID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUIDataInjectionID");
 
                 entity.Property(e => e.AppUitemplateId).HasColumnName("AppUITemplateID");
 
@@ -1438,8 +1588,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.DataDependencyFileJson)
                     .IsRequired()
-                    .HasColumnName("DataDependencyFileJSON")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("DataDependencyFileJSON");
             });
 
             modelBuilder.Entity<AppUitemplate>(entity =>
@@ -1447,48 +1597,53 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.ToTable("AppUITemplate");
 
                 entity.Property(e => e.AppUitemplateId)
-                    .HasColumnName("AppUITemplateID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUITemplateID");
 
                 entity.Property(e => e.AppUitemplateDesc)
                     .IsRequired()
-                    .HasColumnName("AppUITemplateDesc")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppUITemplateDesc");
 
                 entity.Property(e => e.AppUitemplateName)
                     .IsRequired()
-                    .HasColumnName("AppUITemplateName")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppUITemplateName");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppUitemplateData>(entity =>
+            modelBuilder.Entity<AppUitemplateDatum>(entity =>
             {
+                entity.HasKey(e => e.AppUitemplateDataId)
+                    .HasName("PK_AppUITemplateDataID");
+
                 entity.ToTable("AppUITemplateData");
 
                 entity.Property(e => e.AppUitemplateDataId)
-                    .HasColumnName("AppUITemplateDataID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUITemplateDataID");
 
-                entity.Property(e => e.AppUitemplateData1)
+                entity.Property(e => e.AppUitemplateData)
                     .IsRequired()
-                    .HasColumnName("AppUITemplateData")
-                    .HasMaxLength(3000);
+                    .HasMaxLength(3000)
+                    .HasColumnName("AppUITemplateData");
 
                 entity.Property(e => e.AppUitemplateMetaData)
                     .IsRequired()
-                    .HasColumnName("AppUITemplateMetaData")
-                    .HasColumnType("xml");
+                    .HasColumnType("xml")
+                    .HasColumnName("AppUITemplateMetaData");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppUser>(entity =>
             {
+                entity.ToTable("AppUser");
+
                 entity.Property(e => e.AppUserId)
-                    .HasColumnName("AppUserID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserID");
 
                 entity.Property(e => e.AppNameDesc)
                     .IsRequired()
@@ -1507,30 +1662,30 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppUserActivityDetails>(entity =>
+            modelBuilder.Entity<AppUserActivityDetail>(entity =>
             {
+                entity.HasKey(e => e.AppUserActivityDetailsId)
+                    .HasName("PK_AppUserActivityDetailsID");
+
                 entity.Property(e => e.AppUserActivityDetailsId)
-                    .HasColumnName("AppUserActivityDetailsID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserActivityDetailsID");
 
                 entity.Property(e => e.AppUserActivityId).HasColumnName("AppUserActivityID");
 
                 entity.Property(e => e.AppUserActivityInputId)
                     .IsRequired()
-                    .HasColumnName("AppUserActivityInputID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppUserActivityInputID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppUserActivityErrors>(entity =>
+            modelBuilder.Entity<AppUserActivityError>(entity =>
             {
-                entity.HasKey(e => e.AppUserActivityErrorId)
-                    .HasName("PK_AppUserActivityErrorID");
-
                 entity.Property(e => e.AppUserActivityErrorId)
-                    .HasColumnName("AppUserActivityErrorID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserActivityErrorID");
 
                 entity.Property(e => e.AppUserActivityErrorDesc)
                     .IsRequired()
@@ -1538,17 +1693,19 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppUserActivityId)
                     .IsRequired()
-                    .HasColumnName("AppUserActivityID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppUserActivityID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppUserActivityExecutedTime>(entity =>
             {
+                entity.ToTable("AppUserActivityExecutedTime");
+
                 entity.Property(e => e.AppUserActivityExecutedTimeId)
-                    .HasColumnName("AppUserActivityExecutedTimeID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserActivityExecutedTimeID");
 
                 entity.Property(e => e.ActivityStoppedOrInterrupted).HasColumnType("datetime");
 
@@ -1556,8 +1713,8 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppUserActivityId)
                     .IsRequired()
-                    .HasColumnName("AppUserActivityID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppUserActivityID");
 
                 entity.Property(e => e.AppUserActivityStartDate).HasColumnType("datetime");
 
@@ -1566,9 +1723,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppUserActivityFrame>(entity =>
             {
+                entity.ToTable("AppUserActivityFrame");
+
                 entity.Property(e => e.AppUserActivityFrameId)
-                    .HasColumnName("AppUserActivityFrameID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserActivityFrameID");
 
                 entity.Property(e => e.AppUserActivityFrameEndDate).HasColumnType("datetime");
 
@@ -1576,17 +1735,19 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppUserActivityId)
                     .IsRequired()
-                    .HasColumnName("AppUserActivityID")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppUserActivityID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<AppUserActivityInput>(entity =>
             {
+                entity.ToTable("AppUserActivityInput");
+
                 entity.Property(e => e.AppUserActivityInputId)
-                    .HasColumnName("AppUserActivityInputID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserActivityInputID");
 
                 entity.Property(e => e.AppUserActivityInputName)
                     .IsRequired()
@@ -1605,9 +1766,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppUserRole>(entity =>
             {
+                entity.ToTable("AppUserRole");
+
                 entity.Property(e => e.AppUserRoleId)
-                    .HasColumnName("AppUserRoleID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppUserRoleID");
 
                 entity.Property(e => e.AppRoleAssociateDesc)
                     .IsRequired()
@@ -1624,36 +1787,21 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<AppUserRoleDetail>(entity =>
-            {
-                entity.Property(e => e.AppUserRoleDetailId)
-                    .HasColumnName("AppUserRoleDetailID")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.AppUitemplateId).HasColumnName("AppUITemplateID");
-
-                entity.Property(e => e.AppUserRoleDetailDesc)
-                    .IsRequired()
-                    .HasMaxLength(200);
-
-                entity.Property(e => e.AppUserRoleId).HasColumnName("AppUserRoleID");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            });
-
             modelBuilder.Entity<AppUserSesion>(entity =>
             {
                 entity.HasKey(e => e.AppSessionId)
                     .HasName("PK_AppSessionID");
 
+                entity.ToTable("AppUserSesion");
+
                 entity.Property(e => e.AppSessionId)
-                    .HasColumnName("AppSessionID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSessionID");
 
                 entity.Property(e => e.AppClientUserIp)
                     .IsRequired()
-                    .HasColumnName("AppClientUserIP")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppClientUserIP");
 
                 entity.Property(e => e.AppSessionName)
                     .IsRequired()
@@ -1667,9 +1815,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppSessionRefVarId)
                     .HasName("PK_AppSessionRefVarID");
 
+                entity.ToTable("AppUserSessionCrossRefVar");
+
                 entity.Property(e => e.AppSessionRefVarId)
-                    .HasColumnName("AppSessionRefVarID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppSessionRefVarID");
 
                 entity.Property(e => e.AppSessionId).HasColumnName("AppSessionID");
 
@@ -1692,9 +1842,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppWareHouse>(entity =>
             {
+                entity.ToTable("AppWareHouse");
+
                 entity.Property(e => e.AppWareHouseId)
-                    .HasColumnName("AppWareHouseID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppWareHouseID");
 
                 entity.Property(e => e.AppWareHosueLocationCountryCode)
                     .IsRequired()
@@ -1719,9 +1871,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppWareHouseNode>(entity =>
             {
+                entity.ToTable("AppWareHouseNode");
+
                 entity.Property(e => e.AppWareHouseNodeId)
-                    .HasColumnName("AppWareHouseNodeID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppWareHouseNodeID");
 
                 entity.Property(e => e.AppWareHouseNodeName)
                     .IsRequired()
@@ -1732,9 +1886,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
             modelBuilder.Entity<AppWareHouseVendor>(entity =>
             {
+                entity.ToTable("AppWareHouseVendor");
+
                 entity.Property(e => e.AppWareHouseVendorId)
-                    .HasColumnName("AppWareHouseVendorID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppWareHouseVendorID");
 
                 entity.Property(e => e.AppWareHouseMaterialExpert)
                     .IsRequired()
@@ -1747,15 +1903,41 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<Appcart>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("APPCART");
+
+                entity.Property(e => e.AppOrderdetailsId).HasColumnName("APP_ORDERDETAILS_ID");
+
+                entity.Property(e => e.Appcartdesc)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .HasColumnName("APPCARTDESC");
+
+                entity.Property(e => e.Appcartid).HasColumnName("APPCARTID");
+
+                entity.Property(e => e.Createdby).HasColumnName("CREATEDBY");
+
+                entity.Property(e => e.Createddate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDDATE");
+
+                entity.Property(e => e.PaymentHistoryId).HasColumnName("PaymentHistory_ID");
+            });
+
             modelBuilder.Entity<ApplicationContext>(entity =>
             {
+                entity.ToTable("ApplicationContext");
+
                 entity.Property(e => e.ApplicationContextId)
-                    .HasColumnName("ApplicationContextID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("ApplicationContextID");
 
                 entity.Property(e => e.AppClientId)
-                    .HasColumnName("AppClientID")
-                    .HasMaxLength(2000);
+                    .HasMaxLength(2000)
+                    .HasColumnName("AppClientID");
 
                 entity.Property(e => e.AppClientSecretKey).HasMaxLength(13);
 
@@ -1771,9 +1953,11 @@ namespace BlueKangrooCoreOnlyAPI.Models
                 entity.HasKey(e => e.AppId)
                     .HasName("PK_AppID");
 
+                entity.ToTable("ApplicationModel");
+
                 entity.Property(e => e.AppId)
-                    .HasColumnName("AppID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("AppID");
 
                 entity.Property(e => e.AppModelName)
                     .IsRequired()
@@ -1781,30 +1965,52 @@ namespace BlueKangrooCoreOnlyAPI.Models
 
                 entity.Property(e => e.AppServerIphashed)
                     .IsRequired()
-                    .HasColumnName("AppServerIPHashed")
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("AppServerIPHashed");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Sysdiagrams>(entity =>
+            modelBuilder.Entity<Applocation>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToTable("sysdiagrams");
+                entity.ToTable("APPLOCATION");
 
-                entity.Property(e => e.Definition).HasColumnName("definition");
-
-                entity.Property(e => e.DiagramId).HasColumnName("diagram_id");
-
-                entity.Property(e => e.Name)
+                entity.Property(e => e.Appgeolocation)
                     .IsRequired()
-                    .HasColumnName("name")
-                    .HasMaxLength(128);
+                    .HasMaxLength(20)
+                    .HasColumnName("APPGEOLOCATION");
 
-                entity.Property(e => e.PrincipalId).HasColumnName("principal_id");
+                entity.Property(e => e.Applocationaddress)
+                    .IsRequired()
+                    .HasMaxLength(400)
+                    .HasColumnName("APPLOCATIONADDRESS");
 
-                entity.Property(e => e.Version).HasColumnName("version");
+                entity.Property(e => e.Applocationcity)
+                    .IsRequired()
+                    .HasMaxLength(400)
+                    .HasColumnName("APPLOCATIONCITY");
+
+                entity.Property(e => e.Applocationcountrycode)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("APPLOCATIONCOUNTRYCODE");
+
+                entity.Property(e => e.Applocationid).HasColumnName("APPLOCATIONID");
+
+                entity.Property(e => e.Applocationstatecode)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("APPLOCATIONSTATECODE");
+
+                entity.Property(e => e.Createdby)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDBY");
+
+                entity.Property(e => e.Createddate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDDATE");
             });
 
             OnModelCreatingPartial(modelBuilder);

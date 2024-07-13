@@ -22,8 +22,10 @@ using Scrutor;
 using System;
 using System.Collections.Generic;
 using m = BlueKangrooCoreOnlyAPI.options;
-using AWS.Logger.AspNetCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Antiforgery;
+using BlueKangrooCoreOnlyAPI.Utilities;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -66,12 +68,21 @@ namespace BlueKangrooCoreOnlyAPI
            {
                options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
                options.Audience = Configuration["Auth0:Audience"];
-           });           
-            services.AddControllers();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0); 
-            services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+           });       
+          
+             services.AddDbContext<blueKangrooContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BlueKangrooDBConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+              
+
+            services.AddControllers()
+              .AddNewtonsoftJson(options =>
+              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore 
+
+               );        
+        services.AddMvc(); 
+
+               
             services.AddHttpContextAccessor();
-            
+                    
             
 
 
@@ -89,6 +100,7 @@ namespace BlueKangrooCoreOnlyAPI
              services.AddDependencies();
 
 
+           
             services.AddSwaggerGen(c =>
           {
              c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
@@ -116,6 +128,8 @@ namespace BlueKangrooCoreOnlyAPI
                     In = ParameterLocation.Header,
 
            },
+
+           
              new List<string>()
             }
          }); 
@@ -124,83 +138,111 @@ namespace BlueKangrooCoreOnlyAPI
 
           });
 
-
-            services.AddControllers()
-              .AddNewtonsoftJson(options =>
-              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-               );
+   
 
             services.AddMemoryCache();
+            // Global validation no need at Class levels but question is its API 
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
+            
+
+
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
-
-       
-         
-
+        
+            // prevent from froegry token it must be added afetr Add Stack
+          
+        
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger , IAntiforgery antiforgery)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 IdentityModelEventSource.ShowPII = true;
             }
+            else
+            {          
+                app.UseHttpsRedirection();
+            }
 
            
      
             app.UseCors("BlueCorsPolicy");
             app.UseAuthentication();
-                   
+         
+
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthorization(); 
+                
+              
+
+
+
+            
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers(); 
             });
            
+          // app.UseAntiforgeryTokens();
+   
+    /* app.Use(next => context =>
+    {
+        string path = context.Request.Path.Value!;
+
+        if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(path, "/swagger", StringComparison.OrdinalIgnoreCase))
+        {
+            // The request token can be sent as a JavaScript-readable cookie, 
+            // and Angular uses it by default.s
+            var tokens = antiforgery.GetAndStoreTokens(context);
             
+
+            context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, 
+                new CookieOptions() { HttpOnly = false });
+        }
+
+        return next(context);
+    }); */
+             
+         
             
             var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
             /*Enabling Swagger ui, consider doing it on Development env only*/
+          
+          
             app.UseSwagger(option =>
           {
+              
               option.RouteTemplate = swaggerOptions.JsonRoute;
       
           });
+
 
            app.UseSwaggerUI(option =>
              {
                  option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
                  option.DisplayOperationId();
             });
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("Authorization", "bearer" );
-                context.Response.Headers.Add("CustomerGuidKey", "entercustomerkey");
-                
-                await next.Invoke();
-            });
 
-            app.UseHttpsRedirection();
+         
+           app.UseHttpsRedirection();
 
+         
 
-            // AWS Logging configurati
-            var awsconfig =Configuration.GetAWSLoggingConfigSection();
-    
-            logger.AddAWSProvider(awsconfig);
+            // stored tokens shifting redirect
 
-            var credential = GoogleCredential.FromFile("BlueKangrooCoreApiOnly-6d3cfabd9cfc.json");
-            var storage = StorageClient.Create(credential);
-
-            Console.WriteLine(env.EnvironmentName);
-    
         }
-
+          
          // If using Scrutor the folllowing is not required
         public void ConfigureContainer(ContainerBuilder builder)
         {
@@ -222,7 +264,7 @@ namespace BlueKangrooCoreOnlyAPI
 
         }
 
-        static void HandleMapTest1(IApplicationBuilder app)
+static void HandleMapTest1(IApplicationBuilder app)
 {
     app.Run(async context =>
     {

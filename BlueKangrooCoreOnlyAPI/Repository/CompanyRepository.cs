@@ -24,7 +24,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 company.AppCompanyId = Guid.NewGuid();
                 company.CreatedDate = DateTime.Now;
-                await db.AppCompany.AddAsync(company);
+                await db.AppCompanies.AddAsync(company);
                 await db.SaveChangesAsync();
 
                 return company;
@@ -39,7 +39,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var companies = await db.AppCompany.ToListAsync<AppCompany>();
+                var companies = await db.AppCompanies.ToListAsync<AppCompany>();
                 return companies;
 
             }
@@ -55,12 +55,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var acDel = await db.AppCompany.FirstOrDefaultAsync(p => p.AppCompanyId == CompanyId);
+                var acDel = await db.AppCompanies.FirstOrDefaultAsync(p => p.AppCompanyId == CompanyId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppCompany.Remove(acDel);
+                    db.AppCompanies.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -78,7 +78,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selCompany = await db.AppCompany.FirstOrDefaultAsync<AppCompany>(p => p.AppCompanyId == companyInfo);
+                var selCompany = await db.AppCompanies.FirstOrDefaultAsync<AppCompany>(p => p.AppCompanyId == companyInfo);
                 return selCompany;
 
             }
@@ -91,7 +91,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppCompany.Update(company);
+                db.AppCompanies.Update(company);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

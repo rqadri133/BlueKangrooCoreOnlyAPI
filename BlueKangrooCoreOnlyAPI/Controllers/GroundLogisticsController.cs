@@ -40,7 +40,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         [HttpPost]
         [Route("AddGroundLogistics")]
         [Authorize]
-        public async Task<IActionResult> AddGroundLogistics([FromBody]AppGroundLogistics model)
+        public async Task<IActionResult> AddGroundLogistics([FromBody]AppGroundLogistic model)
         {
 
             if (ModelState.IsValid)
@@ -70,32 +70,6 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
         }
 
 
-
-        [HttpGet]
-        [Route("GetGroundLogistics/{zipCode}")]
-        public async Task<IActionResult> GetGroundLogistics(string zipCode)
-        {
-            if (zipCode == null)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                var selectedLogistics = await groundLogistics.GetGroundLogisticsByZipCode(zipCode);
-
-                if (selectedLogistics == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(selectedLogistics);
-            }
-            catch (Exception excp)
-            {
-                return BadRequest(excp);
-            }
-        }
 
         [HttpDelete]
         [Route("DeleteGroundLogistics")]
@@ -127,7 +101,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
 
         [HttpPut]
         [Route("UpdateGroundLogistics")]
-        public async Task<IActionResult> UpdateGroundLogistics([FromBody]AppGroundLogistics grLogistics)
+        public async Task<IActionResult> UpdateGroundLogistics([FromBody]AppGroundLogistic grLogistics)
         {
             if (ModelState.IsValid)
             {

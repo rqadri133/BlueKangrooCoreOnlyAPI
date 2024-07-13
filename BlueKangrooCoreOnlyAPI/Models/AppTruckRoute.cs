@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace BlueKangrooCoreOnlyAPI.Models
 {
     public partial class AppTruckRoute

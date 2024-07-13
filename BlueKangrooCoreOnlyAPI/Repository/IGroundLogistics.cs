@@ -9,12 +9,11 @@ namespace BlueKangrooCoreOnlyAPI.Repository
     public interface IGroundLogistics
     {
 
-         Task<AppGroundLogistics> AddGroundLogistics(AppGroundLogistics groundLogistics);
+         Task<AppGroundLogistic> AddGroundLogistics(AppGroundLogistic groundLogistics);
          Task<int> DeleteGroundLogistics(Guid? groundLogisticsId);
-         Task<AppGroundLogistics> UpdateGroundLogistics(AppGroundLogistics groundLogistics);
-         Task<List<AppGroundLogistics>> GetAllGroundLogistics();
+         Task<AppGroundLogistic> UpdateGroundLogistics(AppGroundLogistic groundLogistics);
+         Task<List<AppGroundLogistic>> GetAllGroundLogistics();
          Task<List<AppGroundActivity>> GetGroundActivities();
-         Task<AppGroundLogistics> GetGroundLogisticsByZipCode(string zipCode);
         
         Task<AppGroundActivity> AddGroundActity(AppGroundActivity groundActivity);
         Task<List<AppGroundActivity>> LoadAllGroundActivities();

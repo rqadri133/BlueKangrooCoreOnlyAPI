@@ -21,6 +21,10 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
+      
+      
+      - name: Clean with dotnet
+        run: dotnet clean --configuration Release Clean all
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -40,7 +44,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+  
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2

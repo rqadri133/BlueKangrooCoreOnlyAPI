@@ -13,6 +13,7 @@ namespace BlueKangrooCoreOnlyAPI.Headers
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
+            
 
             if (operation.Parameters == null)
                 operation.Parameters = new List<OpenApiParameter>();
@@ -28,7 +29,7 @@ namespace BlueKangrooCoreOnlyAPI.Headers
                     Schema = new OpenApiSchema
                     {
                         Type = "string",
-                        Default = new OpenApiString("apitoken") ,
+                        Default = new OpenApiString("Customer Guid") ,
                         Format = "string"
                     } 
                     
@@ -37,6 +38,8 @@ namespace BlueKangrooCoreOnlyAPI.Headers
                 });
 
             }
+          
+            
         }
         
     }

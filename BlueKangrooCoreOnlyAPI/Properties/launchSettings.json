@@ -23,14 +23,14 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
       "environmentVariables": {},
-      "useSSL": true,
-      "publishAllPorts": true
+      "publishAllPorts": true,
+      "useSSL": true
     },
     "BlueKangrooCoreOnlyAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:5005;http://localhost:5004",
       "environmentVariables": {
         "GOOGLE_APPLICATION_CREDENTIALS": "/Users/syedqadri/Projects/BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI/BlueKangrooCoreApiOnly-6d3cfabd9cfc.json",
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -41,8 +41,8 @@
       "launchBrowser": true,
       "environmentVariables": {},
       "resourceGroup": "Default-SQL-NorthCentralUS",
-      "aksName": "Kangroo1Cluster",
-      "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419"
+      "subscriptionId": "7d195409-a5ea-4300-b962-d96e64961419",
+      "aksName": "Kangroo1Cluster"
     }
   }
 }

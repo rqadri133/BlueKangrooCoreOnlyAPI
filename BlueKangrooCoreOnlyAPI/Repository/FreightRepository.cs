@@ -23,7 +23,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 {
                     freight.AppFreightId = Guid.NewGuid();
                     freight.CreatedDate = DateTime.Now;
-                    await db.AppFreight.AddAsync(freight);
+                    await db.AppFreights.AddAsync(freight);
                     await db.SaveChangesAsync();
 
                     return freight;
@@ -39,7 +39,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
 
-                    var freights = await db.AppFreight.ToListAsync<AppFreight>();
+                    var freights = await db.AppFreights.ToListAsync<AppFreight>();
                     return freights;
 
                 }
@@ -57,12 +57,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
                     //Find the post for specific post id
-                    var frDel = await db.AppFreight.FirstOrDefaultAsync(p => p.AppFreightId == freightId);
+                    var frDel = await db.AppFreights.FirstOrDefaultAsync(p => p.AppFreightId == freightId);
 
                     if (frDel != null)
                     {
                         //Delete that post
-                        db.AppFreight.Remove(frDel);
+                        db.AppFreights.Remove(frDel);
 
                         //Commit the transaction
                         result = await db.SaveChangesAsync();
@@ -82,7 +82,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
                     // One Groud Logistics per zip code
-                    var selFreight = await db.AppFreight.FirstOrDefaultAsync<AppFreight>(p => p.AppFreightId == freightId);
+                    var selFreight = await db.AppFreights.FirstOrDefaultAsync<AppFreight>(p => p.AppFreightId == freightId);
                     return selFreight;
 
                 }
@@ -97,7 +97,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
                 if (db != null)
                 {
                     //Delete that post
-                    db.AppFreight.Update(freight);
+                    db.AppFreights.Update(freight);
 
                     //Commit the transaction
                     await db.SaveChangesAsync();

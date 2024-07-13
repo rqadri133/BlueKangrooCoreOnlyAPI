@@ -16,14 +16,14 @@ namespace BlueKangrooCoreOnlyAPI.Caching
             string serilaizedData = String.Empty;
             if (encodedbytes != null)
             {
-                serilaizedData = Encoding.UTF8.GetString(encodedbytes);
+                serilaizedData = Encoding.UTF32.GetString(encodedbytes);
                 dataFetch = JsonConvert.DeserializeObject<List<T>>(serilaizedData);
             }
             else
             {
 
                 serilaizedData = JsonConvert.SerializeObject(dataFetch);
-                encodedbytes = Encoding.UTF8.GetBytes(serilaizedData);
+                encodedbytes = Encoding.UTF32.GetBytes(serilaizedData);
                 var options = new DistributedCacheEntryOptions()
                                  .SetAbsoluteExpiration(DateTime.Now.AddHours(Convert.ToInt32(configuration["CacheAbsoluteExpirations"])))
                                  .SetSlidingExpiration(TimeSpan.FromMinutes(Convert.ToInt32(configuration["SlidingExpirationsTimeOutInMinutes"])));
@@ -35,6 +35,7 @@ namespace BlueKangrooCoreOnlyAPI.Caching
 
         }
 
+       // Need for Singl
        
     }
 }

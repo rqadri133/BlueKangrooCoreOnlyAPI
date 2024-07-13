@@ -22,7 +22,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 supply.AppSupplyId = Guid.NewGuid();
                 supply.CreatedDate = DateTime.Now;
-                await db.AppSupply.AddAsync(supply);
+                await db.AppSupplies.AddAsync(supply);
                 await db.SaveChangesAsync();
 
                 return supply;
@@ -37,7 +37,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var supplies = await db.AppSupply.ToListAsync<AppSupply>();
+                var supplies = await db.AppSupplies.ToListAsync<AppSupply>();
                 return supplies;
 
             }
@@ -52,13 +52,13 @@ namespace BlueKangrooCoreOnlyAPI.Repository
 
             if (db != null)
             {
-                //Find the post for specific post id
-                var acDel = await db.AppSupply.FirstOrDefaultAsync(p => p.AppSupplyId == supplyId);
+                //Find the post for specific post id    
+                var acDel = await db.AppSupplies.FirstOrDefaultAsync(p => p.AppSupplyId == supplyId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppSupply.Remove(acDel);
+                    db.AppSupplies.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selSupply = await db.AppSupply.FirstOrDefaultAsync<AppSupply>(p => p.AppSupplyId == supplyInfo);
+                var selSupply = await db.AppSupplies.FirstOrDefaultAsync<AppSupply>(p => p.AppSupplyId == supplyInfo);
                 return selSupply;
 
             }
@@ -89,7 +89,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppSupply.Update(supply);
+                db.AppSupplies.Update(supply);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();

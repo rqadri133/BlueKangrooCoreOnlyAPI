@@ -21,7 +21,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             {
                 category.AppCategoryId = Guid.NewGuid();
                 category.CreatedDate = DateTime.Now;
-                await db.AppCategory.AddAsync(category);
+                await db.AppCategories.AddAsync(category);
                 await db.SaveChangesAsync();
 
                 return category;
@@ -36,7 +36,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
 
-                var categories = await db.AppCategory.ToListAsync<AppCategory>();
+                var categories = await db.AppCategories.ToListAsync<AppCategory>();
                 return categories;
 
             }
@@ -52,12 +52,12 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Find the post for specific post id
-                var acDel = await db.AppCategory.FirstOrDefaultAsync(p => p.AppCategoryId == categoryId);
+                var acDel = await db.AppCategories.FirstOrDefaultAsync(p => p.AppCategoryId == categoryId);
 
                 if (acDel != null)
                 {
                     //Delete that post
-                    db.AppCategory.Remove(acDel);
+                    db.AppCategories.Remove(acDel);
 
                     //Commit the transaction
                     result = await db.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 // One Groud Logistics per zip code
-                var selCategory = await db.AppCategory.FirstOrDefaultAsync<AppCategory>(p => p.AppCategoryId == categoryInfo);
+                var selCategory = await db.AppCategories.FirstOrDefaultAsync<AppCategory>(p => p.AppCategoryId == categoryInfo);
                 return selCategory;
 
             }
@@ -88,7 +88,7 @@ namespace BlueKangrooCoreOnlyAPI.Repository
             if (db != null)
             {
                 //Delete that post
-                db.AppCategory.Update(category);
+                db.AppCategories.Update(category);
 
                 //Commit the transaction
                 await db.SaveChangesAsync();
