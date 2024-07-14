@@ -1,0 +1,5 @@
+{
+    "dotnet.defaultSolution": "BlueKangrooCoreOnlyAPI.sln",
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "BlueKangrooCoreOnlyAPI/bin/Release/net6.0/publish"
+}

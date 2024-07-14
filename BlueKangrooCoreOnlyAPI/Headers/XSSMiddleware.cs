@@ -173,7 +173,7 @@ namespace BlueKangrooCoreOnlyAPI.Middleware
         {
             if (headers["P3P"].IsNullOrEmpty())
             {
-                headers.Add("P3P", "CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\"");
+                headers.Add("P3P", "CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT POP3\"");
             }
         }
 
