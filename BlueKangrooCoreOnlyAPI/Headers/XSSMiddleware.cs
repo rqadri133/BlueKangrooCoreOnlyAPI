@@ -144,7 +144,7 @@ namespace BlueKangrooCoreOnlyAPI.Middleware
                 {
                     case '<':
                         // If the < is followed by a letter or '!', it's unsafe (looks like a tag or HTML comment)
-                        if (IsAtoZ(s[n + 1]) || s[n + 1] == '!' || s[n + 1] == '/' || s[n + 1] == '?') return true;
+                        if (IsAtoZ(s[n + 1]) || s[n + 1] == '!' || s[n + 1] == '/' || s[n + 1] == '?' || s[n + 1] == '&'  ) return true;
                         break;
                     case '&':
                         // If the & is followed by a #, it's unsafe (e.g. S) 
