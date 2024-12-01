@@ -22,19 +22,24 @@ public class ValidateAntiForgeryTokenMiddleware
 
     public async Task Invoke(HttpContext context)
     {
+        string path = context.Request.Path.Value!;
+       
+            // The request token can be sent as a JavaScript-readable cookie, 
+            // and Angular uses it by default.
+            var tokens = _antiforgery.GetAndStoreTokens(context);
+            _antiforgery.GetTokens(context).CookieToken!.Replace(_antiforgery.GetTokens(context).CookieToken!,"XSRF-TOKEN");
+            context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, 
+                new CookieOptions() { HttpOnly = false });
+        
+
     
-        var tokenSet = _antiforgery.GetAndStoreTokens(context);
-          Trace.Write(tokenSet);
-                 Trace.Write(tokenSet.CookieToken!);
 
             // validate authenticate header information here 
         if (HttpMethods.IsPost(context.Request.Method)  ||  HttpMethods.IsTrace(context.Request.Method))
         {
-                var requestPath = context.Request.Path.Value;
                 
            
-            context.Response.Cookies.Append("XSRF-TOKEN", tokenSet.RequestToken!,
-                    new CookieOptions { HttpOnly = false });
+           
             Console.WriteLine($"Display  {_antiforgery.GetTokens(context)}");   
             await _antiforgery.ValidateRequestAsync(context);
         }
@@ -42,7 +47,9 @@ public class ValidateAntiForgeryTokenMiddleware
             
 
            await _next(context);
-    }
+    
+}
+}
 }
 
-}
+

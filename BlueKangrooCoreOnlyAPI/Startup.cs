@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Antiforgery;
 using BlueKangrooCoreOnlyAPI.Utilities;
 using Microsoft.AspNetCore.DataProtection;
+using BlueKangrooCoreOnlyAPI.Middleware;
 
 namespace BlueKangrooCoreOnlyAPI
 {
@@ -142,11 +143,9 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddMemoryCache();
             // Global validation no need at Class levels but question is its API 
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            });
+            services.AddControllersWithViews();
             
+             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
 
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
@@ -191,7 +190,7 @@ namespace BlueKangrooCoreOnlyAPI
                 endpoints.MapControllers(); 
             });
            
-          // app.UseAntiforgeryTokens();
+          //app.UseAntiforgeryTokens();
    
     /* app.Use(next => context =>
     {
@@ -233,8 +232,11 @@ namespace BlueKangrooCoreOnlyAPI
                  option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
                  option.DisplayOperationId();
             });
+ 
+           app.UseAntiforgeryTokens();
 
-         
+          app.UseAntiXssMiddleware();
+
            app.UseHttpsRedirection();
 
          
