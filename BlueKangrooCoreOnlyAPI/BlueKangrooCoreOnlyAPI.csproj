@@ -6,10 +6,18 @@
      <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+   <PropertyGroup>
+      <ContainerImageName>web-blue-api</ContainerImageName>
+      <ContainerImageTags>latest</ContainerImageTags>
+      <PublishProfile>DefaultContainer</PublishProfile>
+      <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
   <ItemGroup>
    <None Update="app.yaml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
+   <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="9.0.3" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.8.1" />
     <PackageReference Include="DotNetCli" Version="0.1.9" />
