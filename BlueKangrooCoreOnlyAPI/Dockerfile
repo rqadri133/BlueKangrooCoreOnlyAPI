@@ -1,23 +1,26 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS b
+# Stage 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY . .
-RUN dotnet restore "./BlueKangrooCoreOnlyAPI.csproj"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "BlueKangrooCoreOnlyAPI.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "BlueKangrooCoreOnlyAPI.csproj" -c Release -o /app/publish
+# Copy the project file(s) and restore dependencies
+COPY BlueKangrooCoreOnlyAPI/*.csproj ./BlueKangrooCoreOnlyAPI/
+RUN dotnet restore BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj
 
-FROM base AS final
+# Copy the remaining source code and build the project
+COPY BlueKangrooCoreOnlyAPI/ ./BlueKangrooCoreOnlyAPI/
+WORKDIR /src/BlueKangrooCoreOnlyAPI
+RUN dotnet publish -c Release -o /app --no-restore
+
+# Stage 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BlueKangrooCoreOnlyAPI.dll"]
 
+# Copy the build artifacts from the first stage
+COPY --from=build /app .
+
+# Expose the port (optional, customize as needed)
+EXPOSE 5000
+EXPOSE 5001
+
+# Specify the entry point for the application
+ENTRYPOINT ["dotnet", "BlueKangrooCoreOnlyAPI.dll"]
