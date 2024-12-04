@@ -13,9 +13,14 @@
       <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 
-  <ItemGroup>
-   <None Update="app.yaml">
+    <PropertyGroup>
+  <PublishSingleFile>true</PublishSingleFile>
+  <PublishTrimmed>true</PublishTrimmed>
+</PropertyGroup>
+ <ItemGroup>
+    <None Update="app.yaml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      
     </None>
    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="9.0.3" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
@@ -65,6 +70,7 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Pricing\" />
+    
   </ItemGroup>
   <ItemGroup>
     <None Remove="Dockerfile.original" />
