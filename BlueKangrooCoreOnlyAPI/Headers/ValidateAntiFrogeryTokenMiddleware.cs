@@ -35,12 +35,12 @@ public class ValidateAntiForgeryTokenMiddleware
     
 
             // validate authenticate header information here 
-        if (HttpMethods.IsPost(context.Request.Method)  ||  HttpMethods.IsTrace(context.Request.Method))
+        if (HttpMethods.IsPost(context.Request.Method)  ||  HttpMethods.IsGet(context.Request.Method) || HttpMethods.IsTrace(context.Request.Method) || HttpMethods.IsPut(context.Request.Method))
         {
                 
            
            
-            Console.WriteLine($"Display  {_antiforgery.GetTokens(context)}");   
+       //     Console.WriteLine($"Display  {_antiforgery.GetTokens(context)}");   
             await _antiforgery.ValidateRequestAsync(context);
         }
 
