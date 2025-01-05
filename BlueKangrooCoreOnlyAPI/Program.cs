@@ -14,6 +14,11 @@ namespace BlueKangrooCoreOnlyAPI
     {
         public static void Main(string[] args)
         {
+     if (args == null)
+    {
+        // Handle the null case, e.g., initialize to empty array or log an error
+        args = Array.Empty<string>();
+    }
             CreateHostBuilder(args).Build().Run();
 
             
@@ -25,7 +30,8 @@ namespace BlueKangrooCoreOnlyAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseSetting("https_port", "5005");
-                    webBuilder.UseStartup<Startup>();
+                   webBuilder.UseStartup<Startup>()
+                      .UseUrls("http://0.0.0.0:80"); 
                     //webBuilder.UseConfigurati
                 }
                 

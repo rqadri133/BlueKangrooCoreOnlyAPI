@@ -2,21 +2,13 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>ad259fb1-d44a-455a-b35d-e9a4d03d12ac</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
      <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-   <PropertyGroup>
-      <ContainerImageName>web-blue-api</ContainerImageName>
-      <ContainerImageTags>latest</ContainerImageTags>
-      <PublishProfile>DefaultContainer</PublishProfile>
-      <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
-  </PropertyGroup>
 
-    <PropertyGroup>
-  <PublishSingleFile>true</PublishSingleFile>
-  <PublishTrimmed>true</PublishTrimmed>
-</PropertyGroup>
+
+  
+  
  <ItemGroup>
     <None Update="app.yaml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -27,13 +19,22 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.8.1" />
     <PackageReference Include="DotNetCli" Version="0.1.9" />
     <PackageReference Include="Google.Cloud.AIPlatform.V1" Version="2.18.0" />
-    <PackageReference Include="Google.Cloud.Diagnostics.AspNetCore" Version="4.0.0" />
+
+    
     <PackageReference Include="Google.Cloud.Storage.V1" Version="2.5.0" />
     <PackageReference Include="GoogleMapsApi" Version="1.2.0" />
     <PackageReference Include="IdentityModel" Version="4.1.1" />
+    <PackageReference Include="MassTransit" Version="8.3.4" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.11" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.5" />

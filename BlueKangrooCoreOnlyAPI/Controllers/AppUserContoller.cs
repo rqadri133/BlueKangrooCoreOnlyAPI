@@ -57,7 +57,7 @@ namespace BlueKangrooCoreOnlyAPI.Controllers
                 {
                     logger.LogError("Model State is Invalid returning bad request");
 
-                    return BadRequest();
+                    return BadRequest("Model Data is not Correct");
                 }
             }
             catch(Exception excp)

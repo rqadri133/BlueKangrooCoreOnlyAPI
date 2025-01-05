@@ -99,12 +99,36 @@ namespace BlueKangrooCoreOnlyAPI
                     policy.Requirements.Add(new CustomerGuidHandlerRequirement()));
             });
              services.AddDependencies();
-
+            services.AddControllers();
 
            
             services.AddSwaggerGen(c =>
           {
-             c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooAPI", Version = "V1" } );
+             c.SwaggerDoc("v1", new OpenApiInfo() { Title = "BlueKangrooCoreOnlyAPI", Version = "V1" } );
+
+             c.AddSecurityDefinition("X-CSRF-TOKEN", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.ApiKey,
+        Name = "X-CSRF-TOKEN",
+        In = ParameterLocation.Header,
+        Description = "Anti-Forgery Token",
+    });
+
+     c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "X-CSRF-TOKEN"
+                }
+            },
+            new string[] {}
+        }
+    });
+
               c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                   Description =
@@ -130,6 +154,9 @@ namespace BlueKangrooCoreOnlyAPI
 
            },
 
+
+           
+
            
              new List<string>()
             }
@@ -143,9 +170,8 @@ namespace BlueKangrooCoreOnlyAPI
 
             services.AddMemoryCache();
             // Global validation no need at Class levels but question is its API 
-            services.AddControllersWithViews();
             
-             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+             services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
 
 
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
@@ -177,10 +203,18 @@ namespace BlueKangrooCoreOnlyAPI
 
             app.UseRouting();
 
-            app.UseAuthorization(); 
-                
-              
+        app.UseAuthorization(); 
 
+              
+            app.UseSwagger();
+
+  var swaggerOptions = new m.SwaggerOptions();
+            Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
+
+           app.UseSwaggerUI(option =>
+             {
+                option.SwaggerEndpoint("/swagger/v1/swagger.json", "BlueKangrooCoreOnlyAPI");
+            });
 
 
             
@@ -190,54 +224,29 @@ namespace BlueKangrooCoreOnlyAPI
                 endpoints.MapControllers(); 
             });
            
-          //app.UseAntiforgeryTokens();
+          app.UseAntiforgeryTokens();
    
-    /* app.Use(next => context =>
-    {
-        string path = context.Request.Path.Value!;
-
-        if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(path, "/swagger", StringComparison.OrdinalIgnoreCase))
-        {
-            // The request token can be sent as a JavaScript-readable cookie, 
-            // and Angular uses it by default.s
-            var tokens = antiforgery.GetAndStoreTokens(context);
-            
-
-            context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, 
-                new CookieOptions() { HttpOnly = false });
-        }
-
-        return next(context);
-    }); */
-             
+   
          
             
-            var swaggerOptions = new m.SwaggerOptions();
-            Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
-
+          
             /*Enabling Swagger ui, consider doing it on Development env only*/
           
           
-            app.UseSwagger(option =>
-          {
-              
-              option.RouteTemplate = swaggerOptions.JsonRoute;
-      
-          });
-
-
-           app.UseSwaggerUI(option =>
-             {
-                 option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
-                 option.DisplayOperationId();
-            });
+          
  
-           app.UseAntiforgeryTokens();
+          // app.UseAntiforgeryTokens();
 
           app.UseAntiXssMiddleware();
 
            app.UseHttpsRedirection();
+           app.UseStaticFiles();
+
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlueKangrooCoreOnlyAPI");
+    c.InjectJavascript("/swagger-custom.js");
+});
 
          
 

@@ -1,26 +1,22 @@
-# Stage 1: Build
+# Use the official .NET SDK image for build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-
-# Copy the project file(s) and restore dependencies
-COPY BlueKangrooCoreOnlyAPI/*.csproj ./BlueKangrooCoreOnlyAPI/
-RUN dotnet restore BlueKangrooCoreOnlyAPI/BlueKangrooCoreOnlyAPI.csproj
-
-# Copy the remaining source code and build the project
-COPY BlueKangrooCoreOnlyAPI/ ./BlueKangrooCoreOnlyAPI/
-WORKDIR /src/BlueKangrooCoreOnlyAPI
-RUN dotnet publish -c Release -o /app --no-restore
-
-# Stage 2: Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Copy the build artifacts from the first stage
-COPY --from=build /app .
+# Copy the project files
+COPY *.csproj ./
+RUN dotnet restore
 
-# Expose the port (optional, customize as needed)
-EXPOSE 5000
-EXPOSE 5001
+# Copy the remaining files and publish
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-# Specify the entry point for the application
+# Use the runtime image to run the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/out .
+
+# Expose port 80
+EXPOSE 8080
+
+# Define the entry point for the container
 ENTRYPOINT ["dotnet", "BlueKangrooCoreOnlyAPI.dll"]

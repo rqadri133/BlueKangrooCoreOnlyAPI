@@ -27,8 +27,8 @@ public class ValidateAntiForgeryTokenMiddleware
             // The request token can be sent as a JavaScript-readable cookie, 
             // and Angular uses it by default.
             var tokens = _antiforgery.GetAndStoreTokens(context);
-            _antiforgery.GetTokens(context).CookieToken!.Replace(_antiforgery.GetTokens(context).CookieToken!,"XSRF-TOKEN");
-            context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, 
+            _antiforgery.GetTokens(context).CookieToken!.Replace(_antiforgery.GetTokens(context).CookieToken!,"X-CSRF-TOKEN");
+            context.Response.Cookies.Append("X-CSRF-TOKEN", tokens.RequestToken!, 
                 new CookieOptions() { HttpOnly = false });
         
 
