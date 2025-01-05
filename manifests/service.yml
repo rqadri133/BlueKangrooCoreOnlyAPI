@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "ecrcluster-b7e0"
+    labels:
+        app: "ecrcluster-b7e0"
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 8078
+      targetPort: 8078
+      protocol: TCP
+      name: http
+    selector:
+        app: "ecrcluster-b7e0"

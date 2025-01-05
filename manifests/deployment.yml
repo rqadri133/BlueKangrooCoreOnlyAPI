@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "ecrcluster-b7e0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "ecrcluster-b7e0"
+  template:
+    metadata:
+      labels:
+        app: "ecrcluster-b7e0"
+    spec:
+      containers:
+        - name: "ecrcluster-b7e0"
+          image: "ecrblueadmin.azurecr.io/ecrcluster"
+          ports:
+          - containerPort: 8078
