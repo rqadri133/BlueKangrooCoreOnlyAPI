@@ -125,6 +125,7 @@ namespace BlueKangrooCoreOnlyAPI
                     Id = "X-CSRF-TOKEN"
                 }
             },
+            // Completely block
             new string[] {}
         }
     });
@@ -171,8 +172,11 @@ namespace BlueKangrooCoreOnlyAPI
             services.AddMemoryCache();
             // Global validation no need at Class levels but question is its API 
             
-             services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
-
+            services.AddAntiforgery(options =>
+            {
+              
+                options.HeaderName = "X-CSRF-TOKEN";  // For Angular or other SPA frontends
+            });
 
             services.AddStackExchangeRedisCache(options => { options.Configuration = Configuration["RedisServerURL"]; });
         
@@ -211,11 +215,7 @@ namespace BlueKangrooCoreOnlyAPI
   var swaggerOptions = new m.SwaggerOptions();
             Configuration.GetSection(nameof(m.SwaggerOptions)).Bind(swaggerOptions);
 
-           app.UseSwaggerUI(option =>
-             {
-                option.SwaggerEndpoint("/swagger/v1/swagger.json", "BlueKangrooCoreOnlyAPI");
-            });
-
+           
 
             
 
@@ -224,7 +224,6 @@ namespace BlueKangrooCoreOnlyAPI
                 endpoints.MapControllers(); 
             });
            
-          app.UseAntiforgeryTokens();
    
    
          
@@ -233,20 +232,20 @@ namespace BlueKangrooCoreOnlyAPI
             /*Enabling Swagger ui, consider doing it on Development env only*/
           
           
-          
+                     app.UseStaticFiles();
+
  
-          // app.UseAntiforgeryTokens();
-
-          app.UseAntiXssMiddleware();
-
-           app.UseHttpsRedirection();
-           app.UseStaticFiles();
-
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlueKangrooCoreOnlyAPI");
     c.InjectJavascript("/swagger-custom.js");
 });
+          // app.UseAntiforgeryTokens();
+
+          app.UseAntiXssMiddleware();
+
+           app.UseHttpsRedirection();
+
 
          
 
